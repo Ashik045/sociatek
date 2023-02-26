@@ -16,7 +16,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <Navbar />
-        <h2>Weblog-2.0</h2>
+        <h2>Weblog-2.0 - The latest version of weblog app</h2>
       </main>
     </>
   );
