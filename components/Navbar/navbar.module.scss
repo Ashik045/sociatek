@@ -144,6 +144,10 @@
       .res_navbar {
         display: none;
 
+        .res_nav_iconn {
+          cursor: pointer;
+        }
+
         .res_nav_menu {
           position: absolute;
           top: 56px;
@@ -155,7 +159,7 @@
             cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
           animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 
-          a {
+          p {
             display: block;
             @include menuStyle();
             padding: 5px 8px;
@@ -165,19 +169,19 @@
             @include menuStyleHover();
           }
 
-          .res_nav_reg {
-            display: none;
+          //   .res_nav_reg {
+          //     display: none;
 
-            button {
-              @include reg-button();
-              margin-top: 10px;
-              margin-left: 10px;
-            }
+          //     button {
+          //       @include reg-button();
+          //       margin-top: 10px;
+          //       margin-left: 10px;
+          //     }
 
-            button:hover {
-              @include reg-button-hover();
-            }
-          }
+          //     button:hover {
+          //       @include reg-button-hover();
+          //     }
+          //   }
         }
         @-webkit-keyframes slide-left {
           0% {
@@ -204,79 +208,79 @@
   }
 }
 
-// @media screen and (max-width: 992px) {
-//   .navbar {
-//     .navbar_main {
-//       display: grid;
-//       grid-template-columns: 8% 90%;
-//       .nav_brand {
-//         h5 {
-//           font-size: 21px;
-//         }
-//       }
+@media screen and (max-width: 992px) {
+  .navbar {
+    .navbar_main {
+      display: grid;
+      grid-template-columns: 8% 90% 2%;
+      .nav_brand {
+        h5 {
+          font-size: 21px;
+        }
+      }
 
-//       .nav_right {
-//         .nav_menu {
-//           a {
-//             font-size: 16px;
-//             padding: 7px 5px;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
+      .nav_right {
+        .nav_menu {
+          p {
+            font-size: 16px;
+            padding: 7px 5px;
+          }
+        }
+      }
+    }
+  }
+}
 
-// @media screen and (max-width: 800px) {
-//   .navbar {
-//     .navbar_main {
-//       // padding-right: 10px;
-//       padding-left: 10px;
-//       display: grid;
-//       grid-template-columns: 5% 90%;
+@media screen and (max-width: 800px) {
+  .navbar {
+    .navbar_main {
+      // padding-right: 10px;
+      padding-left: 10px;
+      display: grid;
+      grid-template-columns: 5% 90% 3%;
 
-//       .nav_right {
-//         .search {
-//           margin-right: 10px;
-//           margin-left: auto;
-//           width: 60%;
+      .nav_right {
+        .search {
+          margin-right: 10px;
+          margin-left: auto;
+          width: 60%;
 
-//           input {
-//             width: 80%;
-//           }
-//         }
-//         .nav_menu {
-//           display: none;
-//         }
+          input {
+            width: 80%;
+          }
+        }
+        .nav_menu {
+          display: none;
+        }
 
-//         .nav_reg {
-//           margin-left: auto;
-//           margin-right: 15px;
-//           width: 50px;
+        .nav_reg {
+          margin-left: auto;
+          margin-right: 15px;
+          width: 50px;
 
-//           button {
-//             display: none;
-//           }
-//         }
+          button {
+            display: none;
+          }
+        }
 
-//         .res_navbar {
-//           display: block;
-//           margin-right: 4%;
-//           position: relative;
-//           .res_nav_menu {
-//             .res_nav_reg {
-//               display: block;
+        .res_navbar {
+          display: block;
+          margin-right: 4%;
+          position: relative;
+          .res_nav_menu {
+            .res_nav_reg {
+              display: block;
 
-//               button {
-//                 padding: 7px;
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
+              button {
+                padding: 7px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 // @media screen and(max-width: 576px) {
 //   .navbar {

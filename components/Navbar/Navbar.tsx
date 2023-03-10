@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { BiMenu, BiX } from "react-icons/bi";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import noPhoto from "../../images/no-photo.png";
 import styles from "./navbar.module.scss";
@@ -139,43 +140,39 @@ const Navbar = () => {
           </div>
 
           {/* for responsive device */}
-          <div className="res_navbar">
-            {/* {toggler ? (
-                            <BiX size={29} onClick={() => setToggler(false)} />
-                        ) : (
-                            <BiMenu size={29} onClick={() => setToggler(true)} />
-                        )} */}
-            {/* {toggler && (
-                            <div className="res_nav_menu">
-                                <NavLink to="/">
-                                    <a onClick={() => setToggler(false)} href="">
-                                        Home
-                                    </a>
-                                </NavLink>
-                                <NavLink to="/">
-                                    <a onClick={() => setToggler(false)} href="">
-                                        About
-                                    </a>
-                                </NavLink>
-                                <NavLink to="/seetings">
-                                    <a onClick={() => setToggler(false)} href="">
-                                        Profile
-                                    </a>
-                                </NavLink>
-                                <NavLink to="/write">
-                                    <a onClick={() => setToggler(false)} href="">
-                                        Write
-                                    </a>
-                                </NavLink>
-                                {user && (
-                                    <NavLink to={`users/?user=${user.username}`}>
-                                        <a href="#" onClick={() => setToggler(false)}>
-                                            My Posts
-                                        </a>
-                                    </NavLink>
-                                )} */}
+          <div className={styles.res_navbar}>
+            {toggler ? (
+              <BiX
+                size={29}
+                onClick={() => setToggler(false)}
+                className={styles.res_nav_iconn}
+              />
+            ) : (
+              <BiMenu
+                size={29}
+                onClick={() => setToggler(true)}
+                className={styles.res_nav_iconn}
+              />
+            )}
+            {toggler && (
+              <div className={styles.res_nav_menu}>
+                <Link href="/" style={{ textDecoration: "none" }}>
+                  <p onClick={() => setToggler(false)}>Home</p>
+                </Link>
 
-            {/* <div className="res_nav_reg">
+                <Link href="/seetings" style={{ textDecoration: "none" }}>
+                  <p onClick={() => setToggler(false)}>Profile</p>
+                </Link>
+                <Link href="/write" style={{ textDecoration: "none" }}>
+                  <p onClick={() => setToggler(false)}>Write</p>
+                </Link>
+                {user && (
+                  <Link href={`users/`} style={{ textDecoration: "none" }}>
+                    <p onClick={() => setToggler(false)}>My Posts</p>
+                  </Link>
+                )}
+
+                {/* <div className="res_nav_reg">
                                     {user ? (
                                         <button type="button" onClick={logOut}>
                                             Log out
@@ -186,8 +183,8 @@ const Navbar = () => {
                                         </button>
                                     )}
                                 </div> */}
-            {/* </div> */}
-            {/* )} */}
+              </div>
+            )}
           </div>
         </div>
       </div>
