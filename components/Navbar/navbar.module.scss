@@ -282,61 +282,61 @@
   }
 }
 
-@media screen and(max-width: 576px) {
-  .navbar {
-    .navbar_main {
-      .nav_right {
-        .nav_reg {
-          display: flex;
-          margin-right: -10px;
-          // margin-left: 0px;
+// @media screen and(max-width: 576px) {
+//   .navbar {
+//     .navbar_main {
+//       .nav_right {
+//         .nav_reg {
+//           display: flex;
+//           margin-right: -10px;
+//           // margin-left: 0px;
 
-          .profilePic {
-            height: 35px;
-            width: 35px;
-          }
-        }
+//           .profilePic {
+//             height: 35px;
+//             width: 35px;
+//           }
+//         }
 
-        .search {
-          margin-right: -30px;
-          width: 50%;
-          display: flex;
-          align-items: center;
+//         .search {
+//           margin-right: -30px;
+//           width: 50%;
+//           display: flex;
+//           align-items: center;
 
-          input {
-            width: 70%;
-          }
-        }
+//           input {
+//             width: 70%;
+//           }
+//         }
 
-        .res_navbar {
-          .res_nav_menu {
-            margin-right: -15px;
-            text-align: center;
-            .res_nav_reg {
-              display: block;
-            }
-          }
-        }
-      }
-    }
-  }
-}
+//         .res_navbar {
+//           .res_nav_menu {
+//             margin-right: -15px;
+//             text-align: center;
+//             .res_nav_reg {
+//               display: block;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 
-@media screen and(max-width: 370px) {
-  .navbar {
-    .navbar_main {
-      .nav_right {
-        .search {
-          margin-right: -45px;
-          width: 45%;
-          display: flex;
-          align-items: center;
+// @media screen and(max-width: 370px) {
+//   .navbar {
+//     .navbar_main {
+//       .nav_right {
+//         .search {
+//           margin-right: -45px;
+//           width: 45%;
+//           display: flex;
+//           align-items: center;
 
-          input {
-            width: 60%;
-          }
-        }
-      }
-    }
-  }
-}
+//           input {
+//             width: 60%;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
