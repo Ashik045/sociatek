@@ -35,12 +35,12 @@ const Navbar = () => {
   // };
 
   // user logout function
-  // const logOut = () => {
-  //     // setUser(false);
-  //     setToggler(false);
-  //     dispatch({ type: 'LOGOUT' });
-  //     navigate('/');
-  // };
+  const logOut = () => {
+    // // setUser(false);
+    // setToggler(false);
+    // dispatch({ type: 'LOGOUT' });
+    // navigate('/');
+  };
 
   const handleChange = (e) => {
     setInpVal(e.target.value);
@@ -172,17 +172,17 @@ const Navbar = () => {
                   </Link>
                 )}
 
-                {/* <div className="res_nav_reg">
-                                    {user ? (
-                                        <button type="button" onClick={logOut}>
-                                            Log out
-                                        </button>
-                                    ) : (
-                                        <button type="button" onClick={handleClick}>
-                                            Log In
-                                        </button>
-                                    )}
-                                </div> */}
+                <div className="res_nav_reg">
+                  {user ? (
+                    <button type="button" onClick={logOut}>
+                      Log out
+                    </button>
+                  ) : (
+                    <button type="button" onClick={handleClick}>
+                      Log In
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </div>
