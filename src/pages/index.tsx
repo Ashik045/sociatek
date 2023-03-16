@@ -1,26 +1,20 @@
 import styles from "@/styles/Home.module.css";
 import { Inter } from "@next/font/google";
 import Homepage from "components/Homepage/Homepage";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import { Postt } from "types.global";
 import Navbar from "../../components/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 interface PostProps {
-  posts: {
-    _id: string;
-    categories: string[];
-    username: string;
-    title: string;
-    desc: string;
-    photo: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }[];
+  posts: Postt[];
 }
 
-export default function Home({ posts }: PostProps) {
+export const revalidate = 30;
+
+const Home: NextPage<PostProps> = ({ posts }) => {
   return (
     <>
       <Head>
@@ -37,10 +31,10 @@ export default function Home({ posts }: PostProps) {
       </main>
     </>
   );
-}
+};
 
 // SSR - get called on every request
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps<PostProps> = async () => {
   const res = await fetch("https://weblog-backend.onrender.com/api/posts");
   const data = await res.json();
 
@@ -50,3 +44,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
     },
   };
 };
+
+export default Home;

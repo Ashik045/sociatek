@@ -42,12 +42,12 @@ const Navbar = () => {
     // navigate('/');
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setInpVal(e.target.value);
   };
 
   // search and get data
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     //   e.preventDefault();
     //   setInpVal(e.target.value);
     //   if (inpVal?.length > 0) {

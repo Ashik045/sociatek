@@ -1,20 +1,25 @@
 import Post from "components/Post/Post";
+import { Postt } from "types.global";
 import styles from "./homepage.module.scss";
 
-type PostsProps = {
-  posts: {
-    _id: string;
-    categories: string[];
-    username: string;
-    title: string;
-    desc: string;
-    photo: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }[];
-};
+// type PostsProps = {
+//   posts: {
+//     _id: string;
+//     categories: string[];
+//     username: string;
+//     title: string;
+//     desc: string;
+//     photo: string;
+//     createdAt: Date;
+//     updatedAt: Date;
+//   }[];
+// };
 
-const Homepage = ({ posts }: PostsProps) => {
+interface PostProps {
+  posts: Postt[];
+}
+
+const Homepage = ({ posts }: PostProps) => {
   return (
     <div className={styles.homepage}>
       <div className={styles.homepage_profile}>Profile(linkedin)</div>
