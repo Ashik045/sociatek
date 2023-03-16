@@ -1,0 +1,32 @@
+@mixin small_chngs {
+  padding: 10px;
+  border-radius: 3px;
+  background-color: #f6fcfd;
+  height: fit-content;
+}
+
+.homepage {
+  margin-top: 95px;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  // padding-left: 10px;
+  // padding-right: 10px;
+  display: grid;
+  grid-template-columns: 23% 42% 27%;
+  gap: 15px;
+  //   justify-content: center;
+
+  .homepage_profile {
+    @include small_chngs();
+  }
+
+  .homepage_feed {
+    border-radius: 3px;
+  }
+
+  .homepage_users {
+    @include small_chngs();
+  }
+}

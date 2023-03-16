@@ -127,7 +127,7 @@ const Navbar = () => {
               <>
                 <Image
                   onClick={() => router.push("/seetings")}
-                  className="profilePic"
+                  className={styles.profilePic}
                   src={noPhoto}
                   alt="user profile"
                 />
@@ -172,7 +172,7 @@ const Navbar = () => {
                   </Link>
                 )}
 
-                <div className="res_nav_reg">
+                <div className={styles.res_nav_reg}>
                   {user ? (
                     <button type="button" onClick={logOut}>
                       Log out

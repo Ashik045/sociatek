@@ -1,5 +1,6 @@
 import styles from "@/styles/Home.module.css";
 import { Inter } from "@next/font/google";
+import Homepage from "components/Homepage/Homepage";
 import Head from "next/head";
 import Navbar from "../../components/Navbar/Navbar";
 
@@ -16,7 +17,9 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <Navbar />
-        <h2>Weblog-2.0 - The latest version of weblog app..</h2>
+
+        {/* main section of this application */}
+        <Homepage />
       </main>
     </>
   );

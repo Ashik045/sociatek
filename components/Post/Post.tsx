@@ -1,5 +1,7 @@
+import styles from "./post.module.scss";
+
 const Post = () => {
-  return <div>Post component</div>;
+  return <div className={styles.post_comp}>Post component</div>;
 };
 
 export default Post;
