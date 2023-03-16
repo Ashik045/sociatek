@@ -1,12 +1,28 @@
 import styles from "@/styles/Home.module.css";
 import { Inter } from "@next/font/google";
 import Homepage from "components/Homepage/Homepage";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Navbar from "../../components/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+interface PostProps {
+  posts: {
+    _id: string;
+    categories: string[];
+    username: string;
+    title: string;
+    desc: string;
+    photo: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
+}
+
+export default function Home({ posts }: PostProps) {
+  console.log(posts);
+
   return (
     <>
       <Head>
@@ -19,8 +35,22 @@ export default function Home() {
         <Navbar />
 
         {/* main section of this application */}
-        <Homepage />
+        <Homepage posts={posts} />
       </main>
     </>
   );
 }
+
+// SSR - get called on every request
+export const getServerSideProps: GetServerSideProps = async () => {
+  const res = await fetch("https://weblog-backend.onrender.com/api/posts");
+  const data = await res.json();
+  // const data = datas.message;
+  console.log(data.message);
+
+  return {
+    props: {
+      posts: data.message,
+    },
+  };
+};
