@@ -19,10 +19,15 @@ const Homepage = ({ posts }: PostsProps) => {
     <div className={styles.homepage}>
       <div className={styles.homepage_profile}>Profile(linkedin)</div>
 
+      {/* feed sectioin - (write post, browse post) */}
       <div className={styles.homepage_feed}>
-        {posts.map((post) => {
-          return <Post key={post._id} items={post} />;
-        })}
+        {posts.length > 0 ? (
+          posts.map((post) => {
+            return <Post key={post._id} postItems={post} />;
+          })
+        ) : (
+          <p>No post found!</p>
+        )}
       </div>
 
       <div className={styles.homepage_users}>

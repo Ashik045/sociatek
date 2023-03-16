@@ -21,8 +21,6 @@ interface PostProps {
 }
 
 export default function Home({ posts }: PostProps) {
-  console.log(posts);
-
   return (
     <>
       <Head>
@@ -45,8 +43,6 @@ export default function Home({ posts }: PostProps) {
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch("https://weblog-backend.onrender.com/api/posts");
   const data = await res.json();
-  // const data = datas.message;
-  console.log(data.message);
 
   return {
     props: {

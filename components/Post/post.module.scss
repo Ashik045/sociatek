@@ -1,8 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Open+Sans:ital,wght@1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Open+Sans:ital,wght@1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+
 .post_comp {
   background-color: #f6fcfd;
   height: fit-content;
   border-radius: 3px;
+  // padding: 10px;
+  margin-bottom: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  overflow: hidden;
 
-  padding: 10px;
-  margin-bottom: 10px;
+  .post_image {
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  .post_info {
+    padding: 10px;
+    .post_cat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0px;
+
+      .username {
+        margin-top: 0px;
+      }
+
+      .post_date {
+        margin-right: 5%;
+        padding-top: 5px;
+        font-size: 14px;
+        margin-top: -10px;
+        // color: gray;
+      }
+    }
+
+    .post_title {
+      text-transform: capitalize;
+      font-size: 23px;
+      font-weight: 600;
+      margin-left: 1%;
+      margin-top: -5px;
+      font-family: "Open Sans", sans-serif;
+      cursor: pointer;
+      color: rgb(44, 43, 43);
+      text-decoration: none;
+      transition: all 0.4s ease;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .post_title:hover {
+      text-decoration: underline;
+    }
+
+    p {
+      color: #444;
+      font-family: "Varela Round", sans-serif;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      margin-left: 1%;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.single_post:hover .post_title {
+  color: #ff577f;
+}
+
+@media screen and (max-width: 576px) {
+  .single_post {
+    .post_image {
+      width: 100%;
+      height: auto;
+    }
+  }
 }
