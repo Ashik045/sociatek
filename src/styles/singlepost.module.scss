@@ -1,0 +1,192 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital@1&family=Varela+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;1,400&family=Varela+Round&display=swap");
+
+.singlePost {
+  display: grid;
+  grid-template-columns: 65% 33%;
+  grid-gap: 25px;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+
+  .singlePost_detail {
+    margin-top: 50px;
+    Image {
+      margin-top: 0px;
+      width: 100%;
+      height: 65vh;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .title_updel {
+      display: grid;
+      grid-template-columns: 80% 20%;
+      justify-items: center;
+      align-items: center;
+      grid-gap: 15px;
+      h3 {
+        text-transform: capitalize;
+        margin: 20px 0px;
+        font-weight: 700;
+        font-family: "Varela Round", sans-serif;
+        text-align: center;
+      }
+
+      .post_title_inp {
+        text-transform: capitalize;
+        font-weight: 700;
+        font-family: "Varela Round", sans-serif;
+        border: none;
+        color: rgb(94, 93, 93);
+        border-bottom: 3px solid rgb(48, 47, 47);
+        font-size: 22px;
+        margin: 20px 0px;
+      }
+
+      .post_title_inp:focus {
+        outline: none;
+      }
+
+      .updel {
+        display: flex;
+        justify-content: space-around;
+        margin-right: 10px;
+
+        .updel_btnn {
+          transition: all 0.3s ease;
+        }
+
+        .updel_btnn:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    .post_text {
+      p:first-child {
+        font-size: 17px;
+      }
+
+      .authorName {
+        color: black;
+        // text-decoration: none;
+        font-size: 20px;
+        font-weight: 600;
+        text-decoration: underline;
+      }
+      // .authorName:hover {
+      // }
+
+      .textDesc {
+        font-family: "Varela Round", sans-serif;
+        line-height: 35px;
+        color: rgb(85, 83, 83);
+      }
+
+      .textDesc_inp {
+        font-family: "Varela Round", sans-serif;
+        width: 95%;
+        border: 1px solid rgb(138, 137, 137);
+      }
+
+      .textDesc::first-letter {
+        margin-left: 15px;
+        font-size: 30px;
+        font-weight: 600;
+        color: black;
+      }
+
+      .update_post {
+        background: none;
+        border: none;
+        background-color: #88bef5;
+        height: 40px;
+        width: 130px;
+        font-weight: 600;
+        border-radius: 5px;
+        margin-left: 80%;
+        margin-top: 20px;
+      }
+
+      .update_post:hover {
+        background-color: #43dde6;
+      }
+    }
+  }
+
+  .popular_post_sec {
+    margin-top: 50px;
+    // height: max-content;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .singlePost {
+    display: grid;
+    grid-template-columns: 95%;
+    grid-gap: 25px;
+    justify-content: center;
+
+    .popular_post_sec {
+      width: 60%;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .singlePost {
+    .singlePost_detail {
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      .post_text {
+        .update_post {
+          margin-left: 70%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .singlePost {
+    .singlePost_detail {
+      .title_updel {
+        h3 {
+          margin: 15px 0px;
+          font-weight: 600;
+          font-size: 20px;
+          text-align: left;
+          padding-right: 10px;
+        }
+        .post_title_inp {
+          width: 240px;
+        }
+      }
+
+      .post_text {
+        .authorName {
+          font-size: 18px;
+          font-weight: 500;
+        }
+        .update_post {
+          margin-left: 47%;
+        }
+
+        .textDesc {
+          line-height: 30px;
+        }
+      }
+    }
+
+    .popular_post_sec {
+      width: 100%;
+    }
+  }
+}
