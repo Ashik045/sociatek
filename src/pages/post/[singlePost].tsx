@@ -29,6 +29,7 @@ const SinglePost = ({ post }: SinglePostProp) => {
   const [loading, setLoading] = useState(false);
   const [updMode, setUpdMode] = useState(false);
   const [user, setUser] = useState(false);
+  // update functionalities
 
   return (
     <div className={styles.singlePost}>
