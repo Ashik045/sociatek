@@ -7,22 +7,10 @@ import { useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import { MdBorderColor } from "react-icons/md";
 import Skeleton from "react-loading-skeleton";
+import { SinglePostProp } from "types.global";
 import postt from "../../../images/no-image-available-icon-6.png";
 
 import styles from "../../styles/singlepost.module.scss";
-
-interface SinglePostProp {
-  post: {
-    _id: string;
-    categories: string[];
-    username: string;
-    title: string;
-    desc: string;
-    photo: string;
-    createdAt: Date;
-    updatedAt: Date;
-  };
-}
 
 const SinglePost = ({ post }: SinglePostProp) => {
   const [title, setTitle] = useState("");
@@ -46,7 +34,12 @@ const SinglePost = ({ post }: SinglePostProp) => {
             {post.photo ? (
               <Image src={post.photo} alt="noimg" height={400} width={700} />
             ) : (
-              <Image src={postt} alt="default-img" height={400} width={700} />
+              <Image
+                src={postt}
+                alt="sociatek image"
+                height={400}
+                width={700}
+              />
             )}
 
             <div className={styles.title_updel}>
