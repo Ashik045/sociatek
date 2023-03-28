@@ -75,9 +75,11 @@ const Navbar = () => {
     <div className={styles.navbar}>
       <div className={styles.navbar_main}>
         <div className={styles.nav_brand}>
-          <h5>
-            WE<span style={{ color: "#FB2576" }}>BLOG</span>
-          </h5>
+          <Link href="/" style={{ textDecoration: "none", color: "black" }}>
+            <h5>
+              SO<span style={{ color: "#FB2576" }}>CIATEK</span>
+            </h5>
+          </Link>
         </div>
 
         <div className={styles.nav_right}>

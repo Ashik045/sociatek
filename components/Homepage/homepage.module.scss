@@ -1,6 +1,6 @@
 @mixin small_chngs {
-  padding: 10px;
-  border-radius: 3px;
+  // padding: 10px;
+  border-radius: 5px;
   background-color: #f6fcfd;
   height: fit-content;
 }
@@ -11,11 +11,11 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  // padding-left: 10px;
-  // padding-right: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
   display: grid;
-  grid-template-columns: 23% 42% 27%;
-  gap: 15px;
+  grid-template-columns: 23% 42% 25%;
+  gap: 25px;
   //   justify-content: center;
 
   .homepage_profile {

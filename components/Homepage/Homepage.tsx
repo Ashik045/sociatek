@@ -1,19 +1,7 @@
 import Post from "components/Post/Post";
+import Profile from "components/Profile/Profile";
 import { Postt } from "types.global";
 import styles from "./homepage.module.scss";
-
-// type PostsProps = {
-//   posts: {
-//     _id: string;
-//     categories: string[];
-//     username: string;
-//     title: string;
-//     desc: string;
-//     photo: string;
-//     createdAt: Date;
-//     updatedAt: Date;
-//   }[];
-// };
 
 interface PostProps {
   posts: Postt[];
@@ -22,7 +10,9 @@ interface PostProps {
 const Homepage = ({ posts }: PostProps) => {
   return (
     <div className={styles.homepage}>
-      <div className={styles.homepage_profile}>Profile(linkedin)</div>
+      <div className={styles.homepage_profile}>
+        <Profile />
+      </div>
 
       {/* feed sectioin - (write post, browse post) */}
       <div className={styles.homepage_feed}>
