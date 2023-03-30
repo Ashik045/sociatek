@@ -1,5 +1,6 @@
 import Post from "components/Post/Post";
 import Profile from "components/Profile/Profile";
+import Suggestions from "components/Suggestions/Suggestions";
 import { Postt } from "types.global";
 import styles from "./homepage.module.scss";
 
@@ -26,7 +27,7 @@ const Homepage = ({ posts }: PostProps) => {
       </div>
 
       <div className={styles.homepage_users}>
-        Suggestions for you(instagram)
+        <Suggestions />
       </div>
     </div>
   );

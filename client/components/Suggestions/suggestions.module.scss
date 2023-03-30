@@ -1,0 +1,85 @@
+.suggestions_component {
+  overflow: hidden;
+  .suggestions_component_title {
+    padding: 0px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h4 {
+      color: rgba(0, 0, 0, 0.521);
+      margin-bottom: 15px;
+      margin-top: 15px;
+    }
+
+    .seeall_btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      color: rgba(0, 0, 0, 0.938);
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .suggestions_users {
+    .suggestions_user {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding: 0px 10px;
+      display: grid;
+      grid-template-columns: 18% 70% 10%;
+      justify-content: space-between;
+      align-items: center;
+
+      .user_profile_pic {
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .user_uname {
+        .user_username {
+          margin: 0px;
+          font-weight: bold;
+          color: rgba(0, 0, 0, 0.726);
+          font-size: 15px;
+          transition: all 0.2s ease;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .user_txt {
+          margin: 0px;
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.514);
+        }
+      }
+
+      .follow_btns {
+        .follow_btn {
+          cursor: pointer;
+          color: rgba(0, 0, 0, 0.726);
+          font-size: 19px;
+
+          &:hover {
+            color: #5783f9;
+          }
+        }
+
+        .followed_btn {
+          cursor: pointer;
+          font-size: 19px;
+          color: #5782f9da;
+        }
+      }
+    }
+  }
+}

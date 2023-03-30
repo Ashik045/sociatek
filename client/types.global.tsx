@@ -21,3 +21,11 @@ export interface SinglePostProp {
     updatedAt: Date;
   };
 }
+
+export interface User {
+  _id: string;
+  name: string;
+  usename: string;
+  text: string;
+  profilepic: string;
+}

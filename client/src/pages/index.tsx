@@ -1,15 +1,20 @@
 import styles from "@/styles/Home.module.css";
 import { Inter } from "@next/font/google";
+import axios from "axios";
 import Homepage from "components/Homepage/Homepage";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { Postt } from "types.global";
+import { Postt, User } from "types.global";
 import Navbar from "../../components/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 interface PostProps {
   posts: Postt[];
+}
+
+interface UserProps {
+  users: User[];
 }
 
 export const revalidate = 30;
@@ -35,8 +40,11 @@ const Home: NextPage<PostProps> = ({ posts }) => {
 
 // SSR - get called on every request
 export const getServerSideProps: GetServerSideProps<PostProps> = async () => {
-  const res = await fetch("https://weblog-backend.onrender.com/api/posts");
-  const data = await res.json();
+  const res = await axios.get("https://weblog-backend.onrender.com/api/posts");
+  const data = await res.data;
+  // const res2 = await axios.get("https://weblog-backend.onrender.com/api/users");
+  // const data2 = await res2.data;
+  // console.log(data2.message);
 
   return {
     props: {
