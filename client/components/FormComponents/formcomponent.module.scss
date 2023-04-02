@@ -1,0 +1,57 @@
+.exact_form {
+  .exact_form_inp {
+    display: block;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    padding: 10px 12px;
+    font-size: 15px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  }
+
+  .textarea {
+    display: block;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    padding: 7px 10px;
+    font-size: 15px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  }
+
+  p {
+    color: red;
+    font-size: 13px;
+    margin-top: -15px;
+    margin-bottom: 15px;
+    display: none;
+    width: 80%;
+  }
+
+  input:invalid[focused="true"] ~ p {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .exact_form {
+    .exact_form_inp {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    p {
+      width: 100%;
+    }
+  }
+}

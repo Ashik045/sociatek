@@ -26,7 +26,7 @@ const Navbar = () => {
 
   // navigate to login page
   const handleClick = () => {
-    router.push("/login");
+    router.push("/registration");
     setToggler(false);
   };
 
