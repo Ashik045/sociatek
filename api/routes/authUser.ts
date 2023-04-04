@@ -4,7 +4,6 @@ const express = require("express");
 
 // internal imports
 // @ts-ignore
-
 const {
   userLoginHandler,
   userRegHandler,
@@ -13,9 +12,9 @@ const {
 const router = express.Router();
 
 // login route
-router.get("/login", userLoginHandler);
+router.post("/login", userLoginHandler);
 
 // login route
-router.get("/signup", userRegHandler);
+router.post("/signup", userRegHandler);
 
 module.exports = router;
