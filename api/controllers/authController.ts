@@ -1,13 +1,15 @@
 // external imports
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
+import express from "express";
 
 // internal import
-// @ts-ignore
-const User = require("../models/usermode");
+import User from "../models/usermodel";
 
 // login handler
-// @ts-ignore
-const userLoginHandler = async (req, res) => {
+export const userLoginHandler = async (
+  req: express.Request,
+  res: express.Response
+) => {
   const { email, password, username } = req.body;
 
   try {
@@ -15,16 +17,68 @@ const userLoginHandler = async (req, res) => {
     const isEmail = await User.findOne({ email: email });
     const isUserName = await User.findOne({ username: username });
 
-    if (isEmail || isUserName) {
+    if (isEmail) {
+      // check if the password is correct
+      const isRightPassword = await bcrypt.compare(password, isEmail.password);
+
+      try {
+        // extract the password
+        const {
+          _id,
+          username,
+          fullname,
+          email,
+          about,
+          password,
+          phone,
+          location,
+          profession,
+          profilePicture,
+          coverPhoto,
+          followers,
+          following,
+          activities,
+        } = isEmail;
+        const user = {
+          _id,
+          username,
+          fullname,
+          email,
+          about,
+          phone,
+          location,
+          profession,
+          profilePicture,
+          coverPhoto,
+          followers,
+          following,
+          activities,
+        };
+
+        // if the password is correct then login and send the user as a result
+        if (isRightPassword) {
+          res.status(200).json({
+            message: user,
+          });
+        } else {
+          res.status(500).json({
+            error: "Password is incorrect!",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (isUserName) {
       // check if the password is correct
       const isRightPassword = await bcrypt.compare(
         password,
-        isEmail.password | isUserName.password
+        isUserName.password
       );
 
+      // if the password is correct then login and send the user as a result
       if (isRightPassword) {
         res.status(200).json({
-          message: isEmail ? isEmail : isUserName,
+          message: isUserName,
         });
       } else {
         res.status(500).json({
@@ -44,8 +98,10 @@ const userLoginHandler = async (req, res) => {
 };
 
 // user register handler
-// @ts-ignore
-const userRegHandler = async (req, res) => {
+export const userRegHandler = async (
+  req: express.Request,
+  res: express.Response
+) => {
   const { email, password, username } = req.body;
 
   try {
@@ -84,9 +140,4 @@ const userRegHandler = async (req, res) => {
       error: "User registration failed!",
     });
   }
-};
-
-module.exports = {
-  userLoginHandler,
-  userRegHandler,
 };

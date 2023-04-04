@@ -1,13 +1,11 @@
-// @ts-ignore
-
-const express = require("express");
+// external imports
+import express from "express";
 
 // internal imports
-// @ts-ignore
-const {
+import {
   userLoginHandler,
   userRegHandler,
-} = require("../controllers/authController");
+} from "../controllers/authController";
 
 const router = express.Router();
 
@@ -17,4 +15,4 @@ router.post("/login", userLoginHandler);
 // login route
 router.post("/signup", userRegHandler);
 
-module.exports = router;
+export default router;
