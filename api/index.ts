@@ -43,13 +43,13 @@ app.use(
 // default handler
 app.use(
   (
-    err: express.Errback,
+    err: Error,
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) => {
     res.status(500).json({
-      error: err,
+      error: err.message,
     });
   }
 );

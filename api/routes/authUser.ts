@@ -6,6 +6,10 @@ import {
   userLoginHandler,
   userRegHandler,
 } from "../controllers/authController";
+import {
+  UserRegValidation,
+  UserRegValidationHandler,
+} from "../middlewares/userValidator";
 
 const router = express.Router();
 
@@ -13,6 +17,11 @@ const router = express.Router();
 router.post("/login", userLoginHandler);
 
 // login route
-router.post("/signup", userRegHandler);
+router.post(
+  "/signup",
+  UserRegValidation,
+  UserRegValidationHandler,
+  userRegHandler
+);
 
 export default router;
