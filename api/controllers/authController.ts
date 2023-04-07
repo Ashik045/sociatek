@@ -10,12 +10,12 @@ export const userLoginHandler = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const { email, password, username } = req.body;
+  const { emailOrUsername, password } = req.body;
 
   try {
     // check if the username or email matches
-    const isEmail = await User.findOne({ email: email });
-    const isUserName = await User.findOne({ username: username });
+    const isEmail = await User.findOne({ email: emailOrUsername });
+    const isUserName = await User.findOne({ username: emailOrUsername });
 
     if (isEmail) {
       // check if the password is correct
@@ -23,42 +23,13 @@ export const userLoginHandler = async (
 
       try {
         // extract the password
-        const {
-          _id,
-          username,
-          fullname,
-          email,
-          about,
-          password,
-          phone,
-          location,
-          profession,
-          profilePicture,
-          coverPhoto,
-          followers,
-          following,
-          activities,
-        } = isEmail;
-        const user = {
-          _id,
-          username,
-          fullname,
-          email,
-          about,
-          phone,
-          location,
-          profession,
-          profilePicture,
-          coverPhoto,
-          followers,
-          following,
-          activities,
-        };
+        // @ts-ignore
+        const { password, ...userDetail } = isEmail._doc;
 
         // if the password is correct then login and send the user as a result
         if (isRightPassword) {
           res.status(200).json({
-            message: user,
+            message: userDetail,
           });
         } else {
           res.status(500).json({
@@ -75,15 +46,23 @@ export const userLoginHandler = async (
         isUserName.password
       );
 
-      // if the password is correct then login and send the user as a result
-      if (isRightPassword) {
-        res.status(200).json({
-          message: isUserName,
-        });
-      } else {
-        res.status(500).json({
-          error: "Password is incorrect!",
-        });
+      try {
+        // extract the password
+        // @ts-ignore
+        const { password, ...userDetail } = isUserName._doc;
+
+        // if the password is correct then login and send the user as a result
+        if (isRightPassword) {
+          res.status(200).json({
+            message: userDetail,
+          });
+        } else {
+          res.status(500).json({
+            error: "Password is incorrect!",
+          });
+        }
+      } catch (error) {
+        console.log(error);
       }
     } else {
       res.status(500).json({
