@@ -4,7 +4,8 @@ import express from "express";
 import mongoose from "mongoose";
 
 // internal imports
-import authController from "./routes/authUser";
+import authUserRoute from "./routes/authUser";
+import userRoute from "./routes/user";
 
 // modules
 const app = express();
@@ -29,7 +30,8 @@ mongoose
 app.get("/api", (req: express.Request, res: express.Response) => {
   return res.status(200).send({ message: "OK" });
 });
-app.use("/api/user", authController);
+app.use("/api", authUserRoute);
+app.use("/api", userRoute);
 
 // error handlers
 // not found handler

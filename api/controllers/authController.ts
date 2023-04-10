@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import express from "express";
 
 // internal import
-import User from "../models/usermodel";
+import { User } from "../models/usermodel";
 
 // login handler
 export const userLoginHandler = async (
@@ -23,8 +23,7 @@ export const userLoginHandler = async (
 
       try {
         // extract the password
-        // @ts-ignore
-        const { password, ...userDetail } = isEmail._doc;
+        const { password: _pw, ...userDetail } = isEmail.toObject();
 
         // if the password is correct then login and send the user as a result
         if (isRightPassword) {
@@ -48,8 +47,7 @@ export const userLoginHandler = async (
 
       try {
         // extract the password
-        // @ts-ignore
-        const { password, ...userDetail } = isUserName._doc;
+        const { password: _pw, ...userDetail } = isUserName.toObject();
 
         // if the password is correct then login and send the user as a result
         if (isRightPassword) {
@@ -102,7 +100,7 @@ export const userRegHandler = async (
         newUser.save();
 
         res.status(200).json({
-          message: "Registration successful.",
+          message: newUser,
         });
       } else {
         res.status(500).json({

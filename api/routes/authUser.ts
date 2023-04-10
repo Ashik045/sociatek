@@ -14,11 +14,11 @@ import {
 const router = express.Router();
 
 // login route
-router.post("/login", userLoginHandler);
+router.post("/auth/login", userLoginHandler);
 
 // login route
 router.post(
-  "/signup",
+  "/auth/signup",
   UserRegValidation,
   UserRegValidationHandler,
   userRegHandler

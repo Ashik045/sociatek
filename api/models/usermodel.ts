@@ -1,7 +1,23 @@
 import mongoose from "mongoose";
 
+interface IUser {
+  username: string;
+  fullname: string;
+  email: string;
+  password: string;
+  about: string;
+  phone: string;
+  location: string;
+  profession: "student" | "worker";
+  profilePicture?: string;
+  coverPhoto?: string;
+  followers: string[];
+  following: string[];
+  activities: string[];
+}
+
 // user schema
-const UserSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema<IUser>(
   {
     username: {
       type: String,
@@ -28,14 +44,14 @@ const UserSchema = new mongoose.Schema(
     },
     profilePicture: { type: String },
     coverPhoto: { type: String },
-    followers: { type: Array, default: [] },
-    following: { type: Array, default: [] },
-    activities: { type: Array, default: [] },
+    followers: { type: [String], default: [] },
+    following: { type: [String], default: [] },
+    activities: { type: [String], default: [] },
   },
   { timestamps: true }
 );
 
 // user model
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model<IUser>("User", UserSchema);
 
-export default User;
+export { IUser, User };
