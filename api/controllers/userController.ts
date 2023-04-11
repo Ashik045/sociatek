@@ -70,56 +70,6 @@ export const getUserByUserName = async (
 };
 
 // get user by userId
-// export const updateUser = async (
-//   req: express.Request,
-//   res: express.Response
-// ) => {
-//   try {
-//     const username = await req.body.username;
-//     const isUser = await User.findOne({ username });
-
-//     if (!isUser) {
-//       if (req.body.userId === req.params.id) {
-//         if (req.body.password) {
-//           req.body.password = await bcrypt.hash(req.body.password, 10);
-//         }
-
-//         // update the  user by findByIdAndUpdate method
-//         try {
-//           const user = await User.findByIdAndUpdate(
-//             req.params.id,
-//             {
-//               $set: req.body,
-//             },
-//             { new: true }
-//           );
-
-//           res.status(200).json({
-//             message: user,
-//           });
-//         } catch (error) {
-//           res.status(500).json({
-//             error: "can not find user!",
-//           });
-//         }
-//       } else {
-//         res.status(500).json({
-//           error: "You can only update your account!",
-//         });
-//       }
-//     } else {
-//       res.status(500).json({
-//         error: "User not found!",
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       error: "Can not find user!",
-//     });
-//   }
-// };
-
-// get user by userId
 export const updateUser = async (
   req: express.Request,
   res: express.Response
@@ -128,7 +78,6 @@ export const updateUser = async (
   // const isUser = await User.findOne({ username: username });
   const userId = await req.params.userid;
   const existingUser = await User.findById(userId);
-  // console.log(userId);
 
   try {
     // Check if the user exists
@@ -166,6 +115,7 @@ export const updateUser = async (
   }
 };
 
+// delete user
 export const deleteUser = async (
   req: express.Request,
   res: express.Response

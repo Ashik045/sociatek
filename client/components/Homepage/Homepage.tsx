@@ -1,14 +1,15 @@
 import Post from "components/Post/Post";
 import Profile from "components/Profile/Profile";
 import Suggestions from "components/Suggestions/Suggestions";
-import { Postt } from "types.global";
+import { Postt, User } from "types.global";
 import styles from "./homepage.module.scss";
 
-interface PostProps {
+interface PostAndUserProps {
   posts: Postt[];
+  users: User[];
 }
 
-const Homepage = ({ posts }: PostProps) => {
+const Homepage = ({ posts, users }: PostAndUserProps) => {
   return (
     <div className={styles.homepage}>
       <div className={styles.homepage_profile}>
@@ -27,7 +28,7 @@ const Homepage = ({ posts }: PostProps) => {
       </div>
 
       <div className={styles.homepage_users}>
-        <Suggestions />
+        <Suggestions users={users} />
       </div>
     </div>
   );

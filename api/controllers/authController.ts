@@ -14,57 +14,29 @@ export const userLoginHandler = async (
 
   try {
     // check if the username or email matches
-    const isEmail = await User.findOne({ email: emailOrUsername });
-    const isUserName = await User.findOne({ username: emailOrUsername });
+    const user = await User.findOne({
+      $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
+    });
 
-    if (isEmail) {
+    if (user) {
       // check if the password is correct
-      const isRightPassword = await bcrypt.compare(password, isEmail.password);
+      const isRightPassword = await bcrypt.compare(password, user.password);
 
-      try {
-        // extract the password
-        const { password: _pw, ...userDetail } = isEmail.toObject();
+      // if the password is correct then login and send the user as a result
+      if (isRightPassword) {
+        const { password: _pw, ...userDetail } = user.toObject();
 
-        // if the password is correct then login and send the user as a result
-        if (isRightPassword) {
-          res.status(200).json({
-            message: userDetail,
-          });
-        } else {
-          res.status(500).json({
-            error: "Password is incorrect!",
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    } else if (isUserName) {
-      // check if the password is correct
-      const isRightPassword = await bcrypt.compare(
-        password,
-        isUserName.password
-      );
-
-      try {
-        // extract the password
-        const { password: _pw, ...userDetail } = isUserName.toObject();
-
-        // if the password is correct then login and send the user as a result
-        if (isRightPassword) {
-          res.status(200).json({
-            message: userDetail,
-          });
-        } else {
-          res.status(500).json({
-            error: "Password is incorrect!",
-          });
-        }
-      } catch (error) {
-        console.log(error);
+        res.status(200).json({
+          message: userDetail,
+        });
+      } else {
+        res.status(401).json({
+          error: "Incorrect email/username or password!",
+        });
       }
     } else {
-      res.status(500).json({
-        error: "Can't find account!",
+      res.status(401).json({
+        error: "Incorrect email/username or password!",
       });
     }
   } catch (error) {

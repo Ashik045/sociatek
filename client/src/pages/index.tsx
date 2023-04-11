@@ -9,17 +9,14 @@ import Navbar from "../../components/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
-interface PostProps {
+interface HomePageProps {
   posts: Postt[];
-}
-
-interface UserProps {
   users: User[];
 }
 
 export const revalidate = 30;
 
-const Home: NextPage<PostProps> = ({ posts }) => {
+const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   return (
     <>
       <Head>
@@ -32,23 +29,25 @@ const Home: NextPage<PostProps> = ({ posts }) => {
         <Navbar />
 
         {/* main section of this application */}
-        <Homepage posts={posts} />
+        <Homepage posts={posts} users={users} />
       </main>
     </>
   );
 };
 
 // SSR - get called on every request
-export const getServerSideProps: GetServerSideProps<PostProps> = async () => {
+export const getServerSideProps: GetServerSideProps<
+  HomePageProps
+> = async () => {
   const res = await axios.get("https://weblog-backend.onrender.com/api/posts");
   const data = await res.data;
-  // const res2 = await axios.get("https://weblog-backend.onrender.com/api/users");
-  // const data2 = await res2.data;
-  // console.log(data2.message);
+  const res2 = await axios.get("http://localhost:4000/api/users/all");
+  const data2 = await res2.data;
 
   return {
     props: {
       posts: data.message,
+      users: data2.message,
     },
   };
 };

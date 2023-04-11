@@ -24,8 +24,19 @@ export interface SinglePostProp {
 
 export interface User {
   _id: string;
-  name: string;
-  usename: string;
-  text: string;
-  profilepic: string;
+  username: string;
+  fullname: string;
+  email: string;
+  password?: string;
+  about: string;
+  phone: string;
+  location: string;
+  profession: string;
+  profilePicture: string;
+  coverPhoto: string;
+  followers: string[];
+  following: string[];
+  activities: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
