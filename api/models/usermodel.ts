@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     password: { type: String, required: true },
     about: { type: String, required: true },
     phone: { type: String, required: true },
-    location: { type: String, required: true },
+    location: { type: String },
     profession: {
       type: String,
       enum: ["student", "worker"],

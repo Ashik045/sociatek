@@ -2,125 +2,21 @@
 import Navbar from "components/Navbar/Navbar";
 import RegForm from "components/RegForm/RegForm";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import styles from "../../styles/registration.module.scss";
 
 const index = () => {
-  const Router = useRouter();
   const [page, setPage] = useState(0);
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [conPass, setConPass] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [fullname, setFullname] = useState("");
-  const [userName, setUserName] = useState("");
-  const [bio, setBio] = useState("");
-
-  const [phone, setPhone] = useState("");
-  const [facebookUrl, setFacebookUrl] = useState("");
-  const [twitterUrl, setTwitterUrl] = useState("");
-
-  // console.log(watch("example"));
-
-  const eChng = (e: any) => {
-    setEmail(e.target.value);
-  };
-  const pChng = (e) => {
-    setPass(e.target.value);
-  };
-  const cChng = (e) => {
-    setConPass(e.target.value);
-  };
-
-  const fChng = (e) => {
-    setFullname(e.target.value);
-  };
-  const lChng = (e) => {
-    setBio(e.target.value);
-  };
-  const uChng = (e) => {
-    setUserName(e.target.value);
-  };
-  const phnChng = (e) => {
-    setPhone(e.target.value);
-  };
-  const facebookUrlChng = (e) => {
-    setFacebookUrl(e.target.value);
-  };
-  const twitterUrlChng = (e) => {
-    setTwitterUrl(e.target.value);
-  };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     setLoading(true);
-
-  //     if (photo) {
-  //       const data = new FormData();
-  //       data.append("file", photo);
-  //       data.append("upload_preset", "upload");
-
-  //       const uploadRes = await axios.post(
-  //         "https://api.cloudinary.com/v1_1/drbvugloj/image/upload",
-  //         data
-  //       );
-
-  //       const { url } = uploadRes.data;
-  //       try {
-  //         await axios.post(
-  //           "https://rooms-backend.onrender.com/api/user/signup",
-  //           {
-  //             email,
-  //             password: pass,
-  //             fullname,
-  //             bio,
-  //             username: userName,
-  //             image: url,
-  //             phone,
-  //             fblink: facebookUrl,
-  //             twlink: twitterUrl,
-  //           }
-  //         );
-
-  //         Router.push("/login");
-  //         setLoading(false);
-  //       } catch (err) {
-  //         setError(true);
-  //         console.log("signup error", err);
-  //         setLoading(false);
-  //       }
-  //     } else {
-  //       try {
-  //         await axios.post(
-  //           "https://rooms-backend.onrender.com/api/user/signup",
-  //           {
-  //             email,
-  //             password: pass,
-  //             fullname,
-  //             bio,
-  //             username: userName,
-  //             phone,
-  //             fblink: facebookUrl,
-  //             twlink: twitterUrl,
-  //           }
-  //         );
-
-  //         Router.push("/login");
-  //         setLoading(false);
-  //       } catch (err) {
-  //         setError(true);
-  //         console.log("signup error", err);
-  //         setLoading(false);
-  //       }
-  //     }
-  //   } catch (errr) {
-  //     console.log("image error", errr);
-  //     setError(true);
-  //     setLoading(false);
-  //   }
-  // };
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <span className={styles.loader}></span>
+      </>
+    );
+  }
 
   return (
     <div className={styles.registration_page}>
@@ -146,7 +42,12 @@ const index = () => {
             </div>
           </div>
 
-          <RegForm />
+          <RegForm
+            page={page}
+            setPage={setPage}
+            loading={loading}
+            setLoading={setLoading}
+          />
         </div>
       </div>
     </div>

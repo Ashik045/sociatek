@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -20,12 +21,23 @@ type Inputs = {
   profession: string;
 };
 
-const RegForm: React.FC = () => {
-  const [photo, setPhoto] = useState(null);
-  const [page, setPage] = useState(0);
-  const [error, setError] = useState(false);
+type PageProp = {
+  page: number;
+  setPage(value: number): void;
+  loading: boolean;
+  setLoading(value: boolean): void;
+};
 
-  const [loading, setLoading] = useState(false);
+interface ErrorObject {
+  msg: string;
+  param: string;
+  location: string;
+}
+
+const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
+  const [profilePic, setProfilePic] = useState<File | null>(null);
+  const [coverImg, setCoverImg] = useState<File | null>(null);
+  const [errorss, setErrorss] = useState([]);
 
   const {
     register,
@@ -37,21 +49,95 @@ const RegForm: React.FC = () => {
 
   const password = watch("password", "");
 
-  const onSubmit = (data: Inputs) => {
-    const { confirmPassword, ...others } = data;
-    const userInfo = {
-      ...others,
-      profilePicture: "https://www.google.com",
-      coverPhoto: "https://www.google.com",
-    };
+  // handle the profile picture
+  const handleProfilePictureChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setProfilePic(e.target.files[0]);
+    }
+  };
 
-    console.log(userInfo);
+  // handle the cover photo
+  const handleCoverPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setCoverImg(e.target.files[0]);
+    }
+  };
+
+  const onSubmit = async (data: Inputs) => {
+    setLoading(true);
+    const { confirmPassword, ...others } = data;
+    console.log(errors);
+
+    try {
+      let profilePicture = "";
+      let coverPhoto = "";
+      let newUser = {};
+
+      if (profilePic) {
+        const formData = new FormData();
+        formData.append("file", profilePic);
+        formData.append("upload_preset", "uploads");
+
+        const {
+          data: { url },
+        } = await axios.post(
+          "https://api.cloudinary.com/v1_1/dqctmbhde/image/upload",
+          formData
+        );
+
+        profilePicture = url;
+      }
+
+      if (coverImg) {
+        const formData = new FormData();
+        formData.append("file", coverImg);
+        formData.append("upload_preset", "uploads");
+
+        const {
+          data: { url },
+        } = await axios.post(
+          "https://api.cloudinary.com/v1_1/dqctmbhde/image/upload",
+          formData
+        );
+
+        coverPhoto = url;
+      }
+
+      newUser = {
+        ...others,
+        profilePicture: profilePicture,
+        coverPhoto: coverPhoto,
+      };
+
+      try {
+        const user = await axios.post(
+          "http://localhost:4000/api/auth/signup",
+          newUser
+        );
+        console.log(user.data.message);
+      } catch (error: AxiosError) {
+        console.log(Object.values(error.response.data.error));
+        setErrorss(errorArr);
+        // not showing the errorss
+        console.log(errorss);
+
+        // console.log();
+      }
+
+      // console.log(newUser);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setLoading(false);
   };
 
   const PageTitle = [
     "Email & Pass",
     "Fullname, Username & Bio",
-    "Social Links",
+    "Phone, Facebook & Profession",
   ];
 
   return (
@@ -60,7 +146,7 @@ const RegForm: React.FC = () => {
         <div className={styles.upload_imgs}>
           <div className={styles.form_inp_profile_pic}>
             <Image
-              src={photo ? URL.createObjectURL(photo) : noImage}
+              src={profilePic ? URL.createObjectURL(profilePic) : noImage}
               alt="upload image"
               width={85}
               height={85}
@@ -76,19 +162,20 @@ const RegForm: React.FC = () => {
               name="file"
               id="file"
               style={{ display: "none" }}
-              onChange={(e) => setPhoto(e.target.files?.[0])}
+              onChange={handleProfilePictureChange}
+              // onChange={(e) => setProfilePicture(e.target.files?.[0])}
             />
           </div>
 
           <div className={styles.form_inp_profile_cover}>
             <Image
-              src={photo ? URL.createObjectURL(photo) : noCoverImage}
+              src={coverImg ? URL.createObjectURL(coverImg) : noCoverImage}
               alt="upload image"
               width={200}
               height={80}
               className={styles.cover_img}
             />
-            <label htmlFor="file">
+            <label htmlFor="file2">
               Profile Cover:{" "}
               <MdDriveFolderUpload className={styles.file_icon} />
             </label>
@@ -96,9 +183,9 @@ const RegForm: React.FC = () => {
             <input
               type="file"
               name="file"
-              id="file"
+              id="file2"
               style={{ display: "none" }}
-              onChange={(e) => setPhoto(e.target.files?.[0])}
+              onChange={handleCoverPhotoChange}
             />
           </div>
         </div>
@@ -108,6 +195,7 @@ const RegForm: React.FC = () => {
         </div>
 
         <div className={styles.form_body}>
+          {/* Email & Pass section */}
           {page === 0 && (
             <>
               <input
@@ -124,7 +212,7 @@ const RegForm: React.FC = () => {
                 }}
                 className={styles.exact_form_inp}
               />
-              {/* {errors.email && <span>{errors.email.message}</span>} */}
+              {/* error message */}
               <span className={styles.form_err}>{errors.email?.message}</span>
 
               <input
@@ -166,36 +254,131 @@ const RegForm: React.FC = () => {
               </span>
             </>
           )}
+
+          {/* Fullname, Username & Bio section */}
           {page === 1 && (
             <>
               <input
                 {...register("username", {
-                  required: "This field is required",
+                  required: "Username should be 3-15 characters!",
+                  minLength: {
+                    value: 3,
+                    message: "Minimum length is 3 characters!",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "Maximum length is 15 characters!",
+                  },
                 })}
                 placeholder="username"
                 onBlur={() => {
                   trigger("username");
                 }}
+                className={styles.exact_form_inp}
               />
-              {errors.username && <span>{errors.username.message}</span>}
+              <span className={styles.form_err}>
+                {errors.username?.message}
+              </span>
+
+              <input
+                {...register("fullname", {
+                  required: "Fullname is required!",
+                  minLength: {
+                    value: 3,
+                    message: "Minimum length is 3 characters!",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "Maximum length is 20 characters!",
+                  },
+                })}
+                placeholder="Fullname"
+                onBlur={() => {
+                  trigger("fullname");
+                }}
+                className={styles.exact_form_inp}
+              />
+              {/* error message */}
+              <span className={styles.form_err}>
+                {errors.fullname?.message}
+              </span>
+
+              <textarea
+                {...register("about", {
+                  required: "About field is required!!",
+                  minLength: {
+                    value: 10,
+                    message: "Minimum length is 10 characters!",
+                  },
+                  maxLength: {
+                    value: 400,
+                    message: "Maximum length is 400 characters!",
+                  },
+                })}
+                placeholder="About yourself"
+                onBlur={() => {
+                  trigger("about");
+                }}
+                className={styles.textarea}
+                rows={3}
+                cols={70}
+              />
+              {/* error message */}
+              <span className={styles.form_err}>{errors.about?.message}</span>
             </>
           )}
+
+          {/* Phone, Facebook & Profession */}
           {page === 2 && (
             <>
               <input
                 {...register("phone", {
-                  required: "This field is required",
+                  required: "Phone is required!",
                   pattern: {
                     value: /^[\d+]+$/,
-                    message: "Invalid phone number",
+                    message: "Invalid phone number!",
                   },
                 })}
-                placeholder="phone"
+                placeholder="Phone Number"
                 onBlur={() => {
                   trigger("phone");
                 }}
+                className={styles.exact_form_inp}
               />
-              {errors.phone && <span>{errors.phone.message}</span>}
+              <span className={styles.form_err}>{errors.phone?.message}</span>
+              <input
+                {...register("facebook", {
+                  required: false,
+                })}
+                placeholder="Facebook account link"
+                className={styles.exact_form_inp}
+              />
+              <span className={styles.form_err}>
+                {errors.facebook?.message}
+              </span>
+
+              <label className={styles.form_profession}>
+                <b>Profession:</b>
+                <input
+                  type="radio"
+                  value="student"
+                  {...register("profession", {
+                    required: "Profession is required!",
+                  })}
+                />{" "}
+                Student
+                <input
+                  type="radio"
+                  value="worker"
+                  {...register("profession", {
+                    required: "Profession is required!",
+                  })}
+                />{" "}
+                Worker
+              </label>
+              <span className={styles.form_err}>
+                {errors.profession?.message}
+              </span>
             </>
           )}
         </div>
@@ -205,7 +388,7 @@ const RegForm: React.FC = () => {
             <span
               className={styles.form_btns}
               style={{ marginRight: "3px" }}
-              onClick={() => setPage((curr) => curr - 1)}
+              onClick={() => setPage(page - 1)}
             >
               Prev
             </span>
@@ -214,18 +397,20 @@ const RegForm: React.FC = () => {
             <span
               className={styles.form_btns}
               style={{ marginLeft: "3px" }}
-              onClick={() => setPage((curr) => curr + 1)}
+              onClick={() => setPage(page + 1)}
             >
               Next
             </span>
           )}
         </div>
 
-        {error && (
-          <p style={{ color: "red", marginBottom: "-5px" }}>
-            Registration failed!
-          </p>
-        )}
+        {errorss.map((error, i) => {
+          return (
+            <span key={i} className={styles.form_err}>
+              {error}
+            </span>
+          );
+        })}
         {page === 2 && (
           <input
             type="submit"
@@ -234,8 +419,12 @@ const RegForm: React.FC = () => {
             style={{ cursor: loading ? "not-allowed" : "pointer" }}
           />
         )}
-        <p style={{ marginTop: "10px" }}>
-          <Link href="/login"> Already have an account? Log in here..</Link>
+
+        <p style={{ marginTop: "15px" }}>
+          <Link href="/login" style={{ color: "black" }}>
+            {" "}
+            Already have an account? Log in here..
+          </Link>
         </p>
       </form>
     </div>

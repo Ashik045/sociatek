@@ -32,7 +32,7 @@
         box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 
         .registration_progress_widht {
-          background-color: #2650b1;
+          background-color: #607eaaa2;
           height: 18px;
           border-radius: 20px;
           display: flex;
@@ -46,6 +46,63 @@
         }
       }
     }
+  }
+}
+
+.loader {
+  display: block;
+  height: 32px;
+  width: 120px;
+  border-bottom: 5px solid black;
+  box-sizing: border-box;
+  animation: balancing 2s linear infinite alternate;
+  transform-origin: 50% 100%;
+  position: absolute;
+  top: 40%;
+  left: 44%;
+  transform: translate(-40%, -44%);
+}
+.loader:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ff3d00;
+  animation: ballbns 2s linear infinite alternate;
+}
+.loader:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 20px;
+  width: 20px;
+  transform: translate(-50%, 100%);
+  border-radius: 50%;
+  border: 6px solid black;
+}
+@keyframes ballbns {
+  0% {
+    left: 0;
+    transform: translateX(0%);
+  }
+  100% {
+    left: 100%;
+    transform: translateX(-100%);
+  }
+}
+@keyframes balancing {
+  0% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(15deg);
   }
 }
 
@@ -65,5 +122,12 @@
         }
       }
     }
+  }
+
+  .loader {
+    position: absolute;
+    top: 45%;
+    left: 36%;
+    transform: translate(-45%, -36%);
   }
 }

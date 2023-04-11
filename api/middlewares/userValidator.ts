@@ -8,8 +8,8 @@ import { User } from "../models/usermodel";
 
 export const UserRegValidation = [
   check("username")
-    .isLength({ min: 3, max: 10 })
-    .withMessage("Username should be 3-10 characters!")
+    .isLength({ min: 3, max: 15 })
+    .withMessage("Username should be 3-15 characters!")
     .trim()
     .custom(async (value) => {
       try {
