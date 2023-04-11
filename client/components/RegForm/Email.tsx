@@ -1,7 +1,23 @@
 import { useState } from "react";
 import styles from "./formcomponent.module.scss";
 
-function Email({ eVal, pVal, cVal, cChng, eChng, pChng }) {
+interface Props {
+  register: any;
+  errors: any;
+  trigger: any;
+}
+
+const Email: React.FC<Props> = ({
+  eVal,
+  pVal,
+  cVal,
+  cChng,
+  eChng,
+  pChng,
+  register,
+  errors,
+  trigger,
+}) => {
   const [focus, setFocus] = useState(false);
 
   const onBlur = (n) => {
@@ -76,6 +92,6 @@ function Email({ eVal, pVal, cVal, cChng, eChng, pChng }) {
       </p>
     </div>
   );
-}
+};
 
 export default Email;

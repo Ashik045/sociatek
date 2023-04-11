@@ -54,13 +54,15 @@ function SocialLink({
       >
         Facebook is required.
       </p>
-      <input
-        className={style.exact_form_inp}
-        type="text"
-        placeholder="Twitter Link"
-        value={twitterUrl}
-        onChange={twitterUrlChng}
-      />
+
+      <div className={style.profession}>
+        <span className={style.profession_title}>Select Profession:</span>
+        <input type="radio" id="html" name="fav_language" value="student" />
+        <label htmlFor="html">Student</label>
+
+        <input type="radio" id="html2" name="fav_language" value="wroker" />
+        <label htmlFor="html2">Wroker</label>
+      </div>
     </div>
   );
 }

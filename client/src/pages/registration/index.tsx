@@ -1,17 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import axios from "axios";
-import Email from "components/FormComponents/Email";
-import PersonalInfo from "components/FormComponents/PersonalInfo";
-import SocialLink from "components/FormComponents/SocialLink";
 import Navbar from "components/Navbar/Navbar";
+import RegForm from "components/RegForm/RegForm";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { MdDriveFolderUpload } from "react-icons/md";
-import noCoverImage from "../../../images/no-image-available-icon-6.png";
-import noImage from "../../../images/no-photo.png";
 import styles from "../../styles/registration.module.scss";
 
 const index = () => {
@@ -29,12 +21,9 @@ const index = () => {
   const [facebookUrl, setFacebookUrl] = useState("");
   const [twitterUrl, setTwitterUrl] = useState("");
 
-  const [photo, setPhoto] = useState(null);
-  const [error, setError] = useState(false);
+  // console.log(watch("example"));
 
-  const [loading, setLoading] = useState(false);
-
-  const eChng = (e) => {
+  const eChng = (e: any) => {
     setEmail(e.target.value);
   };
   const pChng = (e) => {
@@ -63,118 +52,75 @@ const index = () => {
     setTwitterUrl(e.target.value);
   };
 
-  const PageTitle = [
-    "Email & Pass",
-    "Fullname, Username & Bio",
-    "Social Links",
-  ];
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     setLoading(true);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
+  //     if (photo) {
+  //       const data = new FormData();
+  //       data.append("file", photo);
+  //       data.append("upload_preset", "upload");
 
-      if (photo) {
-        const data = new FormData();
-        data.append("file", photo);
-        data.append("upload_preset", "upload");
+  //       const uploadRes = await axios.post(
+  //         "https://api.cloudinary.com/v1_1/drbvugloj/image/upload",
+  //         data
+  //       );
 
-        const uploadRes = await axios.post(
-          "https://api.cloudinary.com/v1_1/drbvugloj/image/upload",
-          data
-        );
+  //       const { url } = uploadRes.data;
+  //       try {
+  //         await axios.post(
+  //           "https://rooms-backend.onrender.com/api/user/signup",
+  //           {
+  //             email,
+  //             password: pass,
+  //             fullname,
+  //             bio,
+  //             username: userName,
+  //             image: url,
+  //             phone,
+  //             fblink: facebookUrl,
+  //             twlink: twitterUrl,
+  //           }
+  //         );
 
-        const { url } = uploadRes.data;
-        try {
-          await axios.post(
-            "https://rooms-backend.onrender.com/api/user/signup",
-            {
-              email,
-              password: pass,
-              fullname,
-              bio,
-              username: userName,
-              image: url,
-              phone,
-              fblink: facebookUrl,
-              twlink: twitterUrl,
-            }
-          );
+  //         Router.push("/login");
+  //         setLoading(false);
+  //       } catch (err) {
+  //         setError(true);
+  //         console.log("signup error", err);
+  //         setLoading(false);
+  //       }
+  //     } else {
+  //       try {
+  //         await axios.post(
+  //           "https://rooms-backend.onrender.com/api/user/signup",
+  //           {
+  //             email,
+  //             password: pass,
+  //             fullname,
+  //             bio,
+  //             username: userName,
+  //             phone,
+  //             fblink: facebookUrl,
+  //             twlink: twitterUrl,
+  //           }
+  //         );
 
-          Router.push("/login");
-          setLoading(false);
-        } catch (err) {
-          setError(true);
-          console.log("signup error", err);
-          setLoading(false);
-        }
-      } else {
-        try {
-          await axios.post(
-            "https://rooms-backend.onrender.com/api/user/signup",
-            {
-              email,
-              password: pass,
-              fullname,
-              bio,
-              username: userName,
-              phone,
-              fblink: facebookUrl,
-              twlink: twitterUrl,
-            }
-          );
-
-          Router.push("/login");
-          setLoading(false);
-        } catch (err) {
-          setError(true);
-          console.log("signup error", err);
-          setLoading(false);
-        }
-      }
-    } catch (errr) {
-      console.log("image error", errr);
-      setError(true);
-      setLoading(false);
-    }
-  };
-
-  const PageBody = function () {
-    if (page === 0) {
-      return (
-        <Email
-          eVal={email}
-          pVal={pass}
-          cVal={conPass}
-          eChng={eChng}
-          pChng={pChng}
-          cChng={cChng}
-        />
-      );
-    }
-    if (page === 1) {
-      return (
-        <PersonalInfo
-          fnVal={fullname}
-          lnVal={bio}
-          unVal={userName}
-          fnChng={fChng}
-          lnChng={lChng}
-          usChng={uChng}
-        />
-      );
-    }
-    return (
-      <SocialLink
-        facebookUrl={facebookUrl}
-        twitterUrl={twitterUrl}
-        phoneUrl={phone}
-        phnChng={phnChng}
-        facebookUrlChng={facebookUrlChng}
-        twitterUrlChng={twitterUrlChng}
-      />
-    );
-  };
+  //         Router.push("/login");
+  //         setLoading(false);
+  //       } catch (err) {
+  //         setError(true);
+  //         console.log("signup error", err);
+  //         setLoading(false);
+  //       }
+  //     }
+  //   } catch (errr) {
+  //     console.log("image error", errr);
+  //     setError(true);
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className={styles.registration_page}>
@@ -200,104 +146,7 @@ const index = () => {
             </div>
           </div>
 
-          <div className={styles.form_container}>
-            <form onSubmit={handleSubmit}>
-              <div className={styles.upload_imgs}>
-                <div className={styles.form_inp_profile_pic}>
-                  <Image
-                    src={photo ? URL.createObjectURL(photo) : noImage}
-                    alt="upload image"
-                    width={85}
-                    height={85}
-                    className={styles.img}
-                  />
-                  <label htmlFor="file">
-                    Profile Image:{" "}
-                    <MdDriveFolderUpload className={styles.file_icon} />
-                  </label>
-
-                  <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    style={{ display: "none" }}
-                    onChange={(e) => setPhoto(e.target.files?.[0])}
-                  />
-                </div>
-
-                <div className={styles.form_inp_profile_cover}>
-                  <Image
-                    src={photo ? URL.createObjectURL(photo) : noCoverImage}
-                    alt="upload image"
-                    width={200}
-                    height={80}
-                    className={styles.cover_img}
-                  />
-                  <label htmlFor="file">
-                    Profile Cover:{" "}
-                    <MdDriveFolderUpload className={styles.file_icon} />
-                  </label>
-
-                  <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    style={{ display: "none" }}
-                    onChange={(e) => setPhoto(e.target.files?.[0])}
-                  />
-                </div>
-              </div>
-
-              <div className={styles.form_header}>
-                <h3>{PageTitle[page]}</h3>
-              </div>
-
-              <div className={styles.form_body}>
-                <div>{PageBody()}</div>
-              </div>
-
-              <div className={styles.form_footer}>
-                {page !== 0 && (
-                  <span
-                    className={styles.form_btns}
-                    style={{ marginRight: "3px" }}
-                    onClick={() => setPage((curr) => curr - 1)}
-                  >
-                    Prev
-                  </span>
-                )}
-                {page !== PageTitle.length - 1 && (
-                  <span
-                    className={styles.form_btns}
-                    style={{ marginLeft: "3px" }}
-                    onClick={() => setPage((curr) => curr + 1)}
-                  >
-                    Next
-                  </span>
-                )}
-              </div>
-
-              {error && (
-                <p style={{ color: "red", marginBottom: "-5px" }}>
-                  Registration failed!
-                </p>
-              )}
-              {page === 2 && (
-                <input
-                  type="submit"
-                  value={loading ? "Loading..." : "Submit"}
-                  className={styles.submit_btn}
-                  style={{ cursor: loading ? "not-allowed" : "pointer" }}
-                />
-              )}
-              <p style={{ marginTop: "10px" }}>
-                <Link href="/login">
-                  {" "}
-                  Already have an account? Log in here..
-                </Link>
-              </p>
-            </form>
-          </div>
+          <RegForm />
         </div>
       </div>
     </div>
