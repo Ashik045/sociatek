@@ -28,22 +28,25 @@ type PageProp = {
   setLoading(value: boolean): void;
 };
 
-interface ErrorObject {
-  msg: string;
-  param: string;
-  location: string;
+interface ApiError {
+  [key: string]: {
+    msg: string;
+    param: string;
+    location: string;
+  };
 }
 
 const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [coverImg, setCoverImg] = useState<File | null>(null);
-  const [errorss, setErrorss] = useState([]);
+  const [errorss, setErrorss] = useState<ApiError>({}); // replace `any` with your expected error array type
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
     trigger,
   } = useForm<Inputs>();
 
@@ -68,7 +71,6 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   const onSubmit = async (data: Inputs) => {
     setLoading(true);
     const { confirmPassword, ...others } = data;
-    console.log(errors);
 
     try {
       let profilePicture = "";
@@ -117,13 +119,18 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           newUser
         );
         console.log(user.data.message);
+        reset();
       } catch (error: AxiosError) {
-        console.log(Object.values(error.response.data.error));
-        setErrorss(errorArr);
-        // not showing the errorss
+        const errorObj = error.response?.data?.error;
+        if (errorObj) {
+          setErrorss(errorObj);
+        }
+
+        // console.log(error.response.data.error);
         console.log(errorss);
 
-        // console.log();
+        // not showing the errorss
+        reset({ ...others });
       }
 
       // console.log(newUser);
@@ -132,6 +139,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
     }
 
     setLoading(false);
+    reset({ ...others });
   };
 
   const PageTitle = [
@@ -404,13 +412,13 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           )}
         </div>
 
-        {errorss.map((error, i) => {
+        {/* {errorss.map((error, i) => {
           return (
             <span key={i} className={styles.form_err}>
               {error}
             </span>
           );
-        })}
+        })} */}
         {page === 2 && (
           <input
             type="submit"
