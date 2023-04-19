@@ -1,4 +1,3 @@
-import styles from "@/styles/Home.module.css";
 import { Inter } from "@next/font/google";
 import axios from "axios";
 import Homepage from "components/Homepage/Homepage";
@@ -25,7 +24,7 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main className="main">
         <Navbar />
 
         {/* main section of this application */}
