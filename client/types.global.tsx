@@ -40,3 +40,19 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type State = {
+  user: null | User;
+  isLoading: boolean;
+  error: null | string;
+  dispatch: React.Dispatch<Action>;
+};
+
+export type Action =
+  | { type: "LOGIN_START" }
+  | { type: "LOGIN_SUCCESS"; payload: State["user"] }
+  | { type: "LOGIN_FAILURE"; payload: string }
+  | { type: "LOGOUT" }
+  | { type: "USER_UPDATE_START" }
+  | { type: "USER_UPDATE_SUCCESS"; payload: State["user"] }
+  | { type: "USER_UPDATE_FAILURE"; payload: string };

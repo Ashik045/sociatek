@@ -1,22 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiMenu, BiX } from "react-icons/bi";
 import { FaSearch, FaTimes } from "react-icons/fa";
-import noPhoto from "../../images/no-photo.png";
+import { User } from "types.global";
 import styles from "./navbar.module.scss";
 
 const Navbar = () => {
   const [toggler, setToggler] = useState(false);
-  const [user, setuser] = useState(false);
   const [inpVal, setInpVal] = useState("");
+  const [user, setUser] = useState<null | User>(null);
   const [APIData, setAPIData] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
-  // const { user, dispatch } = useContext(Context);
-  // const { input, dispatchh } = useContext(InpContext);
-  // const navigate = useNavigate();
   const router = useRouter();
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+
+    if (typeof window !== "undefined" && userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  console.log(user);
 
   //   useEffect(() => {
   //     axios.get(`https://weblog-backend.onrender.com/api/posts`).then((response) => {
@@ -130,7 +137,7 @@ const Navbar = () => {
                 <Image
                   onClick={() => router.push("/seetings")}
                   className={styles.profilePic}
-                  src={noPhoto}
+                  src={user.profilePicture}
                   alt="user profile"
                 />
               </>

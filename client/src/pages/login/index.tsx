@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { Context } from "Context/Context";
 import axios from "axios";
 import Navbar from "components/Navbar/Navbar";
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../../styles/login.module.scss";
 
@@ -15,6 +17,7 @@ type LoginInputs = {
 const index = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -23,23 +26,29 @@ const index = () => {
     reset,
     trigger,
   } = useForm<LoginInputs>();
+  const { dispatch } = useContext(Context);
 
   const onSubmit = async (data: LoginInputs) => {
     setLoading(true);
 
     try {
-      dispatch;
+      dispatch({ type: "LOGIN_START" });
       const res = await axios.post(
         "http://localhost:4000/api/auth/login",
         data
       );
 
+      // if login is successful return the user and save the session
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.message });
+
+      // router.push("/");
       console.log(res.data?.message);
-      console.log(res.data);
       setError(null);
     } catch (error) {
+      // some code that may throw error
       console.log(error.response.data?.error);
       setError(error.response.data?.error);
+      dispatch({ type: "LOGIN_FAILURE", payload: error.response.data.error });
     }
 
     setLoading(false);
