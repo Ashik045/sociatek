@@ -39,9 +39,9 @@ const index = () => {
       );
 
       // if login is successful return the user and save the session
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.message });
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data?.message });
 
-      // router.push("/");
+      router.push("/profile");
       console.log(res.data?.message);
       setError(null);
     } catch (error) {
@@ -78,7 +78,7 @@ const index = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
               {...register("emailOrUsername", {
-                required: "Email is required!",
+                required: "This field is required!",
               })}
               placeholder="Email Or Username"
               onBlur={() => {

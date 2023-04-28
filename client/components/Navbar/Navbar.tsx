@@ -23,8 +23,6 @@ const Navbar = () => {
     }
   }, []);
 
-  console.log(user);
-
   //   useEffect(() => {
   //     axios.get(`https://weblog-backend.onrender.com/api/posts`).then((response) => {
   //         setAPIData(response.data.message);
@@ -114,7 +112,10 @@ const Navbar = () => {
             <Link href="/" style={{ textDecoration: "none" }}>
               <p>Home</p>
             </Link>
-            <Link href="/seetings" style={{ textDecoration: "none" }}>
+            <Link
+              href={user ? "/profile" : "login"}
+              style={{ textDecoration: "none" }}
+            >
               <p>Profile</p>
             </Link>
             <Link href="/write" style={{ textDecoration: "none" }}>
@@ -130,16 +131,19 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* nav reg sec */}
+          {/* show popup(logour, view profile) on mousehover */}
           <div className={styles.nav_reg}>
             {user ? (
               <>
                 <Image
-                  onClick={() => router.push("/seetings")}
+                  onClick={() => router.push("/profile")}
                   className={styles.profilePic}
                   src={user.profilePicture}
+                  height={35}
+                  width={35}
                   alt="user profile"
                 />
+                <p>{user?.username}</p>
               </>
             ) : (
               <button type="button" onClick={handleClick}>
@@ -169,7 +173,10 @@ const Navbar = () => {
                   <p onClick={() => setToggler(false)}>Home</p>
                 </Link>
 
-                <Link href="/seetings" style={{ textDecoration: "none" }}>
+                <Link
+                  href={user ? "/profile" : "login"}
+                  style={{ textDecoration: "none" }}
+                >
                   <p onClick={() => setToggler(false)}>Profile</p>
                 </Link>
                 <Link href="/write" style={{ textDecoration: "none" }}>

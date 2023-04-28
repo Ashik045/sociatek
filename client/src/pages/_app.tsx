@@ -1,3 +1,4 @@
+import { ContextProvider } from "Context/Context";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -29,7 +30,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <span className={styles.loader}></span>
         </div>
       ) : null}
-      <Component {...pageProps} />
+      <ContextProvider>
+        <Component {...pageProps} />
+      </ContextProvider>
     </>
   );
 }

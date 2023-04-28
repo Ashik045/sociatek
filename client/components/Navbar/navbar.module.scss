@@ -126,14 +126,17 @@
       .nav_reg {
         display: flex;
         width: 80px;
+        cursor: pointer;
 
         .profilePic {
-          height: 40px;
-          width: 40px;
           border-radius: 50%;
-          margin-right: 10px;
-          cursor: pointer;
+          margin-right: 5px;
           object-fit: cover;
+        }
+
+        p {
+          text-decoration: underline;
+          padding: 0px;
         }
 
         button {
