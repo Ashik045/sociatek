@@ -7,6 +7,7 @@
       display: block;
       border-top-right-radius: 3px;
       border-top-left-radius: 3px;
+      object-fit: cover;
     }
 
     .profile_pic {
@@ -51,12 +52,13 @@
         justify-content: center;
         align-items: center;
 
-        p {
+        .follow_sec {
           display: flex;
           justify-content: center;
           align-items: center;
           padding: 0px 10px;
           font-size: 16px;
+          color: rgba(0, 0, 0, 0.555);
 
           .user_act_icon {
             font-size: 18px;

@@ -3,8 +3,17 @@ import Navbar from "components/Navbar/Navbar";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+import {
+  MdFacebook,
+  MdLocationPin,
+  MdOutbond,
+  MdOutlineCalendarMonth,
+  MdPhone,
+  MdWork,
+} from "react-icons/md";
 import { User } from "types.global";
-import styles from "../../styles/profile.module.scss";
+import styles from "../../styles/user.module.scss";
 
 interface UserProps {
   user: User;
@@ -12,6 +21,11 @@ interface UserProps {
 
 const Index: React.FC<UserProps> = ({ user }) => {
   // console.log(user);
+  const createAt = new Date(user?.createdAt);
+  const date = Intl.DateTimeFormat("en-US", {
+    month: "long",
+    year: "numeric",
+  }).format(createAt);
 
   return (
     <div className={styles.user_profile}>
@@ -24,19 +38,19 @@ const Index: React.FC<UserProps> = ({ user }) => {
       <Navbar />
 
       <div className={styles.user_profile_main}>
-        <div className={styles.user_profile}>
+        <div className={styles.user_profilee}>
           <Image
             src={user?.coverPhoto}
             alt="sociatek user cover"
-            height={100}
-            width={800}
+            height={150}
+            width={400}
             className={styles.user_cover}
           />
           <Image
             src={user?.profilePicture}
             alt="sociatek user profile"
-            height={100}
-            width={100}
+            height={120}
+            width={120}
             className={styles.user_dp}
           />
 
@@ -44,15 +58,65 @@ const Index: React.FC<UserProps> = ({ user }) => {
             <h2>
               {user?.fullname}
               <span> ({user?.username})</span>
-            </h2>{" "}
-            ()
+            </h2>
             <p>{user?.about}</p>
-            <div className={styles.user_profile_contact}>
-              <p>{user?.location}</p>
-              <p>{user?.phone}</p>
-              <p>{user?.profession}</p>
+
+            <div className={styles.user_activities}>
+              <p className={styles.follow_sec}>
+                <span>{user?.followers?.length}</span> Followers
+              </p>
+              <p className={styles.follow_sec}>
+                <span>{user?.following?.length}</span> Following
+              </p>
             </div>
-            <p>Facebook: {user.facebook ? user.facebook : "Not signed"}</p>
+
+            <div className={styles.user_profile_contact}>
+              <p>
+                <MdLocationPin className={styles.contact_icon} />{" "}
+                {user?.location}
+              </p>
+              <p>
+                <MdPhone className={styles.contact_icon} /> {user?.phone}
+              </p>
+              <p>
+                <MdWork className={styles.contact_icon} /> {user?.profession}
+              </p>
+            </div>
+
+            <div className={styles.contact_btm}>
+              <div className={styles.contact_btmm}>
+                <MdFacebook className={styles.contact_btm_icon} />
+                Facebook:
+                <div className={styles.contact_btm_fb}>
+                  {user?.facebook ? (
+                    <p style={{ cursor: "pointer" }}>
+                      <Link
+                        href={user?.facebook}
+                        style={{ color: "rgba(0, 0, 0, 0.795)" }}
+                        target="blank"
+                      >
+                        <MdOutbond
+                          style={{
+                            marginBottom: "-13px",
+                            fontSize: "25px",
+                            marginLeft: "4px",
+                          }}
+                        />
+                      </Link>
+                    </p>
+                  ) : (
+                    <p style={{ marginBottom: "4px", marginLeft: "4px" }}>
+                      Not Signed!
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles.contact_btm_join}>
+                <MdOutlineCalendarMonth className={styles.contact_btm_icon} />
+                Joined: {date}
+              </div>
+            </div>
           </div>
         </div>
 

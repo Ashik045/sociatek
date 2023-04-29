@@ -1,0 +1,126 @@
+.user_profile {
+  .user_profile_main {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: 35% 60%;
+    gap: 25px;
+
+    .user_profilee {
+      padding-bottom: 50px;
+      overflow: hidden;
+      position: relative;
+      background-color: #f6fcfd;
+
+      .user_cover {
+        display: block;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+        object-fit: cover;
+        width: 100%;
+      }
+
+      .user_dp {
+        border-radius: 50%;
+        cursor: pointer;
+        object-fit: cover;
+        position: absolute;
+        top: 100px;
+        left: 35%;
+        outline: 5px solid #f6fcfd;
+        transition: all 0.2s ease;
+
+        &:hover {
+          outline: 5px solid rgba(185, 184, 184, 0.699);
+        }
+      }
+
+      .user_profile_detail {
+        margin-top: 90px;
+        text-align: center;
+
+        h2 {
+          margin-bottom: 0px;
+          color: rgba(0, 0, 0, 0.726);
+        }
+
+        p {
+          margin-top: 5px;
+          color: rgba(0, 0, 0, 0.555);
+        }
+
+        .user_activities {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          p {
+            margin: 0px 5px;
+            color: rgba(0, 0, 0, 0.726);
+            text-decoration: underline;
+            cursor: pointer;
+
+            span {
+              font-weight: bold;
+              color: rgba(0, 0, 0, 0.795);
+            }
+          }
+        }
+
+        .user_profile_contact {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 20px 0px;
+
+          p {
+            margin: 0px 5px;
+            display: flex;
+            align-items: center;
+
+            .contact_icon {
+              margin-right: 3px;
+            }
+          }
+        }
+
+        .contact_btm {
+          display: flex;
+          justify-content: center;
+          color: rgba(0, 0, 0, 0.726);
+
+          .contact_btmm {
+            display: flex;
+            align-items: center;
+            margin: 0px 5px;
+
+            .contact_btm_fb {
+              display: flex;
+              align-items: center;
+            }
+          }
+
+          .contact_btm_icon {
+            font-size: 20px;
+            margin-right: 3px;
+            color: rgba(0, 0, 0, 0.603);
+          }
+
+          .contact_btm_join {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+
+    .user_posts {
+      background-color: #f6fcfd;
+    }
+  }
+}

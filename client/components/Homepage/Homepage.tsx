@@ -1,6 +1,8 @@
+import { Context } from "Context/Context";
 import Post from "components/Post/Post";
 import Profile from "components/Profile/Profile";
 import Suggestions from "components/Suggestions/Suggestions";
+import { useContext } from "react";
 import { Postt, User } from "types.global";
 import styles from "./homepage.module.scss";
 
@@ -10,11 +12,10 @@ interface PostAndUserProps {
 }
 
 const Homepage = ({ posts, users }: PostAndUserProps) => {
+  const { user } = useContext(Context);
   return (
     <div className={styles.homepage}>
-      <div className={styles.homepage_profile}>
-        <Profile />
-      </div>
+      <div className={styles.homepage_profile}>{user && <Profile />}</div>
 
       {/* feed sectioin - (write post, browse post) */}
       <div className={styles.homepage_feed}>

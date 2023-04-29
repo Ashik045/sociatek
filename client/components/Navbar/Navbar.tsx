@@ -1,33 +1,29 @@
+import { Context } from "Context/Context";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { BiMenu, BiX } from "react-icons/bi";
 import { FaSearch, FaTimes } from "react-icons/fa";
-import { User } from "types.global";
 import styles from "./navbar.module.scss";
 
 const Navbar = () => {
   const [toggler, setToggler] = useState(false);
   const [inpVal, setInpVal] = useState("");
-  const [user, setUser] = useState<null | User>(null);
+  // const [user, setUser] = useState<null | User>(null);
   const [APIData, setAPIData] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
   const router = useRouter();
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
+  // useEffect(() => {
+  //   const userData = localStorage.getItem("user");
 
-    if (typeof window !== "undefined" && userData) {
-      setUser(JSON.parse(userData));
-    }
-  }, []);
-
-  //   useEffect(() => {
-  //     axios.get(`https://weblog-backend.onrender.com/api/posts`).then((response) => {
-  //         setAPIData(response.data.message);
-  //     });
+  //   if (typeof window !== "undefined" && userData) {
+  //     setUser(JSON.parse(userData));
+  //   }
   // }, []);
+
+  const { user } = useContext(Context);
 
   // navigate to login page
   const handleClick = () => {

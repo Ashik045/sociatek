@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       posts: data.message,
-      users: data2.message,
+      users: data2.message.slice(0, 6),
     },
   };
 };
