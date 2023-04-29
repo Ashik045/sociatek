@@ -31,6 +31,7 @@ export interface User {
   about: string;
   phone: string;
   location: string;
+  facebook: string;
   profession: string;
   profilePicture: string;
   coverPhoto: string;

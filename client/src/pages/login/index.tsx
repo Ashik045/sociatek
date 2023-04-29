@@ -41,7 +41,7 @@ const index = () => {
       // if login is successful return the user and save the session
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data?.message });
 
-      router.push("/profile");
+      router.push(`/user/${res.data?.message._id}`);
       console.log(res.data?.message);
       setError(null);
     } catch (error) {

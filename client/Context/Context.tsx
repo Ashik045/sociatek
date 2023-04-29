@@ -6,8 +6,13 @@ type Props = {
   children: React.ReactNode;
 };
 
+const isServer = typeof window !== "undefined";
+
 export const INITIAL_STATE: State = {
-  user: null,
+  user:
+    isServer && localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") as string)
+      : null,
   isLoading: false,
   error: null,
   dispatch: () => null,

@@ -113,7 +113,7 @@ const Navbar = () => {
               <p>Home</p>
             </Link>
             <Link
-              href={user ? "/profile" : "login"}
+              href={user ? `/user/${user._id}` : "login"}
               style={{ textDecoration: "none" }}
             >
               <p>Profile</p>
@@ -174,7 +174,7 @@ const Navbar = () => {
                 </Link>
 
                 <Link
-                  href={user ? "/profile" : "login"}
+                  href={user ? `/user/${user._id}` : "login"}
                   style={{ textDecoration: "none" }}
                 >
                   <p onClick={() => setToggler(false)}>Profile</p>

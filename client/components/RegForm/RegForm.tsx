@@ -17,6 +17,7 @@ type Inputs = {
   fullname: string;
   about: string;
   phone: string;
+  location: string;
   facebook: string;
   profession: string;
 };
@@ -204,7 +205,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
 
         <div className={styles.form_body}>
           {/* Email & Pass section */}
-          {page === 0 && (
+          {page === 2 && (
             <>
               <input
                 {...register("email", {
@@ -264,7 +265,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           )}
 
           {/* Fullname, Username & Bio section */}
-          {page === 1 && (
+          {page === 0 && (
             <>
               <input
                 {...register("username", {
@@ -337,7 +338,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           )}
 
           {/* Phone, Facebook & Profession */}
-          {page === 2 && (
+          {page === 1 && (
             <>
               <input
                 {...register("phone", {
@@ -354,6 +355,19 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 className={styles.exact_form_inp}
               />
               <span className={styles.form_err}>{errors.phone?.message}</span>
+              <input
+                {...register("location", {
+                  required: "Location is required!",
+                })}
+                placeholder="Location"
+                onBlur={() => {
+                  trigger("location");
+                }}
+                className={styles.exact_form_inp}
+              />
+              <span className={styles.form_err}>
+                {errors.location?.message}
+              </span>
               <input
                 {...register("facebook", {
                   required: false,
