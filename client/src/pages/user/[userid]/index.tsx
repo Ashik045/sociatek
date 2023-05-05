@@ -6,7 +6,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import {
   MdFacebook,
@@ -16,19 +16,25 @@ import {
   MdPhone,
   MdWork,
 } from "react-icons/md";
-import { User } from "types.global";
+import { Postt, User } from "types.global";
 import styles from "../../../styles/user.module.scss";
 
+import Post from "components/Post/Post";
 import noCover from "../../../../images/no-image-available-icon-6.png";
 import noProfilePhoto from "../../../../images/no-photo.png";
 
 interface UserProps {
   userr: User;
+  posts: Postt[];
 }
 
-const Index: React.FC<UserProps> = ({ userr }) => {
-  // console.log(user);
+const Index: React.FC<UserProps> = ({ userr, posts }) => {
+  const [activity, setActivity] = useState(false);
+
   const router = useRouter();
+  console.log(router);
+  console.log(posts);
+
   const userID = router.query.userid;
 
   const { user } = useContext(Context);
@@ -153,9 +159,32 @@ const Index: React.FC<UserProps> = ({ userr }) => {
         </div>
 
         {/* activities section. showing users post and activities */}
-        <div className={styles.user_posts}>
-          <h3>posts</h3>
-          <h3>activities</h3>
+        <div className={styles.user_posts_and_activities}>
+          <div className={styles.posts_and_activities_nav}>
+            <p
+              className={activity ? `${styles.notactive}` : `${styles.active}`}
+              onClick={() => setActivity(false)}
+            >
+              Posts
+            </p>
+            <p
+              className={activity ? `${styles.active}` : `${styles.notactive}`}
+              onClick={() => setActivity(true)}
+            >
+              Activities
+            </p>
+          </div>
+
+          {/* conditionally render the posts or activities */}
+          {activity ? (
+            <p>User Activities. (Page Updating..)</p>
+          ) : (
+            <div>
+              {posts.map((post) => {
+                return <Post postItems={post} key={post._id} />;
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -184,14 +213,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
 //  Fetch the user data based on the ID from an API or database
 export const getStaticProps: GetStaticProps<UserProps> = async (context) => {
   const { params } = context;
+
   const res = await axios.get(
     `http://localhost:4000/api/user/${params?.userid}`
   );
+  const res2 = await axios.get("https://weblog-backend.onrender.com/api/posts");
+
   const data = await res.data.message;
+  const data2 = await res2.data.message;
 
   return {
     props: {
       userr: data,
+      posts: data2,
     },
   };
 };

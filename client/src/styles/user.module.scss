@@ -35,6 +35,7 @@
       overflow: hidden;
       position: relative;
       background-color: #f6fcfd;
+      height: fit-content;
 
       .user_cover {
         display: block;
@@ -154,8 +155,68 @@
       }
     }
 
-    .user_posts {
-      background-color: #f6fcfd;
+    .user_posts_and_activities {
+      .posts_and_activities_nav {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        border-bottom: 2px solid #e2e3e4;
+        margin-bottom: 10px;
+
+        .notactive {
+          margin: 0px 10px 0px 3px;
+          font-size: 18px;
+          cursor: pointer;
+          border-bottom: 3px solid white;
+          color: rgba(0, 0, 0, 0.623);
+        }
+
+        .active {
+          margin: 0px 10px 0px 3px;
+          border-bottom: 3px solid #dbdbdb;
+          cursor: pointer;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .user_profile {
+    overflow: hidden;
+    .user_profile_main {
+      display: grid;
+      grid-template-columns: 90%;
+      justify-content: center;
+      gap: 25px;
+
+      .user_profilee {
+        .user_dp {
+          position: absolute;
+          top: 100px;
+          left: 42%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .user_profile {
+    .user_profile_main {
+      display: grid;
+      grid-template-columns: 100%;
+      gap: 25px;
+      margin-left: 10px;
+
+      .user_profilee {
+        .user_dp {
+          position: absolute;
+          top: 100px;
+          left: 34%;
+        }
+      }
     }
   }
 }
