@@ -7,6 +7,12 @@ import styles from "../styles/home.module.scss";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  // for hydration errors
+  const [showChild, setShowChild] = useState(false);
+
+  useEffect(() => {
+    setShowChild(true);
+  }, []);
 
   useEffect(() => {
     const handleStart = () => setLoading(true);
@@ -22,6 +28,10 @@ export default function App({ Component, pageProps }: AppProps) {
       router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
+
+  if (!showChild) {
+    return null;
+  }
 
   return (
     <>

@@ -23,7 +23,7 @@ const Navbar = () => {
   //   }
   // }, []);
 
-  const { user } = useContext(Context);
+  const { user, dispatch } = useContext(Context);
 
   // navigate to login page
   const handleClick = () => {
@@ -31,16 +31,11 @@ const Navbar = () => {
     setToggler(false);
   };
 
-  // const handleClick2 = () => {
-  //     navigate('/');
-  // };
-
   // user logout function
-  const logOut = () => {
-    // // setUser(false);
-    // setToggler(false);
-    // dispatch({ type: 'LOGOUT' });
-    // navigate('/');
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    router.push("/");
+    console.log("logged out");
   };
 
   const handleChange = (e: any) => {
@@ -108,22 +103,11 @@ const Navbar = () => {
             <Link href="/" style={{ textDecoration: "none" }}>
               <p>Home</p>
             </Link>
-            <Link
-              href={user ? `/user/${user._id}` : "login"}
-              style={{ textDecoration: "none" }}
-            >
-              <p>Profile</p>
-            </Link>
             <Link href="/write" style={{ textDecoration: "none" }}>
               <p>Post</p>
             </Link>
-            {/* {user && (
-                            <Link href={`users/?user=${user.username}`}>
-                                <a href="">My Posts</a>
-                            </Link>
-                        )} */}
             <Link href={`users/`} style={{ textDecoration: "none" }}>
-              <p>My Posts</p>
+              <p>Find Users</p>
             </Link>
           </div>
 
@@ -131,15 +115,26 @@ const Navbar = () => {
           <div className={styles.nav_reg}>
             {user ? (
               <>
-                <Image
-                  onClick={() => router.push("/profile")}
-                  className={styles.profilePic}
-                  src={user.profilePicture}
-                  height={35}
-                  width={35}
-                  alt="user profile"
-                />
-                <p>{user?.username}</p>
+                <div className={styles.nav_regg}>
+                  <Image
+                    onClick={() => router.push(`/user/${user._id}`)}
+                    className={styles.profilePic}
+                    src={user.profilePicture}
+                    height={35}
+                    width={35}
+                    alt="user profile"
+                  />
+                  <div className={styles.username}>{user?.username}</div>
+                  <div className={styles.user_popup}>
+                    <Link
+                      href={`/user/${user._id}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <p>View Profile</p>
+                    </Link>
+                    <p onClick={handleLogout}>Log Out</p>
+                  </div>
+                </div>
               </>
             ) : (
               <button type="button" onClick={handleClick}>
@@ -169,27 +164,17 @@ const Navbar = () => {
                   <p onClick={() => setToggler(false)}>Home</p>
                 </Link>
 
-                <Link
-                  href={user ? `/user/${user._id}` : "login"}
-                  style={{ textDecoration: "none" }}
-                >
-                  <p onClick={() => setToggler(false)}>Profile</p>
-                </Link>
                 <Link href="/write" style={{ textDecoration: "none" }}>
                   <p onClick={() => setToggler(false)}>Write</p>
                 </Link>
                 {user && (
                   <Link href={`users/`} style={{ textDecoration: "none" }}>
-                    <p onClick={() => setToggler(false)}>My Posts</p>
+                    <p onClick={() => setToggler(false)}>Find Users</p>
                   </Link>
                 )}
 
                 <div className={styles.res_nav_reg}>
-                  {user ? (
-                    <button type="button" onClick={logOut}>
-                      Log out
-                    </button>
-                  ) : (
+                  {!user && (
                     <button type="button" onClick={handleClick}>
                       Log In
                     </button>

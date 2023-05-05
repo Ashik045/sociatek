@@ -124,19 +124,54 @@
       }
 
       .nav_reg {
-        display: flex;
-        width: 80px;
+        width: 95px;
         cursor: pointer;
 
-        .profilePic {
-          border-radius: 50%;
-          margin-right: 5px;
-          object-fit: cover;
-        }
+        .nav_regg {
+          display: flex;
+          align-items: center;
+          position: relative;
+          padding: 5px 0px;
+          z-index: 100;
 
-        p {
-          text-decoration: underline;
-          padding: 0px;
+          &:hover .user_popup {
+            display: block; /* Display the popup when hovering on the parent */
+          }
+
+          .profilePic {
+            border-radius: 50%;
+            margin-right: 5px;
+            object-fit: cover;
+          }
+
+          .username {
+            text-decoration: underline;
+            padding: 0px;
+          }
+
+          .user_popup {
+            display: none; /* Hide the popup by default */
+            position: absolute; /* Set position to absolute to position the popup relative to its parent */
+            bottom: -60px; /* Position the popup 50px below the parent */
+            right: 90; /* Center the popup horizontally */
+            background-color: #fff; /* Set the background color */
+            padding: 5px; /* Add some padding */
+            border-radius: 5px; /* Add some border radius */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add some box shadow for a nice effect */
+            text-align: left;
+            transition: all 0.2s ease;
+
+            p {
+              display: block;
+              margin: 5px 0px;
+              color: #333;
+              text-decoration: none;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
         }
 
         button {
@@ -153,6 +188,7 @@
 
         .res_nav_iconn {
           cursor: pointer;
+          margin-top: 5px;
         }
 
         .res_nav_menu {
@@ -221,7 +257,7 @@
   .navbar {
     .navbar_main {
       display: grid;
-      grid-template-columns: 8% 90% 2%;
+      grid-template-columns: 8% 85% 2%;
       .nav_brand {
         h5 {
           font-size: 21px;
@@ -243,10 +279,9 @@
 @media screen and (max-width: 800px) {
   .navbar {
     .navbar_main {
-      // padding-right: 10px;
       padding-left: 10px;
       display: grid;
-      grid-template-columns: 5% 90% 5%;
+      grid-template-columns: 5% 87% 2%;
 
       .nav_right {
         .search {
@@ -266,8 +301,7 @@
 
         .nav_reg {
           margin-left: auto;
-          margin-right: 15px;
-          width: 50px;
+          width: 100px;
 
           button {
             display: none;
@@ -296,21 +330,40 @@
 @media screen and (max-width: 576px) {
   .navbar {
     .navbar_main {
+      display: grid;
+      grid-template-columns: 5% 80% 2%;
       .nav_right {
         .nav_reg {
           display: flex;
-          margin-right: -10px;
+          margin-right: -60px;
           // margin-left: 0px;
+          .nav_regg {
+            .username {
+              display: none;
+            }
+
+            .user_popup {
+              display: none; /* Hide the popup by default */
+              position: absolute; /* Set position to absolute to position the popup relative to its parent */
+              bottom: -60px; /* Position the popup 50px below the parent */
+              width: 80px;
+              left: -10px;
+
+              p {
+                font-size: 15px;
+              }
+            }
+          }
 
           .profilePic {
-            height: 35px;
-            width: 35px;
+            height: 30px;
+            width: 30px;
           }
         }
 
         .search {
-          margin-right: -50px;
-          width: 65%;
+          margin-right: -30px;
+          width: 40%;
           display: flex;
           align-items: center;
 
@@ -320,7 +373,14 @@
 
             .search_icon {
               margin-right: -15px;
+              margin-bottom: -3px;
+              padding: 0px;
             }
+          }
+          .search_icon_close {
+            margin-right: 0px;
+            margin-bottom: -3px;
+            padding: 0px;
           }
 
           input {
@@ -334,6 +394,7 @@
             text-align: center;
             .res_nav_reg {
               display: block;
+              z-index: 20 !important;
             }
           }
         }
@@ -346,9 +407,13 @@
   .navbar {
     .navbar_main {
       .nav_right {
-        .search {
+        .nav_reg {
+          display: flex;
           margin-right: -65px;
-          width: 50%;
+        }
+        .search {
+          margin-right: -45px;
+          width: 40%;
           display: flex;
           align-items: center;
 

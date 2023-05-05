@@ -15,7 +15,16 @@ const Homepage = ({ posts, users }: PostAndUserProps) => {
   const { user } = useContext(Context);
   return (
     <div className={styles.homepage}>
-      <div className={styles.homepage_profile}>{user && <Profile />}</div>
+      <div className={styles.homepage_profile}>
+        {user ? (
+          <Profile />
+        ) : (
+          <p>
+            Banner / Intro of this application. Sign in to achieve all the
+            features of Sociatek.
+          </p>
+        )}
+      </div>
 
       {/* feed sectioin - (write post, browse post) */}
       <div className={styles.homepage_feed}>
