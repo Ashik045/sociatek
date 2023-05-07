@@ -204,7 +204,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
         </div>
 
         <div className={styles.form_body}>
-          {/* Email & Pass section */}
+          {/* Email, username & Pass section */}
           {page === 2 && (
             <>
               <input
@@ -286,7 +286,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
             </>
           )}
 
-          {/* Fullname, Username & Bio section */}
+          {/* Fullname, Phone & Bio section */}
           {page === 0 && (
             <>
               <input
@@ -353,7 +353,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
             </>
           )}
 
-          {/* Phone, Facebook & Profession */}
+          {/* Facebook & Profession */}
           {page === 1 && (
             <>
               <input

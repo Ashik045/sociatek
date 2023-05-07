@@ -20,6 +20,7 @@ import { Postt, User } from "types.global";
 import styles from "../../../styles/user.module.scss";
 
 import Post from "components/Post/Post";
+import UpdateModal from "components/UpdateModal/UpdateModal";
 import noCover from "../../../../images/no-image-available-icon-6.png";
 import noProfilePhoto from "../../../../images/no-photo.png";
 
@@ -30,10 +31,9 @@ interface UserProps {
 
 const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [activity, setActivity] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const router = useRouter();
-  console.log(router);
-  console.log(posts);
 
   const userID = router.query.userid;
 
@@ -44,6 +44,10 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     month: "long",
     year: "numeric",
   }).format(createAt);
+
+  const handleEditProfile = () => {
+    setOpenModal(true);
+  };
 
   return (
     <div className={styles.user_profile}>
@@ -83,7 +87,10 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
             {/* if the user is same than show the eidt profile button if not then show follow user */}
             <div className={styles.follow_or_edit}>
               {userID === user?._id ? (
-                <div className={styles.edit_profile}>
+                <div
+                  className={styles.edit_profile}
+                  onClick={handleEditProfile}
+                >
                   <p>
                     <FaEdit style={{ marginRight: "5px" }} /> Edit Profile
                   </p>
@@ -94,6 +101,9 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                 </div>
               )}
             </div>
+
+            {/* when user click on edit profile open a modal with the user inifo */}
+            {openModal && <UpdateModal user={userr} />}
 
             <div className={styles.user_activities}>
               <p className={styles.follow_sec}>
