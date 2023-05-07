@@ -208,6 +208,28 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           {page === 2 && (
             <>
               <input
+                {...register("username", {
+                  required: "Username should be 3-15 characters!",
+                  minLength: {
+                    value: 3,
+                    message: "Minimum length is 3 characters!",
+                  },
+                  maxLength: {
+                    value: 15,
+                    message: "Maximum length is 15 characters!",
+                  },
+                })}
+                placeholder="username"
+                onBlur={() => {
+                  trigger("username");
+                }}
+                className={styles.exact_form_inp}
+              />
+              <span className={styles.form_err}>
+                {errors.username?.message}
+              </span>
+
+              <input
                 {...register("email", {
                   required: "Email is required!",
                   pattern: {
@@ -268,28 +290,6 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           {page === 0 && (
             <>
               <input
-                {...register("username", {
-                  required: "Username should be 3-15 characters!",
-                  minLength: {
-                    value: 3,
-                    message: "Minimum length is 3 characters!",
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: "Maximum length is 15 characters!",
-                  },
-                })}
-                placeholder="username"
-                onBlur={() => {
-                  trigger("username");
-                }}
-                className={styles.exact_form_inp}
-              />
-              <span className={styles.form_err}>
-                {errors.username?.message}
-              </span>
-
-              <input
                 {...register("fullname", {
                   required: "Fullname is required!",
                   minLength: {
@@ -334,12 +334,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
               />
               {/* error message */}
               <span className={styles.form_err}>{errors.about?.message}</span>
-            </>
-          )}
 
-          {/* Phone, Facebook & Profession */}
-          {page === 1 && (
-            <>
               <input
                 {...register("phone", {
                   required: "Phone is required!",
@@ -355,6 +350,12 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 className={styles.exact_form_inp}
               />
               <span className={styles.form_err}>{errors.phone?.message}</span>
+            </>
+          )}
+
+          {/* Phone, Facebook & Profession */}
+          {page === 1 && (
+            <>
               <input
                 {...register("location", {
                   required: "Location is required!",

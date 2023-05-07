@@ -117,7 +117,6 @@ const Navbar = () => {
               <>
                 <div className={styles.nav_regg}>
                   <Image
-                    onClick={() => router.push(`/user/${user._id}`)}
                     className={styles.profilePic}
                     src={user.profilePicture}
                     height={35}
