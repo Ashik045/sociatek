@@ -106,6 +106,28 @@
       text-transform: capitalize !important;
     }
   }
+
+  .close_div {
+    position: absolute;
+    top: 130px;
+    right: 250px;
+    z-index: 100;
+    cursor: pointer;
+    padding: 7px;
+    font-size: 20px;
+    background-color: #f6fcfd;
+    border-radius: 50%;
+    color: rgba(0, 0, 0, 0.685);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1999 !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 }
 
 @media screen and (max-width: 992px) {
@@ -113,6 +135,12 @@
     .modal_form {
       position: relative;
       width: 65%;
+    }
+
+    .close_div {
+      position: absolute;
+      top: 130px;
+      right: 100px;
     }
   }
 }
@@ -132,6 +160,14 @@
         width: 86%;
       }
     }
+
+    .close_div {
+      position: absolute;
+      top: 130px;
+      right: 50px;
+      background-color: rgb(95, 95, 95);
+      color: #f6fcfd;
+    }
   }
 }
 
@@ -142,6 +178,12 @@
 
       position: relative;
       width: 80%;
+    }
+
+    .close_div {
+      position: absolute;
+      top: 110px;
+      right: 10px;
     }
   }
 }

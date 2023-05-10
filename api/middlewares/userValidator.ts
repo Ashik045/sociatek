@@ -42,7 +42,7 @@ export const UserRegValidation = [
   check("password")
     .isStrongPassword()
     .withMessage(
-      "Password should be at least 8 characters & should contain at least 1 lowercase, 1 upper case, 1 number & 1 symbol"
+      "Password should be at least 6 characters & should contain at least 1 lowercase, 1 upper case, 1 number & 1 symbol"
     ),
   check("about").isLength({ min: 1 }).withMessage("About field is required!"),
 ];

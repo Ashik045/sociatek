@@ -103,7 +103,9 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
             </div>
 
             {/* when user click on edit profile open a modal with the user inifo */}
-            {openModal && <UpdateModal user={userr} />}
+            {openModal && (
+              <UpdateModal user={userr} setOpenModal={setOpenModal} />
+            )}
 
             <div className={styles.user_activities}>
               <p className={styles.follow_sec}>

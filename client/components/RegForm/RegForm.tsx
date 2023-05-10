@@ -250,11 +250,15 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 type="password"
                 {...register("password", {
                   required:
-                    "Password should be at least 8 characters & should contain at least 1 lowercase, 1 upper case, 1 number & 1 symbol!",
+                    "Password should be at least 6 characters & should contain at least 1 lowercase, 1 upper case, 1 number & 1 symbol!",
                   pattern: {
                     value:
-                      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|~\-=`{}[\]:;<>?,.@#])[a-zA-Z\d!@#$%^&*()_+|~\-=`{}[\]:;<>?,.@#]{8,}$/,
+                      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|~\-=`{}[\]:;<>?,.@#])[a-zA-Z\d!@#$%^&*()_+|~\-=`{}[\]:;<>?,.@#]{6,}$/,
                     message: "Provide a strong password. Ex: #$As@34jhW@&",
+                  },
+                  minLength: {
+                    value: 6,
+                    message: "Minimum length is 6 characters!",
                   },
                 })}
                 placeholder="Password"

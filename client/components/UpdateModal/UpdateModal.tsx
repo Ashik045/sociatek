@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaTimes } from "react-icons/fa";
 import { User } from "types.global";
 import styles from "./updatemoda.module.scss";
 
@@ -17,9 +18,10 @@ type Inputs = {
 
 interface PageProp {
   user: User;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UpdateModal = ({ user }: PageProp) => {
+const UpdateModal = ({ user, setOpenModal }: PageProp) => {
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState<Inputs>({
     username: user?.username || "",
@@ -64,8 +66,15 @@ const UpdateModal = ({ user }: PageProp) => {
     }
   };
 
+  const handleClose = () => {
+    setOpenModal(false);
+  };
+
   return (
     <div className={styles.user_upd_modal}>
+      <span onClick={handleClose} className={styles.close_div}>
+        <FaTimes />
+      </span>
       <div className={styles.modal_form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2>Update Profile</h2>
