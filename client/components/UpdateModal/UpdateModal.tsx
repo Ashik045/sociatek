@@ -1,6 +1,5 @@
 import { Context } from "Context/Context";
 import axios from "axios";
-import Loader from "components/Loader/Loader";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -89,10 +88,6 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
   const handleClose = () => {
     setOpenModal(false);
   };
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <div className={styles.user_upd_modal}>

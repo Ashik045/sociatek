@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
@@ -29,18 +29,15 @@ type PageProp = {
   setLoading(value: boolean): void;
 };
 
-interface ApiError {
-  [key: string]: {
-    msg: string;
-    param: string;
-    location: string;
-  };
-}
-
 const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [coverImg, setCoverImg] = useState<File | null>(null);
-  const [errorss, setErrorss] = useState<ApiError>({}); // replace `any` with your expected error array type
+
+  const [errorsss, setErrorsss] = useState({});
+
+  useEffect(() => {
+    console.log("errors:", errorsss);
+  }, [errorsss]);
 
   const {
     register,
@@ -122,13 +119,17 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
         console.log(user.data.message);
         reset();
       } catch (error: AxiosError) {
-        const errorObj = error.response?.data?.error;
-        if (errorObj) {
-          setErrorss(errorObj);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          console.log(error.response.data.error);
+          setErrorsss(error.response.data.error);
+        } else {
+          console.log("An error occurred while making the request:", error);
+          // Handle other types of errors
         }
-
-        // console.log(error.response.data.error);
-        console.log(errorss);
 
         // not showing the errorss
         reset({ ...others });
@@ -431,13 +432,6 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           )}
         </div>
 
-        {/* {errorss.map((error, i) => {
-          return (
-            <span key={i} className={styles.form_err}>
-              {error}
-            </span>
-          );
-        })} */}
         {page === 2 && (
           <input
             type="submit"
@@ -454,6 +448,13 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           </Link>
         </p>
       </form>
+
+      {/* not working */}
+      <div>
+        {Object.keys(errorsss).map((key) => (
+          <p key={key}>{(errorsss as Record<string, any>)[key].msg}</p>
+        ))}
+      </div>
     </div>
   );
 };

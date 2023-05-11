@@ -19,6 +19,7 @@ import {
 import { Postt, User } from "types.global";
 import styles from "../../../styles/user.module.scss";
 
+import FollowOrFollowingPopup from "components/FollowOrFollowingPopup/FollowOrFollowingPopup";
 import Post from "components/Post/Post";
 import UpdateModal from "components/UpdateModal/UpdateModal";
 import noCover from "../../../../images/no-image-available-icon-6.png";
@@ -32,6 +33,10 @@ interface UserProps {
 const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [activity, setActivity] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [followersList, setFollowersList] = useState([]);
+  const [followingList, setFollowingList] = useState([]);
+  const [followerOrFollowingPopup, setFollowerOrFollowingPopup] =
+    useState(false);
 
   const router = useRouter();
 
@@ -39,6 +44,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
   const { user } = useContext(Context);
 
+  // format the date
   const createAt = new Date(userr?.createdAt);
   const date = Intl.DateTimeFormat("en-US", {
     month: "long",
@@ -47,6 +53,25 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
   const handleEditProfile = () => {
     setOpenModal(true);
+  };
+
+  // Fetch the followers list when the user clicks on the followers section
+  const handleFollowersClick = () => {
+    // You can use the user's followers array to display the list
+    // setFollowersList(user?.followers);
+    setFollowerOrFollowingPopup(true);
+  };
+
+  // Fetch the following list when the user clicks on the following section
+  const handleFollowingClick = () => {
+    // You can use the user's following array to display the list
+    // setFollowingList(user.following);
+    setFollowerOrFollowingPopup(true);
+  };
+
+  // Close the followers&following popup
+  const closeFollowerOrFollowinigPopup = () => {
+    setFollowerOrFollowingPopup(false);
   };
 
   return (
@@ -108,13 +133,21 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
             )}
 
             <div className={styles.user_activities}>
-              <p className={styles.follow_sec}>
+              <p className={styles.follow_sec} onClick={handleFollowersClick}>
                 <span>{userr?.followers?.length}</span> Followers
               </p>
-              <p className={styles.follow_sec}>
+              <p className={styles.follow_sec} onClick={handleFollowingClick}>
                 <span>{userr?.following?.length}</span> Following
               </p>
             </div>
+
+            {/* Render the following popup */}
+            {followerOrFollowingPopup && (
+              <FollowOrFollowingPopup
+                users={followersList || followingList}
+                setFollowerOrFollowingPopup={setFollowerOrFollowingPopup}
+              />
+            )}
 
             <div className={styles.user_profile_contact}>
               {userr?.location && (

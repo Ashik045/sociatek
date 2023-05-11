@@ -43,7 +43,6 @@ const index = () => {
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data?.message });
 
       router.push(`/user/${res.data?.message.username}`);
-      console.log(res.data?.message);
       setError(null);
     } catch (error) {
       // some code that may throw error
