@@ -50,7 +50,7 @@ export const getUserByUserName = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const username = req.query.username;
+  const username = req.params.username;
 
   try {
     const user = await User.findOne({ username });
@@ -69,7 +69,7 @@ export const getUserByUserName = async (
   }
 };
 
-// get user by userId
+// update user
 export const updateUser = async (
   req: express.Request,
   res: express.Response

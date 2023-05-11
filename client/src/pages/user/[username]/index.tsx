@@ -35,7 +35,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
   const router = useRouter();
 
-  const userID = router.query.userid;
+  const userName = router.query.username;
 
   const { user } = useContext(Context);
 
@@ -86,7 +86,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
             {/* if the user is same than show the eidt profile button if not then show follow user */}
             <div className={styles.follow_or_edit}>
-              {userID === user?._id ? (
+              {userName === user?.username ? (
                 <div
                   className={styles.edit_profile}
                   onClick={handleEditProfile}
@@ -212,7 +212,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = users.map((user: User) => ({
     params: {
-      userid: user._id,
+      username: user.username,
     },
   }));
 
@@ -225,9 +225,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 //  Fetch the user data based on the ID from an API or database
 export const getStaticProps: GetStaticProps<UserProps> = async (context) => {
   const { params } = context;
+  console.log(params);
 
   const res = await axios.get(
-    `http://localhost:4000/api/user/${params?.userid}`
+    `http://localhost:4000/api/user/${params?.username}`
   );
   const res2 = await axios.get("https://weblog-backend.onrender.com/api/posts");
 

@@ -36,7 +36,7 @@ const Profile = () => {
         </div>
 
         <div suppressHydrationWarning>
-          <Link href={`/user/${user?._id}`}>
+          <Link href={`/user/${user?.username}`}>
             <Image
               src={user?.profilePicture ? user?.profilePicture : ""}
               height={80}
@@ -48,7 +48,10 @@ const Profile = () => {
         </div>
 
         <div className={styles.owner_details}>
-          <Link href={`/user/${user?._id}`}>
+          <Link
+            href={`/user/${user?.username}`}
+            style={{ textDecoration: "none" }}
+          >
             <h3>{user?.fullname}</h3>
           </Link>
           <p>{user?.about}</p>

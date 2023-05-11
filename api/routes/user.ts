@@ -3,7 +3,6 @@ import express from "express";
 import {
   deleteUser,
   getAllUsers,
-  getUserById,
   getUserByUserName,
   updateUser,
 } from "../controllers/userController";
@@ -19,15 +18,15 @@ const router = express.Router();
 // get all users
 router.get("/users/all", getAllUsers);
 
-// get user by userId
-router.get("/user/:userid", getUserById);
+// get user by username
+router.get("/user/:username", getUserByUserName);
 
 // get user by username
 router.get("/user", getUserByUserName);
 
 // update user
 router.put(
-  "/user/:userid",
+  "/user/:username",
   UserRegValidation,
   UserRegValidationHandler,
   updateUser

@@ -33,7 +33,7 @@ const Suggestions = ({ users }: UserProps) => {
         {users.map((user) => {
           return (
             <div className={styles.suggestions_user} key={user._id}>
-              <Link href={`/user/${user._id}`}>
+              <Link href={`/user/${user?.username}`}>
                 <Image
                   src={user.profilePicture}
                   height={38}
@@ -45,7 +45,7 @@ const Suggestions = ({ users }: UserProps) => {
 
               <div className={styles.user_uname}>
                 <Link
-                  href={`/user/${user._id}`}
+                  href={`/user/${user?.username}`}
                   style={{ textDecoration: "none" }}
                 >
                   <p className={styles.user_username}>{user.username}</p>

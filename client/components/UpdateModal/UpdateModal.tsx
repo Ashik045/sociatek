@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
@@ -56,7 +57,9 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
         setUncngError(false);
 
         // if everything is good then send the data to the server
+        const res = await axios.post("");
         console.log(values);
+        setOpenModal(false);
       }
 
       setLoading(false);

@@ -126,7 +126,7 @@ const Navbar = () => {
                   <div className={styles.username}>{user?.username}</div>
                   <div className={styles.user_popup}>
                     <Link
-                      href={`/user/${user._id}`}
+                      href={`/user/${user.username}`}
                       style={{ textDecoration: "none" }}
                     >
                       <p>View Profile</p>
