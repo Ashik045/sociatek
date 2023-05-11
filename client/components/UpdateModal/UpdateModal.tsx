@@ -1,5 +1,8 @@
+import { Context } from "Context/Context";
 import axios from "axios";
-import { useState } from "react";
+import Loader from "components/Loader/Loader";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 import { User } from "types.global";
@@ -35,16 +38,21 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
     profession: user?.profession || "",
   });
   const [uncngError, setUncngError] = useState(false);
+
   const {
     register,
     handleSubmit,
     trigger,
     formState: { errors },
   } = useForm<Inputs>();
+  const router = useRouter();
+
+  const { dispatch } = useContext(Context);
 
   const onSubmit = async (data: Inputs) => {
     try {
       setLoading(true);
+      dispatch({ type: "USER_UPDATE_START" });
       // check if there is any change in the data
       const hasChanged = Object.entries(data).some(([key, value]) => {
         return values[key] !== value;
@@ -57,21 +65,34 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
         setUncngError(false);
 
         // if everything is good then send the data to the server
-        const res = await axios.post("");
-        console.log(values);
-        setOpenModal(false);
+        try {
+          const res = await axios.put(
+            `http://localhost:4000/api/user/${user?.username}`,
+            values
+          );
+          dispatch({ type: "USER_UPDATE_SUCCESS", payload: res.data?.message });
+          router.push(`/user/${res.data?.message.username}`);
+          setOpenModal(false);
+        } catch (error) {
+          console.log(error.response.data.error);
+        }
       }
 
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
+      dispatch({ type: "USER_UPDATE_FAILURE", payload: "error" });
     }
   };
 
   const handleClose = () => {
     setOpenModal(false);
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.user_upd_modal}>

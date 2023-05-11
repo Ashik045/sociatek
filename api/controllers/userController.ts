@@ -76,8 +76,8 @@ export const updateUser = async (
 ) => {
   // const username = req.body.username;
   // const isUser = await User.findOne({ username: username });
-  const userId = await req.params.userid;
-  const existingUser = await User.findById(userId);
+  const username = await req.params.username;
+  const existingUser = await User.findOne({ username });
 
   try {
     // Check if the user exists
@@ -85,7 +85,7 @@ export const updateUser = async (
       return res.status(404).json({ error: "User not found!" });
     }
 
-    if (existingUser._id.toString() !== userId) {
+    if (existingUser?.username !== username) {
       return res
         .status(403)
         .json({ error: "You can only update your own account!" });
@@ -97,8 +97,8 @@ export const updateUser = async (
     }
 
     // Update the user
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
+    const updatedUser = await User.findOneAndUpdate(
+      { username },
       {
         $set: req.body,
       },

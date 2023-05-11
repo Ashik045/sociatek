@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Context } from "Context/Context";
 import axios from "axios";
+import Loader from "components/Loader/Loader";
 import Navbar from "components/Navbar/Navbar";
 import Head from "next/head";
 import Link from "next/link";
@@ -41,7 +42,7 @@ const index = () => {
       // if login is successful return the user and save the session
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data?.message });
 
-      router.push(`/user/${res.data?.message._id}`);
+      router.push(`/user/${res.data?.message.username}`);
       console.log(res.data?.message);
       setError(null);
     } catch (error) {
@@ -55,12 +56,7 @@ const index = () => {
   };
 
   if (loading) {
-    return (
-      <>
-        <Navbar />
-        <span className={styles.loader}></span>
-      </>
-    );
+    return <Loader />;
   }
   return (
     <div className={styles.login_page}>

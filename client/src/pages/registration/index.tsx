@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import Loader from "components/Loader/Loader";
 import Navbar from "components/Navbar/Navbar";
 import RegForm from "components/RegForm/RegForm";
 import Head from "next/head";
@@ -10,12 +11,7 @@ const index = () => {
   const [loading, setLoading] = useState(false);
 
   if (loading) {
-    return (
-      <>
-        <Navbar />
-        <span className={styles.loader}></span>
-      </>
-    );
+    return <Loader />;
   }
 
   return (

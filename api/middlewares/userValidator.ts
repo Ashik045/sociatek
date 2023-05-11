@@ -47,36 +47,18 @@ export const UserRegValidation = [
   check("about").isLength({ min: 1 }).withMessage("About field is required!"),
 ];
 
-// export const UserUpdValidation = [
-//   check("username")
-//     .isLength({ min: 3 })
-//     .withMessage("Username is required!")
-//     .trim(),
-//   check("fullname")
-//     .isLength({ min: 1 })
-//     .withMessage("Fullname is required!")
-//     .trim(),
-//   check("email")
-//     .isEmail()
-//     .withMessage("Invalid email address!")
-//     .trim()
-//     .custom(async (value) => {
-//       try {
-//         const user = await User.findOne({ email: value });
-//         if (user) {
-//           throw createError("Email already exists!");
-//         }
-//       } catch (errrr) {
-//         throw createError("Email already in use!");
-//       }
-//     }),
-//   check("password")
-//     .isStrongPassword()
-//     .withMessage(
-//       "Password should be at least 8 characters & should contain at least 1 lowercase, 1 upper case, 1 number & 1 symbol"
-//     ),
-//   check("about").isLength({ min: 1 }).withMessage("About field is required!"),
-// ];
+export const UserUpdValidation = [
+  check("username")
+    .isLength({ min: 3, max: 15 })
+    .withMessage("Username should be 3-15 characters!")
+    .trim(),
+  check("fullname")
+    .isLength({ min: 1 })
+    .withMessage("Fullname is required!")
+    .trim(),
+  check("email").isEmail().withMessage("Invalid email address!").trim(),
+  check("about").isLength({ min: 1 }).withMessage("About field is required!"),
+];
 
 export const UserRegValidationHandler = function (
   req: express.Request,

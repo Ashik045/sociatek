@@ -7,8 +7,8 @@ import {
   updateUser,
 } from "../controllers/userController";
 import {
-  UserRegValidation,
   UserRegValidationHandler,
+  UserUpdValidation,
 } from "../middlewares/userValidator";
 
 // internal import
@@ -27,7 +27,7 @@ router.get("/user", getUserByUserName);
 // update user
 router.put(
   "/user/:username",
-  UserRegValidation,
+  UserUpdValidation,
   UserRegValidationHandler,
   updateUser
 );
