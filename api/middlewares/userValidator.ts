@@ -1,6 +1,6 @@
 // external imports
 import express from "express";
-import { check, validationResult } from "express-validator";
+import { check, param, validationResult } from "express-validator";
 import createError from "http-errors";
 
 // internal imports
@@ -86,3 +86,27 @@ export const UserRegValidationHandler = function (
   // }
   // }
 };
+
+// Validation handler for the getFollowers route
+export const getFollowersValidation = [
+  param("userId").notEmpty().withMessage("User ID is required"),
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+// Validation handler for the getFollowing route
+export const getFollowingValidation = [
+  param("userId").notEmpty().withMessage("User ID is required"),
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];

@@ -139,3 +139,47 @@ export const deleteUser = async (
       .json({ error: "An error occurred while deleting the user!" });
   }
 };
+
+// get followers of a particular user
+export const getFollowers = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    const followers = await User.find({ _id: { $in: user.followers } });
+    res.status(200).json({
+      message: followers,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch followers!" });
+  }
+};
+
+// get followings of a particular user
+export const getFollowing = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    const followings = await User.find({ _id: { $in: user.following } });
+    res.status(200).json({
+      message: followings,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch following!" });
+  }
+};

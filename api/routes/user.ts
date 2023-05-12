@@ -3,12 +3,16 @@ import express from "express";
 import {
   deleteUser,
   getAllUsers,
+  getFollowers,
+  getFollowing,
   getUserByUserName,
   updateUser,
 } from "../controllers/userController";
 import {
   UserRegValidationHandler,
   UserUpdValidation,
+  getFollowersValidation,
+  getFollowingValidation,
 } from "../middlewares/userValidator";
 
 // internal import
@@ -34,5 +38,11 @@ router.put(
 
 // delete user
 router.delete("/user/:userid", deleteUser);
+
+// get followers of a particular user
+router.get("/user/:userId/followers", getFollowersValidation, getFollowers);
+
+// get following of a particular user
+router.get("/user/:userId/followings", getFollowingValidation, getFollowing);
 
 export default router;

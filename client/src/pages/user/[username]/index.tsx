@@ -30,6 +30,22 @@ interface UserProps {
   posts: Postt[];
 }
 
+// interface Follower {
+//   _id: string;
+//   username: string;
+//   fullname: string;
+//   email: string;
+//   // ... other follower properties
+// }
+
+// interface Following {
+//   _id: string;
+//   username: string;
+//   fullname: string;
+//   email: string;
+//   // ... other following properties
+// }
+
 const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [activity, setActivity] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -56,16 +72,28 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   };
 
   // Fetch the followers list when the user clicks on the followers section
-  const handleFollowersClick = () => {
+  const handleFollowersClick = async (userId: string) => {
     // You can use the user's followers array to display the list
-    // setFollowersList(user?.followers);
+    const response = await axios.get(
+      `http://localhost:4000/api/user/${userr._id}/followers`
+    );
+    const followers = response.data.message;
+    setFollowersList(followers);
+    console.log(followersList);
+
     setFollowerOrFollowingPopup(true);
   };
 
   // Fetch the following list when the user clicks on the following section
-  const handleFollowingClick = () => {
+  const handleFollowingClick = async (userId: string) => {
     // You can use the user's following array to display the list
-    // setFollowingList(user.following);
+    const response = await axios.get(
+      `http://localhost:4000/api/user/${userr._id}/followings`
+    );
+    const followings = response.data.message;
+    setFollowingList(followings);
+    console.log(followingList);
+
     setFollowerOrFollowingPopup(true);
   };
 
@@ -133,10 +161,16 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
             )}
 
             <div className={styles.user_activities}>
-              <p className={styles.follow_sec} onClick={handleFollowersClick}>
+              <p
+                className={styles.follow_sec}
+                onClick={() => handleFollowersClick(userr._id)}
+              >
                 <span>{userr?.followers?.length}</span> Followers
               </p>
-              <p className={styles.follow_sec} onClick={handleFollowingClick}>
+              <p
+                className={styles.follow_sec}
+                onClick={() => handleFollowingClick(userr._id)}
+              >
                 <span>{userr?.following?.length}</span> Following
               </p>
             </div>

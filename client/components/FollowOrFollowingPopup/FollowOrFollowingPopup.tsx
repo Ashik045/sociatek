@@ -1,8 +1,10 @@
+import Suggestions from "components/Suggestions/Suggestions";
 import { FaTimes } from "react-icons/fa";
+import { User } from "types.global";
 import styles from "./FollowOrFollowingPopup.module.scss";
 
 interface FollowOrFollowingProp {
-  users: string[];
+  users: User[];
   setFollowerOrFollowingPopup: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -20,7 +22,7 @@ const FollowOrFollowingPopup = ({
         <FaTimes />
       </span>
       <div className={styles.popup_main}>
-        <p>followers | following</p>
+        <Suggestions users={users} />
       </div>
     </div>
   );
