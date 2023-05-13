@@ -30,22 +30,6 @@ interface UserProps {
   posts: Postt[];
 }
 
-// interface Follower {
-//   _id: string;
-//   username: string;
-//   fullname: string;
-//   email: string;
-//   // ... other follower properties
-// }
-
-// interface Following {
-//   _id: string;
-//   username: string;
-//   fullname: string;
-//   email: string;
-//   // ... other following properties
-// }
-
 const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [activity, setActivity] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -53,6 +37,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [followingList, setFollowingList] = useState([]);
   const [followerOrFollowingPopup, setFollowerOrFollowingPopup] =
     useState(false);
+  const [followed, setFollowed] = useState(false);
 
   const router = useRouter();
 
@@ -75,9 +60,9 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const handleFollowersClick = async (userId: string) => {
     // You can use the user's followers array to display the list
     const response = await axios.get(
-      `http://localhost:4000/api/user/${userr._id}/followers`
+      `http://localhost:4000/api/user/${userId}/followers`
     );
-    const followers = response.data.message;
+    const followers = await response.data.message;
     setFollowersList(followers);
     console.log(followersList);
 
@@ -88,9 +73,9 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const handleFollowingClick = async (userId: string) => {
     // You can use the user's following array to display the list
     const response = await axios.get(
-      `http://localhost:4000/api/user/${userr._id}/followings`
+      `http://localhost:4000/api/user/${userId}/followings`
     );
-    const followings = response.data.message;
+    const followings = await response.data.message;
     setFollowingList(followings);
     console.log(followingList);
 
@@ -100,6 +85,11 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   // Close the followers&following popup
   const closeFollowerOrFollowinigPopup = () => {
     setFollowerOrFollowingPopup(false);
+  };
+
+  //  ***********  add a follow request to the user profile ***********
+  const setFollow = () => {
+    setFollowed(true);
   };
 
   return (
@@ -178,8 +168,10 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
             {/* Render the following popup */}
             {followerOrFollowingPopup && (
               <FollowOrFollowingPopup
-                users={followersList || followingList}
+                users={followersList.length > 0 ? followersList : followingList}
                 setFollowerOrFollowingPopup={setFollowerOrFollowingPopup}
+                setFollow={setFollow}
+                followersList={followersList}
               />
             )}
 

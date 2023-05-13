@@ -11,9 +11,8 @@
   z-index: 101;
 
   .popup_main {
-    margin-top: 55px;
     position: relative;
-    width: 50%;
+    width: 40% !important;
     background-color: #f6fcfd;
     overflow: hidden;
     display: flex;
@@ -22,16 +21,22 @@
     overflow-y: scroll;
     padding: 15px 0px;
     border-radius: 2px;
-
-    @keyframes slide-in {
-      from {
-        transform: scale(0.5);
-        opacity: 0;
+    .popup_users {
+      h3 {
+        margin: -5px 0px 20px;
+        color: rgba(0, 0, 0, 0.726);
       }
 
-      to {
-        transform: scale(1);
-        opacity: 1;
+      @keyframes slide-in {
+        from {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
       }
     }
   }
@@ -44,9 +49,9 @@
     cursor: pointer;
     padding: 7px;
     font-size: 20px;
-    background-color: #f6fcfd;
+    background-color: rgb(95, 95, 95);
+    color: #f6fcfd;
     border-radius: 50%;
-    color: rgba(0, 0, 0, 0.685);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,6 +60,54 @@
 
     &:hover {
       transform: scale(1.1);
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .popup {
+    .popup_main {
+      position: relative;
+      width: 50% !important;
+    }
+
+    .close_popup {
+      position: absolute;
+      top: 130px;
+      right: 130px;
+      z-index: 100;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .popup {
+    .popup_main {
+      position: relative;
+      width: 60% !important;
+    }
+
+    .close_popup {
+      position: absolute;
+      top: 130px;
+      right: 70px;
+      z-index: 100;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .popup {
+    .popup_main {
+      position: relative;
+      width: 85% !important;
+    }
+
+    .close_popup {
+      position: absolute;
+      top: 130px;
+      right: 20px;
+      z-index: 100;
     }
   }
 }

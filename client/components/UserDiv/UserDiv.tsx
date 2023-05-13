@@ -38,11 +38,14 @@ const UserDiv = ({ users, setFollow }: UserProp) => {
             <span className={styles.follow_btns}>
               {user.followed ? (
                 <FaUserCheck
-                  onClick={setFollow}
+                  onClick={() => setFollow(true)}
                   className={styles.followed_btn}
                 />
               ) : (
-                <FaUserPlus onClick={setFollow} className={styles.follow_btn} />
+                <FaUserPlus
+                  onClick={() => setFollow(true)}
+                  className={styles.follow_btn}
+                />
               )}
             </span>
           </div>
