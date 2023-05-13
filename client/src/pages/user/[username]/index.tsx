@@ -210,7 +210,12 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                 className={styles.follow_sec}
                 onClick={() => handleFollowersClick(userr._id)}
               >
-                <span>{userr?.followers?.length}</span> Followers
+                <span>
+                  {followed && userr?.followers?.length === 0
+                    ? userr?.followers?.length + 1
+                    : userr?.followers?.length}
+                </span>{" "}
+                Followers
               </p>
               <p
                 className={styles.follow_sec}
