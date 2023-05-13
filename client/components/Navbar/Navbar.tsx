@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { BiMenu, BiX } from "react-icons/bi";
 import { FaSearch, FaTimes } from "react-icons/fa";
+import noPhoto from "../../images/no-photo.png";
 import styles from "./navbar.module.scss";
 
 const Navbar = () => {
@@ -118,7 +119,7 @@ const Navbar = () => {
                 <div className={styles.nav_regg}>
                   <Image
                     className={styles.profilePic}
-                    src={user.profilePicture}
+                    src={user.profilePicture ? user.profilePicture : noPhoto}
                     height={35}
                     width={35}
                     alt="user profile"

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { MdDriveFolderUpload } from "react-icons/md";
 import noImage from "../../images/no-image-available-icon-6.png";
@@ -34,6 +35,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   const [coverImg, setCoverImg] = useState<File | null>(null);
 
   const [errorsss, setErrorsss] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
     console.log("errors:", errorsss);
@@ -118,6 +120,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
         );
         console.log(user.data.message);
         reset();
+        router.push("/login");
       } catch (error: AxiosError) {
         if (
           error.response &&

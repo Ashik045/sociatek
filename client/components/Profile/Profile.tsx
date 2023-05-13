@@ -1,12 +1,12 @@
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import { Context } from "Context/Context";
 import Image from "next/image";
 import Link from "next/link";
-// import coverImg from "../../images/no-image-available-icon-6.png";
-// import userImg from "../../images/user1.jpg";
-import { Context } from "Context/Context";
 import { useContext } from "react";
+import noCover from "../../images/no-image-available-icon-6.png";
+import noPhoto from "../../images/no-photo.png";
 import styles from "./profile.module.scss";
 
 const Profile = () => {
@@ -27,7 +27,7 @@ const Profile = () => {
       <div className={styles.profile_owner}>
         <div suppressHydrationWarning>
           <Image
-            src={user?.coverPhoto ? user?.coverPhoto : ""}
+            src={user?.coverPhoto ? user?.coverPhoto : noCover}
             alt="sociatek cover img"
             height={90}
             width={300}
@@ -38,7 +38,7 @@ const Profile = () => {
         <div suppressHydrationWarning>
           <Link href={`/user/${user?.username}`}>
             <Image
-              src={user?.profilePicture ? user?.profilePicture : ""}
+              src={user?.profilePicture ? user?.profilePicture : noPhoto}
               height={80}
               width={80}
               alt="sociatek user img"

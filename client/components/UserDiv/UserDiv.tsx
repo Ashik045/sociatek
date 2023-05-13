@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaUserCheck, FaUserPlus } from "react-icons/fa";
 import { User } from "types.global";
+import noPhoto from "../../images/no-photo.png";
 import styles from "./user.module.scss";
 
 interface UserProp {
@@ -17,7 +18,7 @@ const UserDiv = ({ users, setFollow }: UserProp) => {
           <div className={styles.suggestions_user} key={user._id}>
             <Link href={`/user/${user?.username}`}>
               <Image
-                src={user.profilePicture}
+                src={user.profilePicture ? user.profilePicture : noPhoto}
                 height={38}
                 width={38}
                 alt="sociatek user"
