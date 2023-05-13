@@ -45,4 +45,7 @@ router.get("/user/:userId/followers", getFollowersValidation, getFollowers);
 // get following of a particular user
 router.get("/user/:userId/followings", getFollowingValidation, getFollowing);
 
+// send a follow request to the database
+// router.post("/user/follow/:userId", followUser);
+
 export default router;

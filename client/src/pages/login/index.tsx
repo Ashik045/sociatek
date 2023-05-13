@@ -39,8 +39,13 @@ const index = () => {
         data
       );
 
+      const { message, jwtToken } = res.data;
+
+      // Store the JWT token in localStorage
+      localStorage.setItem("jwtToken", jwtToken);
+
       // if login is successful return the user and save the session
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data?.message });
+      dispatch({ type: "LOGIN_SUCCESS", payload: message });
 
       router.push(`/user/${res.data?.message.username}`);
       setError(null);

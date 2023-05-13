@@ -38,9 +38,11 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [followerOrFollowingPopup, setFollowerOrFollowingPopup] =
     useState(false);
   const [followed, setFollowed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [catchFlwrOrFlwing, setcatchFlwrOrFlwing] = useState(false);
 
+  // get the username
   const router = useRouter();
-
   const userName = router.query.username;
 
   const { user } = useContext(Context);
@@ -64,9 +66,12 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     );
     const followers = await response.data.message;
     setFollowersList(followers);
-    console.log(followersList);
+
+    // set the following list to empty
+    setFollowingList([]);
 
     setFollowerOrFollowingPopup(true);
+    setcatchFlwrOrFlwing(true);
   };
 
   // Fetch the following list when the user clicks on the following section
@@ -77,9 +82,12 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     );
     const followings = await response.data.message;
     setFollowingList(followings);
-    console.log(followingList);
+
+    // set the following list to empty
+    setFollowersList([]);
 
     setFollowerOrFollowingPopup(true);
+    setcatchFlwrOrFlwing(false);
   };
 
   // Close the followers&following popup
@@ -88,8 +96,17 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   };
 
   //  ***********  add a follow request to the user profile ***********
-  const setFollow = () => {
-    setFollowed(true);
+  const handleFollow = (prev: boolean) => {
+    try {
+      setLoading(true);
+      const newFollowed = !prev;
+      setFollowed(newFollowed);
+      // send a follow request to the database using axios
+
+      console.log(newFollowed);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   return (
@@ -139,8 +156,11 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                   </p>
                 </div>
               ) : (
-                <div className={styles.follow_user}>
-                  <p>Follow</p>
+                <div
+                  className={styles.follow_user}
+                  onClick={() => handleFollow(followed)}
+                >
+                  <p>{followed ? "Following" : "Follow"} </p>
                 </div>
               )}
             </div>
@@ -168,10 +188,10 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
             {/* Render the following popup */}
             {followerOrFollowingPopup && (
               <FollowOrFollowingPopup
-                users={followersList.length > 0 ? followersList : followingList}
+                users={catchFlwrOrFlwing ? followersList : followingList}
                 setFollowerOrFollowingPopup={setFollowerOrFollowingPopup}
-                setFollow={setFollow}
-                followersList={followersList}
+                setFollow={handleFollow}
+                catchFlwrOrFlwing={catchFlwrOrFlwing}
               />
             )}
 

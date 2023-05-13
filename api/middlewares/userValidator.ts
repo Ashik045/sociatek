@@ -1,5 +1,5 @@
 // external imports
-import express from "express";
+import { NextFunction, Request, Response } from "express";
 import { check, param, validationResult } from "express-validator";
 import createError from "http-errors";
 
@@ -61,9 +61,9 @@ export const UserUpdValidation = [
 ];
 
 export const UserRegValidationHandler = function (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) {
   const errors = validationResult(req);
   const mappedErrs = errors.mapped();
@@ -90,7 +90,7 @@ export const UserRegValidationHandler = function (
 // Validation handler for the getFollowers route
 export const getFollowersValidation = [
   param("userId").notEmpty().withMessage("User ID is required"),
-  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -102,7 +102,7 @@ export const getFollowersValidation = [
 // Validation handler for the getFollowing route
 export const getFollowingValidation = [
   param("userId").notEmpty().withMessage("User ID is required"),
-  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -110,3 +110,11 @@ export const getFollowingValidation = [
     next();
   },
 ];
+
+// export const followUserMiddleware = (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const userId = getUserIdFromAuthenticationLogic();
+// };

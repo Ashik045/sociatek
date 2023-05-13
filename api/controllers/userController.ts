@@ -183,3 +183,25 @@ export const getFollowing = async (
     res.status(500).json({ error: "Failed to fetch following!" });
   }
 };
+
+// POST request to follow a user
+// export const followUser = async (
+//   req: express.Request,
+//   res: express.Response
+// ) => {
+//   const { userId } = req.params;
+//   const loggedInUserId = req.user.id;
+
+//   try {
+//     // Find the user to follow
+//     const userToFollow = await User.findById(userId);
+
+//     // Add the logged-in user ID to the followers array of the user to follow
+//     userToFollow?.followers.push(loggedInUserId);
+//     await userToFollow?.save();
+
+//     res.status(200).json({ message: "User followed successfully" });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error following user" });
+//   }
+// };

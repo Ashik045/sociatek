@@ -1,6 +1,7 @@
 // external imports
 import bcrypt from "bcrypt";
 import express from "express";
+import jwt, { Secret } from "jsonwebtoken";
 
 // internal import
 import { User } from "../models/usermodel";
@@ -26,8 +27,18 @@ export const userLoginHandler = async (
       if (isRightPassword) {
         const { password: _pw, ...userDetail } = user.toObject();
 
+        // create the jwt token
+        const jwtSecret: Secret = process.env.JWT_SECRET_KEY || "";
+        const payload = {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        };
+        const jwtToken = jwt.sign(payload, jwtSecret, { expiresIn: "1d" });
+
         res.status(200).json({
           message: userDetail,
+          jwtToken,
         });
       } else {
         res.status(401).json({

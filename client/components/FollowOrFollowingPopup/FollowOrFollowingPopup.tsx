@@ -7,19 +7,32 @@ interface FollowOrFollowingProp {
   users: User[];
   setFollowerOrFollowingPopup: React.Dispatch<React.SetStateAction<boolean>>;
   setFollow: React.Dispatch<React.SetStateAction<boolean>>;
-  followersList: User[];
+  catchFlwrOrFlwing: boolean;
 }
 
 const FollowOrFollowingPopup = ({
   users,
   setFollowerOrFollowingPopup,
   setFollow,
-  followersList,
+  catchFlwrOrFlwing,
 }: FollowOrFollowingProp) => {
   // close the popup
   const handleClose = () => {
     setFollowerOrFollowingPopup(false);
   };
+
+  const renderUsers = () => {
+    if (users.length === 0) {
+      if (catchFlwrOrFlwing) {
+        return <p>Currently not being followed by anyone!</p>;
+      } else {
+        return <p>Haven&apos;t followed anyone yet!</p>;
+      }
+    }
+
+    return <UserDiv users={users} setFollow={setFollow} />;
+  };
+
   return (
     <div className={styles.popup}>
       <span onClick={handleClose} className={styles.close_popup}>
@@ -27,8 +40,8 @@ const FollowOrFollowingPopup = ({
       </span>
       <div className={styles.popup_main}>
         <div className={styles.popup_users}>
-          <h3>{followersList.length > 0 ? "Followers " : "Following"} </h3>
-          <UserDiv users={users} setFollow={setFollow} />
+          <h3>{catchFlwrOrFlwing ? "Followers" : "Following"}</h3>
+          {renderUsers()}
         </div>
       </div>
     </div>
