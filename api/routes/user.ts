@@ -2,6 +2,7 @@
 import express from "express";
 import {
   deleteUser,
+  followUser,
   getAllUsers,
   getFollowers,
   getFollowing,
@@ -11,6 +12,7 @@ import {
 import {
   UserRegValidationHandler,
   UserUpdValidation,
+  followUserMiddleware,
   getFollowersValidation,
   getFollowingValidation,
 } from "../middlewares/userValidator";
@@ -46,6 +48,6 @@ router.get("/user/:userId/followers", getFollowersValidation, getFollowers);
 router.get("/user/:userId/followings", getFollowingValidation, getFollowing);
 
 // send a follow request to the database
-// router.post("/user/follow/:userId", followUser);
+router.post("/user/follow/:userId", followUserMiddleware, followUser as any);
 
 export default router;

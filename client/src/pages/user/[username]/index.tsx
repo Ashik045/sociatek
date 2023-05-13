@@ -6,7 +6,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import {
   MdFacebook,
@@ -40,12 +40,24 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [followed, setFollowed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [catchFlwrOrFlwing, setcatchFlwrOrFlwing] = useState(false);
+  const { user } = useContext(Context);
+
+  // check if the user is already a follower
+  useEffect(() => {
+    if (userr && user?._id) {
+      const isFollower = userr.followers.includes(user?._id);
+
+      if (isFollower) {
+        setFollowed(true);
+      }
+    } else {
+      console.log("no user!");
+    }
+  }, [userr]);
 
   // get the username
   const router = useRouter();
   const userName = router.query.username;
-
-  const { user } = useContext(Context);
 
   // format the date
   const createAt = new Date(userr?.createdAt);
@@ -96,14 +108,29 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   };
 
   //  ***********  add a follow request to the user profile ***********
-  const handleFollow = (prev: boolean) => {
+  const handleFollow = async (prev: boolean) => {
+    const token = localStorage.getItem("jwtToken");
     try {
       setLoading(true);
-      const newFollowed = !prev;
+      const newFollowed = followed ? prev : !prev;
       setFollowed(newFollowed);
       // send a follow request to the database using axios
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-      console.log(newFollowed);
+      const response =
+        !followed &&
+        (await axios.post(
+          `http://localhost:4000/api/user/follow/${userr?._id}`,
+          {},
+          config
+        ));
+      console.log(response.data?.message);
+
+      setLoading(false);
     } catch (error) {
       setLoading(false);
     }
@@ -160,7 +187,15 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                   className={styles.follow_user}
                   onClick={() => handleFollow(followed)}
                 >
-                  <p>{followed ? "Following" : "Follow"} </p>
+                  <p style={{ cursor: loading ? "not-allowed" : "pointer" }}>
+                    {loading ? (
+                      <span className={styles.loader}></span>
+                    ) : followed ? (
+                      "Following"
+                    ) : (
+                      "Follow"
+                    )}
+                  </p>
                 </div>
               )}
             </div>

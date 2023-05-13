@@ -5,6 +5,12 @@ import express from "express";
 // internal import
 import { User } from "../models/usermodel";
 
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+  };
+}
+
 // get all users
 export const getAllUsers = async (
   req: express.Request,
@@ -185,23 +191,32 @@ export const getFollowing = async (
 };
 
 // POST request to follow a user
-// export const followUser = async (
-//   req: express.Request,
-//   res: express.Response
-// ) => {
-//   const { userId } = req.params;
-//   const loggedInUserId = req.user.id;
+export const followUser = async (
+  req: AuthenticatedRequest & express.Request,
+  res: express.Response
+) => {
+  const { userId } = req.params;
 
-//   try {
-//     // Find the user to follow
-//     const userToFollow = await User.findById(userId);
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
 
-//     // Add the logged-in user ID to the followers array of the user to follow
-//     userToFollow?.followers.push(loggedInUserId);
-//     await userToFollow?.save();
+  const loggedInUserId = req.user.id;
 
-//     res.status(200).json({ message: "User followed successfully" });
-//   } catch (error) {
-//     res.status(500).json({ message: "Error following user" });
-//   }
-// };
+  try {
+    // Find the user to follow
+    const userToFollow = await User.findById(userId);
+
+    if (!userToFollow) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Add the logged-in user ID to the followers array of the user to follow
+    userToFollow?.followers.push(loggedInUserId);
+    await userToFollow?.save();
+
+    res.status(200).json({ message: "User followed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error following user!" });
+  }
+};

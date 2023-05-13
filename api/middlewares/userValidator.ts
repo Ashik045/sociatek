@@ -2,9 +2,15 @@
 import { NextFunction, Request, Response } from "express";
 import { check, param, validationResult } from "express-validator";
 import createError from "http-errors";
+import jwt from "jsonwebtoken";
 
 // internal imports
 import { User } from "../models/usermodel";
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+  };
+}
 
 export const UserRegValidation = [
   check("username")
@@ -111,10 +117,28 @@ export const getFollowingValidation = [
   },
 ];
 
-// export const followUserMiddleware = (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   const userId = getUserIdFromAuthenticationLogic();
-// };
+export const followUserMiddleware = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const authorizationHeader = req.headers.authorization;
+
+  if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
+    const token = authorizationHeader.slice(7); // Remove the "Bearer " prefix
+
+    try {
+      const decodedToken = jwt.verify(
+        token,
+        process.env.JWT_SECRET_KEY || ""
+      ) as { id: string };
+
+      req.user = { id: decodedToken.id }; // Set the user ID on the request object
+      next();
+    } catch (error) {
+      res.status(401).json({ error: "Unauthorized" });
+    }
+  } else {
+    res.status(401).json({ error: "Unauthorized" });
+  }
+};
