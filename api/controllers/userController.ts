@@ -201,6 +201,7 @@ export const followUser = async (
     return res.status(401).json({ error: "Unauthorized" });
   }
 
+  // get userid
   const loggedInUserId = req.user.id;
 
   try {
