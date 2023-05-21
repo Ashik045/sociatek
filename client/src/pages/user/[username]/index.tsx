@@ -63,8 +63,6 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     //                 : userr?.followers?.length
     if (followed && userr?.followers?.length === 0) {
       setFollowers(userr?.followers?.length + 1);
-    } else if (followed && userr?.followers?.length > 0) {
-      setFollowers(userr?.followers?.length + 1);
     } else {
       setFollowers(userr?.followers?.length);
     }
@@ -125,6 +123,10 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   //  ***********  add a follow request to the user profile ***********
   const handleFollow = async (prev: boolean) => {
     const token = localStorage.getItem("jwtToken");
+    if (!user) {
+      router.push("/login");
+    }
+
     try {
       setLoading(true);
       const newFollowed = followed ? prev : !prev;

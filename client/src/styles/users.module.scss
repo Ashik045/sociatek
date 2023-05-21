@@ -1,0 +1,40 @@
+.users_page {
+  .users_page_main {
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 100px;
+    display: grid;
+    //   grid-template-columns: 33% 60%;
+    //   gap: 25px;
+    background-color: #f6fcfd;
+
+    .users_page_nav {
+      .users_page_nav_main {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+
+        .notactive {
+          margin: 0px 10px 0px 3px;
+          font-size: 18px;
+          cursor: pointer;
+          border-bottom: 3px solid white;
+          color: rgba(0, 0, 0, 0.623);
+        }
+
+        .active {
+          margin: 0px 10px 0px 3px;
+          border-bottom: 3px solid #dbdbdb;
+          cursor: pointer;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}

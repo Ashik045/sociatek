@@ -109,7 +109,7 @@ const Navbar = () => {
             <Link href="/write" style={{ textDecoration: "none" }}>
               <p>Post</p>
             </Link>
-            <Link href={`users/`} style={{ textDecoration: "none" }}>
+            <Link href={`/users`} style={{ textDecoration: "none" }}>
               <p>Find Users</p>
             </Link>
           </div>
@@ -170,7 +170,7 @@ const Navbar = () => {
                   <p onClick={() => setToggler(false)}>Write</p>
                 </Link>
                 {user && (
-                  <Link href={`users/`} style={{ textDecoration: "none" }}>
+                  <Link href={`/users`} style={{ textDecoration: "none" }}>
                     <p onClick={() => setToggler(false)}>Find Users</p>
                   </Link>
                 )}
