@@ -1,11 +1,12 @@
 .users_page {
   .users_page_main {
     width: 100%;
-    max-width: 500px;
+    max-width: 480px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom: 20px;
     margin-top: 100px;
     display: grid;
     //   grid-template-columns: 33% 60%;
@@ -33,10 +34,60 @@
           margin: 0px 10px 0px 3px;
           cursor: pointer;
           font-size: 18px;
-          background-color: #e7e9e9ce;
+          background-color: #e7e9e9c7;
           padding: 3px 5px;
           border-radius: 4px;
         }
+      }
+    }
+
+    .loader {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      position: relative;
+      animation: rotate 1s linear infinite;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .loader::before {
+      content: "";
+      box-sizing: border-box;
+      position: absolute;
+      inset: 0px;
+      border-radius: 50%;
+      border: 3px solid black;
+      animation: prixClipFix 2s linear infinite;
+    }
+
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes prixClipFix {
+      0% {
+        clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+      }
+      25% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+      }
+      50% {
+        clip-path: polygon(
+          50% 50%,
+          0 0,
+          100% 0,
+          100% 100%,
+          100% 100%,
+          100% 100%
+        );
+      }
+      75% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+      }
+      100% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
       }
     }
   }
