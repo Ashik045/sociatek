@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { FaUserCheck, FaUserPlus } from "react-icons/fa";
 import { User } from "types.global";
 import noPhoto from "../../images/no-photo.png";
-import styles from "./user.module.scss";
+import styles from "./userdiv.module.scss";
 
 interface UserProp {
   users: User[];
@@ -16,7 +16,7 @@ interface UserProp {
 const UserDiv = ({ users, setFollow }: UserProp) => {
   const { user } = useContext(Context);
   const router = useRouter();
-  console.log();
+
   return (
     <div className={styles.suggestions_users}>
       {(router.pathname === "/"

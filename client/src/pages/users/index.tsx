@@ -1,9 +1,9 @@
+import { Context } from "Context/Context";
 import axios from "axios";
 import Navbar from "components/Navbar/Navbar";
-import UserDiv from "components/UserDiv/UserDiv";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { User } from "types.global";
 import styles from "../../styles/users.module.scss";
 
@@ -13,10 +13,46 @@ interface HomePageProps {
 
 const Users: NextPage<HomePageProps> = ({ users }) => {
   const [followed, setFollowed] = useState(false);
+  const [userNav, setUserNav] = useState("");
+  const [userss, setUserss] = useState([]);
+
+  useEffect(() => {
+    const userIds = users.map((user) => {
+      return user._id;
+    });
+
+    setUserss(userIds);
+  }, [users]);
+
+  const { user } = useContext(Context);
 
   //  ***********  add a follow request to the user profile ***********
   const setFollow = () => {
     setFollowed(true);
+  };
+
+  // reveive the nav data when user clicks on it
+  const handleUserNav = async (nav: string) => {
+    setUserNav(nav);
+    console.log(nav);
+
+    if (nav === "followers") {
+      const response = await axios.get(
+        `http://localhost:4000/api/user/${user?._id}/followers`
+      );
+      const followers = await response.data.message;
+      setUserss(followers);
+      // setUserss(user?.followers || []);
+    } else if (nav === "followings") {
+      const response = await axios.get(
+        `http://localhost:4000/api/user/${user?._id}/followings`
+      );
+      const followings = await response.data.message;
+      setUserss(followings);
+      // setUserss(user?.following || []);
+    } else {
+      setUserss(users);
+    }
   };
 
   return (
@@ -32,13 +68,42 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
       <div className={styles.users_page_main}>
         <div className={styles.users_page_nav}>
           <div className={styles.users_page_nav_main}>
-            <p>All Users</p>
-            <p>Followers</p>
-            <p>Followings</p>
+            <p
+              className={
+                userNav === "allusers"
+                  ? `${styles.active}`
+                  : `${styles.notactive}`
+              }
+              onClick={() => handleUserNav("allusers")}
+            >
+              All Users
+            </p>
+            <p
+              className={
+                userNav === "followers"
+                  ? `${styles.active}`
+                  : `${styles.notactive}`
+              }
+              onClick={() => handleUserNav("followers")}
+            >
+              Followers
+            </p>
+            <p
+              className={
+                userNav === "followings"
+                  ? `${styles.active}`
+                  : `${styles.notactive}`
+              }
+              onClick={() => handleUserNav("followings")}
+            >
+              Followings
+            </p>
           </div>
         </div>
 
-        <UserDiv users={users} setFollow={setFollow} />
+        {userss.map((user) => {
+          return <User user={user} key={user._id} />;
+        })}
       </div>
     </div>
   );
