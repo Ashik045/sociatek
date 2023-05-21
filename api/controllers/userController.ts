@@ -198,7 +198,7 @@ export const followUser = async (
   const { userId } = req.params;
 
   if (!req.user || !req.user.id) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ error: "Unauthorized!" });
   }
 
   // get userid
@@ -207,14 +207,24 @@ export const followUser = async (
   try {
     // Find the user to follow
     const userToFollow = await User.findById(userId);
+    // also find the current user and update his following list
+    const loggedInUser = await User.findById(loggedInUserId);
 
     if (!userToFollow) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found!" });
+    }
+    if (!loggedInUser) {
+      return res.status(404).json({ error: "User not found!" });
     }
 
     // Add the logged-in user ID to the followers array of the user to follow
     userToFollow?.followers.push(loggedInUserId);
+
+    // save the followed userId to the current user's following field
+    loggedInUser?.following.push(userId);
+
     await userToFollow?.save();
+    await loggedInUser?.save();
 
     res.status(200).json({ message: "User followed successfully" });
   } catch (error) {

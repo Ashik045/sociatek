@@ -36,6 +36,8 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
     router.push("/");
+    // set the JWT token to null
+    localStorage.removeItem("jwtToken");
     console.log("logged out");
   };
 

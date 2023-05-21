@@ -63,6 +63,8 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     //                 : userr?.followers?.length
     if (followed && userr?.followers?.length === 0) {
       setFollowers(userr?.followers?.length + 1);
+    } else if (followed && userr?.followers?.length > 0) {
+      setFollowers(userr?.followers?.length + 1);
     } else {
       setFollowers(userr?.followers?.length);
     }
@@ -352,7 +354,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 //  Fetch the user data based on the ID from an API or database
 export const getStaticProps: GetStaticProps<UserProps> = async (context) => {
   const { params } = context;
-  console.log(params);
+  // console.log(params);
 
   const res = await axios.get(
     `http://localhost:4000/api/user/${params?.username}`

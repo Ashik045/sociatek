@@ -120,7 +120,9 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
         );
         console.log(user.data.message);
         reset();
-        router.push("/login");
+        if (user.data.message) {
+          router.push("/login");
+        }
       } catch (error: AxiosError) {
         if (
           error.response &&
