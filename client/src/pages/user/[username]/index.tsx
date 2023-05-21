@@ -34,7 +34,9 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [activity, setActivity] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [followersList, setFollowersList] = useState([]);
+  const [followers, setFollowers] = useState(userr.followers.length);
   const [followingList, setFollowingList] = useState([]);
+  const [followings, setFollowings] = useState(userr.following.length);
   const [followerOrFollowingPopup, setFollowerOrFollowingPopup] =
     useState(false);
   const [followed, setFollowed] = useState(false);
@@ -54,6 +56,17 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       console.log("no user!");
     }
   }, [userr]);
+
+  useEffect(() => {
+    // followed && userr?.followers?.length === 0
+    //                 ? userr?.followers?.length + 1
+    //                 : userr?.followers?.length
+    if (followed && userr?.followers?.length === 0) {
+      setFollowers(userr?.followers?.length + 1);
+    } else {
+      setFollowers(userr?.followers?.length);
+    }
+  }, [followed, userr?.followers?.length]);
 
   // get the username
   const router = useRouter();
@@ -210,18 +223,13 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                 className={styles.follow_sec}
                 onClick={() => handleFollowersClick(userr._id)}
               >
-                <span>
-                  {followed && userr?.followers?.length === 0
-                    ? userr?.followers?.length + 1
-                    : userr?.followers?.length}
-                </span>{" "}
-                Followers
+                <span>{followers}</span> Followers
               </p>
               <p
                 className={styles.follow_sec}
                 onClick={() => handleFollowingClick(userr._id)}
               >
-                <span>{userr?.following?.length}</span> Following
+                <span>{followings}</span> Following
               </p>
             </div>
 
