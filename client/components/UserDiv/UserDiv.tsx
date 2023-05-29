@@ -2,7 +2,7 @@ import { Context } from "Context/Context";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaUserCheck, FaUserPlus } from "react-icons/fa";
 import { User } from "types.global";
 import noPhoto from "../../images/no-photo.png";
@@ -14,20 +14,39 @@ interface UserProp {
 }
 
 const UserDiv = ({ users, setFollow }: UserProp) => {
+  const [followed, setFollowed] = useState(false);
   const { user } = useContext(Context);
   const router = useRouter();
+  // console.log(user);
+
+  useEffect(() => {
+    if (user && user._id) {
+      const followedUserIds = user.following;
+      // console.log(followedUserIds);
+
+      const filteredUsers = users.filter((user) =>
+        followedUserIds.includes(user._id)
+      );
+
+      const isFollowing = filteredUsers.length > 0;
+      console.log(isFollowing);
+      setFollowed(isFollowing);
+    } else {
+      console.log("no user!");
+    }
+  }, [user, users]);
 
   return (
     <div className={styles.suggestions_users}>
       {(router.pathname === "/"
         ? users.filter((item) => item._id !== user?._id)
         : users
-      ).map((user) => {
+      ).map((userr) => {
         return (
-          <div className={styles.suggestions_user} key={user._id}>
-            <Link href={`/user/${user?.username}`}>
+          <div className={styles.suggestions_user} key={userr._id}>
+            <Link href={`/user/${userr?.username}`}>
               <Image
-                src={user.profilePicture ? user.profilePicture : noPhoto}
+                src={userr.profilePicture ? userr.profilePicture : noPhoto}
                 height={38}
                 width={38}
                 alt="sociatek user"
@@ -37,25 +56,28 @@ const UserDiv = ({ users, setFollow }: UserProp) => {
 
             <div className={styles.user_uname}>
               <Link
-                href={`/user/${user?.username}`}
+                href={`/user/${userr?.username}`}
                 style={{ textDecoration: "none" }}
               >
-                <p className={styles.user_username}>{user.username}</p>
+                <p className={styles.user_username}>{userr.username}</p>
               </Link>
-              <p className={styles.user_txt}>{user.about}</p>
+              <p className={styles.user_txt}>{userr.about}</p>
             </div>
 
             <span className={styles.follow_btns}>
-              {user.followed ? (
+              {userr._id !== user?._id && followed ? (
                 <FaUserCheck
                   onClick={() => setFollow(true)}
                   className={styles.followed_btn}
                 />
               ) : (
-                <FaUserPlus
-                  onClick={() => setFollow(true)}
-                  className={styles.follow_btn}
-                />
+                userr._id !== user?._id && (
+                  <FaUserPlus
+                    onClick={() => setFollow(true)}
+                    className={styles.follow_btn}
+                  />
+                )
+                // )
               )}
             </span>
           </div>
