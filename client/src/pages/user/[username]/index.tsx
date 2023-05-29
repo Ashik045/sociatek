@@ -42,7 +42,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [followed, setFollowed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [catchFlwrOrFlwing, setcatchFlwrOrFlwing] = useState(false);
-  const { user } = useContext(Context);
+  const { user, dispatch } = useContext(Context);
 
   // check if the user is already a follower
   useEffect(() => {
@@ -122,12 +122,15 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
   //  ***********  add a follow request to the user profile ***********
   const handleFollow = async (prev: boolean) => {
+    // check if user is not authenticated
     const token = localStorage.getItem("jwtToken");
     if (!user) {
       router.push("/login");
     }
 
     try {
+      dispatch({ type: "USER_UPDATE_START" });
+
       setLoading(true);
       const newFollowed = followed ? prev : !prev;
       setFollowed(newFollowed);
@@ -145,7 +148,13 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
           {},
           config
         ));
-      console.log(response.data?.message);
+      // if successful
+      if (response && response.data) {
+        dispatch({
+          type: "USER_UPDATE_SUCCESS",
+          payload: response.data?.message,
+        });
+      }
 
       setLoading(false);
     } catch (error) {

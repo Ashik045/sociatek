@@ -50,16 +50,17 @@
         cursor: pointer;
         color: rgba(0, 0, 0, 0.726);
         font-size: 19px;
+        transition: all 0.1s ease;
 
         &:hover {
-          color: #5783f9;
+          color: #fb2577a9;
         }
       }
 
       .followed_btn {
         cursor: pointer;
         font-size: 19px;
-        color: #5782f9da;
+        color: #fb2577a9;
       }
     }
   }

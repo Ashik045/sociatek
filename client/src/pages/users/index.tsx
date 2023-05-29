@@ -14,7 +14,6 @@ interface HomePageProps {
 }
 
 const Users: NextPage<HomePageProps> = ({ users }) => {
-  const [followed, setFollowed] = useState(false);
   const [userNav, setUserNav] = useState("allusers");
   const [userss, setUserss] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
@@ -27,9 +26,6 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
   }, [users]);
 
   //  ***********  add a follow request to the user profile ***********
-  const setFollow = () => {
-    setFollowed(true);
-  };
 
   // reveive the nav data when user clicks on it
   const handleUserNav = async (nav: string) => {
@@ -136,7 +132,7 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
         {loading ? (
           <span className={styles.loader}></span>
         ) : (
-          <UserDiv users={userss} setFollow={setFollow} />
+          <UserDiv users={userss} />
         )}
       </div>
     </div>

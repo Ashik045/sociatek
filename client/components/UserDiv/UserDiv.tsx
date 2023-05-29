@@ -1,4 +1,5 @@
 import { Context } from "Context/Context";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,31 +11,62 @@ import styles from "./userdiv.module.scss";
 
 interface UserProp {
   users: User[];
-  setFollow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UserDiv = ({ users, setFollow }: UserProp) => {
+const UserDiv = ({ users }: UserProp) => {
   const [followed, setFollowed] = useState(false);
-  const { user } = useContext(Context);
+  const { user, dispatch } = useContext(Context);
   const router = useRouter();
-  // console.log(user);
 
   useEffect(() => {
-    if (user && user._id) {
-      const followedUserIds = user.following;
-      // console.log(followedUserIds);
+    console.log(user);
+  }, [user]);
 
-      const filteredUsers = users.filter((user) =>
-        followedUserIds.includes(user._id)
+  console.log(followed);
+
+  const handleFollow = async (prev: boolean, userToFollow: string) => {
+    // check if user is not authenticated
+    if (!user) router.push("/login");
+
+    const token = localStorage.getItem("jwtToken");
+
+    try {
+      dispatch({ type: "USER_UPDATE_START" });
+
+      const isFollowing = user?.following.includes(userToFollow);
+      if (isFollowing) {
+        // User is already followed, no need to send a follow request
+        return;
+      }
+
+      const newFollowed = followed ? prev : !prev;
+      setFollowed(newFollowed);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      // send a follow request to the server
+      const response = await axios.post(
+        `http://localhost:4000/api/user/follow/${userToFollow}`,
+        {},
+        config
       );
 
-      const isFollowing = filteredUsers.length > 0;
-      console.log(isFollowing);
-      setFollowed(isFollowing);
-    } else {
-      console.log("no user!");
+      // if successful
+      if (response && response.data) {
+        console.log(response.data?.message);
+        dispatch({
+          type: "USER_UPDATE_SUCCESS",
+          payload: response.data?.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }, [user, users]);
+  };
 
   return (
     <div className={styles.suggestions_users}>
@@ -65,19 +97,18 @@ const UserDiv = ({ users, setFollow }: UserProp) => {
             </div>
 
             <span className={styles.follow_btns}>
-              {userr._id !== user?._id && followed ? (
+              {user?.following.includes(userr._id) ? (
                 <FaUserCheck
-                  onClick={() => setFollow(true)}
+                  onClick={() => handleFollow(false, userr._id)}
                   className={styles.followed_btn}
                 />
               ) : (
-                userr._id !== user?._id && (
+                userr._id !== user?._id && ( // remove the follow icon for the logged in user
                   <FaUserPlus
-                    onClick={() => setFollow(true)}
+                    onClick={() => handleFollow(true, userr._id)}
                     className={styles.follow_btn}
                   />
                 )
-                // )
               )}
             </span>
           </div>

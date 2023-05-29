@@ -226,7 +226,7 @@ export const followUser = async (
     await userToFollow?.save();
     await loggedInUser?.save();
 
-    res.status(200).json({ message: "User followed successfully" });
+    res.status(200).json({ message: loggedInUser });
   } catch (error) {
     res.status(500).json({ error: "Error following user!" });
   }
