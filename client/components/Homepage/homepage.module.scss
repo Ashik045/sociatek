@@ -7,7 +7,6 @@
 
 .homepage {
   margin-top: 95px;
-  width: 100%;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -28,5 +27,29 @@
 
   .homepage_users {
     @include small_chngs();
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .homepage {
+    display: grid;
+    grid-template-columns: 62% 35%;
+    gap: 20px;
+    .homepage_profile {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .homepage {
+    display: grid;
+    grid-template-columns: 100%;
+    .homepage_profile {
+      display: none;
+    }
+    .homepage_users {
+      display: none;
+    }
   }
 }

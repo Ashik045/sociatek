@@ -185,67 +185,85 @@
 
       .res_navbar {
         display: none;
-
         .res_nav_iconn {
           cursor: pointer;
           margin-top: 5px;
         }
 
         .res_nav_menu {
-          position: absolute;
-          top: 60px;
-          right: -80px;
-          background-color: white;
-          width: 350px;
-          padding: 20px 5px;
-          background-color: #f6fcfd;
+          display: block;
+          position: fixed;
+          top: 80px;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.76);
+          z-index: 10;
 
-          -webkit-animation: slide-left 0.5s
-            cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-          animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+          .res_nav_menuu {
+            position: relative;
+            width: 70%;
+            background-color: #f6fcfd;
+            overflow: hidden;
+            height: 100vh;
+            padding: 20px 5px;
 
-          p {
-            display: block;
-            @include menuStyle();
-            padding: 5px 8px;
-          }
+            -webkit-animation: scale-up-hor-left 0.4s
+              cubic-bezier(0.39, 0.575, 0.565, 1) both;
+            animation: scale-up-hor-left 0.4s
+              cubic-bezier(0.39, 0.575, 0.565, 1) both;
 
-          p:hover {
-            @include menuStyleHover();
-          }
-
-          .res_nav_reg {
-            display: none;
-
-            button {
-              @include reg-button();
-              margin-top: 5px;
-              margin-left: 10px;
+            p {
+              display: block;
+              @include menuStyle();
+              padding: 5px 8px;
             }
 
-            button:hover {
-              @include reg-button-hover();
+            p:hover {
+              @include menuStyleHover();
+            }
+
+            .res_nav_reg {
+              display: none;
+
+              button {
+                @include reg-button();
+                margin-top: 5px;
+                margin-left: 10px;
+              }
+
+              button:hover {
+                @include reg-button-hover();
+              }
             }
           }
         }
-        @-webkit-keyframes slide-left {
+        @-webkit-keyframes scale-up-hor-left {
           0% {
-            -webkit-transform: translateX(0);
-            transform: translateX(0);
+            -webkit-transform: scaleX(0.4);
+            transform: scaleX(0.4);
+            -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
           }
           100% {
-            -webkit-transform: translateX(-100px);
-            transform: translateX(-100px);
+            -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+            -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
           }
         }
-        @keyframes slide-left {
+        @keyframes scale-up-hor-left {
           0% {
-            -webkit-transform: translateX(0);
-            transform: translateX(0);
+            -webkit-transform: scaleX(0.4);
+            transform: scaleX(0.4);
+            -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
           }
           100% {
-            -webkit-transform: translateX(-100px);
-            transform: translateX(-100px);
+            -webkit-transform: scaleX(1);
+            transform: scaleX(1);
+            -webkit-transform-origin: 0% 0%;
+            transform-origin: 0% 0%;
           }
         }
       }

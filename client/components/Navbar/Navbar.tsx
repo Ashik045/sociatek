@@ -106,7 +106,7 @@ const Navbar = () => {
             <Link href="/" style={{ textDecoration: "none" }}>
               <p>Home</p>
             </Link>
-            <Link href="/write" style={{ textDecoration: "none" }}>
+            <Link href="/post" style={{ textDecoration: "none" }}>
               <p>Post</p>
             </Link>
             <Link href={`/users`} style={{ textDecoration: "none" }}>
@@ -162,25 +162,35 @@ const Navbar = () => {
             )}
             {toggler && (
               <div className={styles.res_nav_menu}>
-                <Link href="/" style={{ textDecoration: "none" }}>
-                  <p onClick={() => setToggler(false)}>Home</p>
-                </Link>
+                <div className={styles.res_nav_menuu}>
+                  <Link href="/" style={{ textDecoration: "none" }}>
+                    <p onClick={() => setToggler(false)}>Home</p>
+                  </Link>
 
-                <Link href="/write" style={{ textDecoration: "none" }}>
-                  <p onClick={() => setToggler(false)}>Write</p>
-                </Link>
-                {user && (
+                  <Link href="/post" style={{ textDecoration: "none" }}>
+                    <p onClick={() => setToggler(false)}>Post</p>
+                  </Link>
+
+                  {user && (
+                    <Link
+                      href={`/user/${user.username}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <p onClick={() => setToggler(false)}>Profile</p>
+                    </Link>
+                  )}
+
                   <Link href={`/users`} style={{ textDecoration: "none" }}>
                     <p onClick={() => setToggler(false)}>Find Users</p>
                   </Link>
-                )}
 
-                <div className={styles.res_nav_reg}>
-                  {!user && (
-                    <button type="button" onClick={handleClick}>
-                      Log In
-                    </button>
-                  )}
+                  <div className={styles.res_nav_reg}>
+                    {!user && (
+                      <button type="button" onClick={handleClick}>
+                        Log In
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             )}

@@ -19,10 +19,8 @@ const UserDiv = ({ users }: UserProp) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(user);
+    console.log("user");
   }, [user]);
-
-  console.log(followed);
 
   const handleFollow = async (prev: boolean, userToFollow: string) => {
     // check if user is not authenticated
