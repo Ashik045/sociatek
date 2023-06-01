@@ -119,6 +119,8 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           newUser
         );
         console.log(user.data.message);
+        setLoading(false);
+
         reset();
         if (user.data.message) {
           router.push("/login");
@@ -135,6 +137,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           console.log("An error occurred while making the request:", error);
           // Handle other types of errors
         }
+        setLoading(false);
 
         // not showing the errorss
         reset({ ...others });
@@ -143,6 +146,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
       // console.log(newUser);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
 
     setLoading(false);

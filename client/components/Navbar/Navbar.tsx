@@ -16,14 +16,6 @@ const Navbar = () => {
   const [filteredResults, setFilteredResults] = useState([]);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const userData = localStorage.getItem("user");
-
-  //   if (typeof window !== "undefined" && userData) {
-  //     setUser(JSON.parse(userData));
-  //   }
-  // }, []);
-
   const { user, dispatch } = useContext(Context);
 
   // navigate to login page

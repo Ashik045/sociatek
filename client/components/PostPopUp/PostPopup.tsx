@@ -1,7 +1,8 @@
 import { Context } from "Context/Context";
+import axios from "axios";
 import Image from "next/image";
 import { useContext, useState } from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaImage, FaTimes } from "react-icons/fa";
 import styles from "./postpopup.module.scss";
 
 type PopupProps = {
@@ -11,6 +12,9 @@ type PopupProps = {
 const PostPopup = ({ setPostPopup }: PopupProps) => {
   const [postText, setPostText] = useState("");
   const [postImg, setPostImg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+
   const { user } = useContext(Context);
 
   const handleClose = () => {
@@ -28,18 +32,48 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
     }
   };
 
-  const handleForm = (e: any) => {
+  const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      const formInputs = {
+      let postImage = "";
+      let formInputs = {};
+
+      // show error if input field is empty
+      if (postText === "") {
+        setErrorMessage(true);
+      }
+
+      // upload the image in cloudinary
+      if (postImg) {
+        const formData = new FormData();
+        formData.append("file", postImg);
+        formData.append("upload_preset", "uploads");
+
+        const {
+          data: { url },
+        } = await axios.post(
+          "https://api.cloudinary.com/v1_1/dqctmbhde/image/upload",
+          formData
+        );
+
+        postImage = url;
+      }
+
+      formInputs = {
         postText: postText,
-        postImg: postImg,
+        postImg: postImage,
       };
 
+      // send the form data to the server
       console.log(formInputs);
+      setLoading(false);
+      setPostPopup(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      setPostPopup(false);
     }
   };
 
@@ -63,7 +97,11 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
               placeholder="What do you want to talk about?"
               value={postText}
               onChange={(e) => setPostText(e.target.value)}
+              required
             ></textarea>
+            {errorMessage && (
+              <p className={styles.error_message}>Please enter some text..</p>
+            )}
 
             <div className={styles.form_btm}>
               <div className={styles.form_btm_img}>
@@ -89,7 +127,17 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
                 )}
               </div>
 
-              <input type="submit" value="Post" className={styles.submit_btn} />
+              {loading ? (
+                <div className={styles.loader_div}>
+                  <span className={styles.loader}></span>
+                </div>
+              ) : (
+                <input
+                  type="submit"
+                  value="Post"
+                  className={styles.submit_btn}
+                />
+              )}
             </div>
           </form>
         </div>

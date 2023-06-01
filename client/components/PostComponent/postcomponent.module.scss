@@ -1,0 +1,26 @@
+.post_comp {
+  background-color: #f6fcfd;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px;
+
+  .user_profile {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  input[type="text"] {
+    width: 75%;
+    padding: 11px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 10px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+  }
+}

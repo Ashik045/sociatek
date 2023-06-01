@@ -49,11 +49,13 @@ const index = () => {
 
       router.push(`/user/${res.data?.message.username}`);
       setError(null);
+      setLoading(false);
     } catch (error) {
       // some code that may throw error
       console.log(error.response.data?.error);
       setError(error.response.data?.error);
       dispatch({ type: "LOGIN_FAILURE", payload: error.response.data.error });
+      setLoading(false);
     }
 
     setLoading(false);
