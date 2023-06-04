@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 
 // internal imports
 import authUserRoute from "./routes/authUser";
+import postRoute from "./routes/post";
 import userRoute from "./routes/user";
 
 // modules
@@ -30,8 +31,12 @@ mongoose
 app.get("/api", (req: express.Request, res: express.Response) => {
   return res.status(200).send({ message: "OK" });
 });
+// login and register
 app.use("/api", authUserRoute);
+// user update, follow, unfollow
 app.use("/api", userRoute);
+// post route
+app.use("/api", postRoute);
 
 // error handlers
 // not found handler
