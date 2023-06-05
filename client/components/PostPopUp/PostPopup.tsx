@@ -1,6 +1,7 @@
 import { Context } from "Context/Context";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { FaImage, FaTimes } from "react-icons/fa";
 import styles from "./postpopup.module.scss";
@@ -14,6 +15,7 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
   const [postImg, setPostImg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+  const router = useRouter();
 
   const { user } = useContext(Context);
 
@@ -62,10 +64,33 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
       }
 
       formInputs = {
-        postText: postText,
-        postImg: postImage,
+        text: postText,
+        postimage: postImage,
+        username: user?.username,
+        userid: user?._id,
       };
 
+      // check if user is not authenticated
+      const token = localStorage.getItem("jwtToken");
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      try {
+        const res = await axios.post(
+          "http://localhost:4000/api/post/create",
+          formInputs,
+          config
+        );
+
+        console.log(res.data.message);
+        router.push("/");
+      } catch (error) {
+        console.log(error);
+      }
       // send the form data to the server
       console.log(formInputs);
       setLoading(false);

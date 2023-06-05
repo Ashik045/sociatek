@@ -38,14 +38,16 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
-  const res = await axios.get("https://weblog-backend.onrender.com/api/posts");
+  const res = await axios.get("http://localhost:4000/api/posts/all");
   const data = await res.data;
   const res2 = await axios.get("http://localhost:4000/api/users/all");
   const data2 = await res2.data;
 
+  const reversePosts = data.message.reverse();
+
   return {
     props: {
-      posts: data.message,
+      posts: reversePosts,
       users: data2.message.slice(0, 7),
     },
   };

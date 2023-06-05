@@ -156,9 +156,7 @@ export const getServerSideProps: GetServerSideProps<SinglePostProp> = async (
 ) => {
   const postId = context.query.postid;
 
-  const res = await axios.get(
-    `https://weblog-backend.onrender.com/api/posts/${postId}`
-  );
+  const res = await axios.get(`http://localhost:4000/api/post/${postId}`);
   const data = await res.data.message;
 
   return {

@@ -1,41 +1,46 @@
+import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import styles from "./post.module.scss";
 
 import Image from "next/image";
-import postImg from "../../images/no-image-available-icon-6.png";
+import { useEffect, useState } from "react";
 
 type PostsItems = {
   postItems: {
     _id: string;
     categories: string[];
     username: string;
-    title: string;
-    desc: string;
-    photo: string;
+    userid: string;
+    text: string;
+    postimage: string;
     createdAt: Date;
     updatedAt: Date;
   };
 };
 
 const Post = ({ postItems }: PostsItems) => {
+  const [timeAgo, setTimeAgo] = useState("");
+
+  useEffect(() => {
+    const updateTimeAgo = () => {
+      setTimeAgo(
+        formatDistanceToNow(new Date(postItems.createdAt), { addSuffix: true })
+      );
+    };
+
+    // Update the time every minute (you can adjust the interval as needed)
+    const intervalId = setInterval(updateTimeAgo, 60000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [postItems.createdAt]);
+
   return (
     <div className={styles.post_comp}>
-      <Link href={`/post/${postItems._id}`} className={styles.post_title}>
-        <Image
-          src={postItems.photo ? postItems.photo : postImg}
-          alt="Blog image"
-          width={500}
-          height={300}
-          className={styles.post_image}
-          objectFit="cover"
-          layout="responsive"
-        />
-      </Link>
-
       <div className={styles.post_info}>
         <div className={styles.post_cat}>
           <p className={styles.username}>
-            Author:
+            Posted by:
             <Link
               href={`/users/?user=${postItems.username}`}
               style={{ color: "#16213E" }}
@@ -45,16 +50,26 @@ const Post = ({ postItems }: PostsItems) => {
           </p>
 
           <p className={styles.post_date}>
-            <i>{new Date(postItems.createdAt).toDateString()}</i>
+            <i>{timeAgo}</i>
           </p>
         </div>
 
-        <Link href={`/post/${postItems._id}`} className={styles.post_title}>
-          {postItems.title}
-        </Link>
-
-        <p className={styles.post_text}>{postItems.desc}</p>
+        <p className={styles.post_text}>{postItems.text}</p>
       </div>
+
+      {postItems.postimage && (
+        <Link href={`/post/${postItems._id}`} className={styles.post_title}>
+          <Image
+            src={postItems.postimage && postItems.postimage}
+            alt="Blog image"
+            width={500}
+            height={300}
+            className={styles.post_image}
+            objectFit="cover"
+            layout="responsive"
+          />
+        </Link>
+      )}
     </div>
   );
 };
