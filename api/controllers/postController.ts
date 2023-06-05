@@ -59,7 +59,7 @@ const updPost = async (req: Request, res: Response) => {
     // check only the user created the post can update it
     if (post?.username === req.body.username) {
       try {
-        await Post.findByIdAndUpdate(
+        const post = await Post.findByIdAndUpdate(
           req.params.postid,
           {
             $set: req.body,
@@ -68,7 +68,7 @@ const updPost = async (req: Request, res: Response) => {
         );
 
         res.status(200).json({
-          message: "Post updated successfully.",
+          message: post,
         });
       } catch (error) {
         res.status(404).json({

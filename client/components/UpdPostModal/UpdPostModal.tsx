@@ -2,25 +2,28 @@ import { Context } from "Context/Context";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaImage, FaTimes } from "react-icons/fa";
-import styles from "./postpopup.module.scss";
+import { Post } from "types.global";
+import styles from "./updpostmodal.module.scss";
 
-type PopupProps = {
-  setPostPopup: React.Dispatch<React.SetStateAction<boolean>>;
-};
+interface PostUpdProp {
+  post: Post;
+  setUpdPopup: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const PostPopup = ({ setPostPopup }: PopupProps) => {
-  const [postText, setPostText] = useState("");
-  const [postImg, setPostImg] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+const UpdPostModal = ({ post, setUpdPopup }: PostUpdProp) => {
+  const [postText, setPostText] = useState(post.text);
   const [errorMessage, setErrorMessage] = useState(false);
-  const router = useRouter();
+  const [postImg, setPostImg] = useState<string | null>(post.postimage);
+  const [loading, setLoading] = useState(false);
+  const [uncngError, setUncngError] = useState(false);
 
   const { user } = useContext(Context);
+  const router = useRouter();
 
   const handleClose = () => {
-    setPostPopup(false);
+    setUpdPopup(false);
   };
 
   // handle the post picture
@@ -36,16 +39,16 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
 
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+
+    let formInputs = {};
+    let postImage = "";
 
     try {
-      let postImage = "";
-      let formInputs = {};
-
-      // show error if input field is empty
-      if (postText === "") {
-        setErrorMessage(true);
-      }
+      setLoading(true);
+      // check if there is any change in the data
+      //   const hasChanged = Object.entries(data).some(([key, value]) => {
+      //     return postText !== value;
+      //   });
 
       // upload the image in cloudinary
       if (postImg) {
@@ -63,6 +66,8 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
         postImage = url;
       }
 
+      // if not changed then show error
+
       formInputs = {
         text: postText,
         postimage: postImage,
@@ -79,26 +84,24 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
         },
       };
 
+      // if everything is good then send the data to the server
       try {
-        const res = await axios.post(
-          "http://localhost:4000/api/post/create",
+        const res = await axios.put(
+          `http://localhost:4000/api/post/${post._id}`,
           formInputs,
           config
         );
 
-        console.log(res.data.message);
-        router.push("/");
+        router.push(`/post/${res.data?.message._id}`);
+        setUpdPopup(false);
       } catch (error) {
-        console.log(error);
+        console.log(error?.response?.data.error);
       }
-      // send the form data to the server
-      console.log(formInputs);
+
       setLoading(false);
-      setPostPopup(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
-      setPostPopup(false);
     }
   };
 
@@ -110,7 +113,7 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
 
       <div className={styles.post_popup_main}>
         <h3>
-          Posting by <span>{user?.username}</span>{" "}
+          Posting by <span>{post?.username}</span>{" "}
         </h3>
 
         <div className={styles.post_something}>
@@ -171,4 +174,4 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
   );
 };
 
-export default PostPopup;
+export default UpdPostModal;

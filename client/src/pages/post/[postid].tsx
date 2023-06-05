@@ -32,8 +32,13 @@ const SinglePost = ({ post }: SinglePostProp) => {
             </>
           ) : (
             <>
-              {post.photo ? (
-                <Image src={post.photo} alt="noimg" height={400} width={700} />
+              {post.postimage ? (
+                <Image
+                  src={post.postimage}
+                  alt="noimg"
+                  height={400}
+                  width={700}
+                />
               ) : (
                 <Image
                   src={postt}
@@ -104,7 +109,7 @@ const SinglePost = ({ post }: SinglePostProp) => {
                   />
                 ) : (
                   <p className={styles.textDesc}>
-                    {post.desc || <Skeleton count={6} />}
+                    {post.text || <Skeleton count={6} />}
                   </p>
                 )}
 
