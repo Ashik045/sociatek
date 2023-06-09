@@ -7,7 +7,8 @@ import { Context } from "Context/Context";
 import UpdPostModal from "components/UpdPostModal/UpdPostModal";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
-import { FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisV, FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa";
+import { MdOutlineShortcut } from "react-icons/md";
 import { Post } from "types.global";
 
 type PostsItems = {
@@ -18,6 +19,9 @@ const Post = ({ postItems }: PostsItems) => {
   const [timeAgo, setTimeAgo] = useState("");
   const [postHandle, setPostHandle] = useState(false);
   const [updPopup, setUpdPopup] = useState(false);
+  const [likeCount, setLikeCount] = useState(postItems.likes.length);
+  const [cmntCount, setCmntCount] = useState(postItems.comments.length);
+  const [liked, setLiked] = useState(false);
 
   const {
     _id,
@@ -53,6 +57,15 @@ const Post = ({ postItems }: PostsItems) => {
   }
 
   const { user } = useContext(Context);
+
+  const handleLike = (value: string) => {
+    setLiked(!liked);
+    if (value === "inc") {
+      setLikeCount(likeCount + 1);
+    } else {
+      setLikeCount(likeCount - 1);
+    }
+  };
 
   return (
     <div className={styles.post_comp}>
@@ -128,6 +141,38 @@ const Post = ({ postItems }: PostsItems) => {
           />
         </Link>
       )}
+
+      <div className={styles.post_like_cmnt}>
+        <div className={styles.post_like_line}></div>
+        <div className={styles.like_cmnt_count}>
+          <p>
+            <span
+              className={liked ? `${styles.like_animation}` : `${styles.like}`}
+            >
+              {likeCount}
+            </span>{" "}
+            likes
+          </p>
+          <p>{cmntCount} comments</p>
+        </div>
+
+        <div className={styles.add_like_cmnt}>
+          <p>
+            {liked ? (
+              <FaHeart onClick={() => handleLike("dec")} />
+            ) : (
+              <FaRegHeart onClick={() => handleLike("inc")} />
+            )}
+          </p>
+          <p>
+            <FaRegComment />
+          </p>
+
+          <p>
+            <MdOutlineShortcut />
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

@@ -66,6 +66,12 @@ const UpdPostModal = ({ post, setUpdPopup }: PostUpdProp) => {
         postImage = url;
       }
 
+      // Compare the initial value with the current value
+      if (postText === post.text) {
+        setUncngError(true);
+        return;
+      }
+
       // if not changed then show error
 
       formInputs = {
@@ -169,6 +175,12 @@ const UpdPostModal = ({ post, setUpdPopup }: PostUpdProp) => {
             </div>
           </form>
         </div>
+
+        {uncngError && (
+          <p className={styles.unchangeErr}>
+            You haven&apos;t made any changes!
+          </p>
+        )}
       </div>
     </div>
   );

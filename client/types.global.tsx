@@ -16,6 +16,8 @@ export interface Post {
   userid: string;
   text: string;
   postimage: string;
+  likes: Array<string>;
+  comments: Array<string>;
   createdAt: Date;
   updatedAt: Date;
 }
