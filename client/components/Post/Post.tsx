@@ -4,8 +4,10 @@ import nophoto from "../../images/no-photo.png";
 import styles from "./post.module.scss";
 
 import { Context } from "Context/Context";
+import axios from "axios";
 import UpdPostModal from "components/UpdPostModal/UpdPostModal";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { FaEllipsisV, FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa";
 import { MdOutlineShortcut } from "react-icons/md";
@@ -19,9 +21,12 @@ const Post = ({ postItems }: PostsItems) => {
   const [timeAgo, setTimeAgo] = useState("");
   const [postHandle, setPostHandle] = useState(false);
   const [updPopup, setUpdPopup] = useState(false);
-  const [likeCount, setLikeCount] = useState(postItems.likes.length);
-  const [cmntCount, setCmntCount] = useState(postItems.comments.length);
+  const [likeCount, setLikeCount] = useState(postItems.likes?.length);
+  const [cmntCount, setCmntCount] = useState(postItems.comments?.length);
   const [liked, setLiked] = useState(false);
+
+  const { user } = useContext(Context);
+  const router = useRouter();
 
   const {
     _id,
@@ -31,6 +36,7 @@ const Post = ({ postItems }: PostsItems) => {
     text,
     postimage,
     createdAt,
+    likes,
     updatedAt,
   } = postItems;
 
@@ -52,18 +58,71 @@ const Post = ({ postItems }: PostsItems) => {
     return () => clearInterval(intervalId);
   }, [createdAt]);
 
+  // check if the user is already like the post
+  useEffect(() => {
+    if (postItems && user?._id) {
+      const isFollower = postItems.likes?.includes(user?._id);
+
+      if (isFollower) {
+        setLiked(true);
+      }
+    } else {
+      console.log("Not Liked");
+    }
+  }, [postItems, user?._id]);
+
   if (timeAgo.startsWith("about ")) {
     setTimeAgo(timeAgo.slice(5));
   }
 
-  const { user } = useContext(Context);
+  const handleLike = async (value: string) => {
+    // check if user is authenticated
+    const token = localStorage.getItem("jwtToken");
 
-  const handleLike = (value: string) => {
-    setLiked(!liked);
-    if (value === "inc") {
-      setLikeCount(likeCount + 1);
+    if (!user) {
+      router.push("/");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    if (value === "inc" && !liked) {
+      try {
+        // add a like request
+        const response = await axios.post(
+          `http://localhost:4000/api/post/like/${_id}`,
+          {},
+          config
+        );
+
+        // Success message
+        console.log(response.data.message);
+
+        setLikeCount(likeCount + 1);
+        setLiked(!liked);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
+      // add a unlike request
+      try {
+        const response = await axios.post(
+          `http://localhost:4000/api/post/unlike/${_id}`,
+          {},
+          config
+        );
+
+        // Success message
+        console.log(response.data.message);
+      } catch (error) {
+        console.error(error.response.data.error);
+      }
+      console.log("Unlike the post");
       setLikeCount(likeCount - 1);
+      setLiked(!liked);
     }
   };
 
@@ -151,7 +210,7 @@ const Post = ({ postItems }: PostsItems) => {
             >
               {likeCount}
             </span>{" "}
-            likes
+            {likeCount > 1 ? "likes" : "like"}
           </p>
           <p>{cmntCount} comments</p>
         </div>
@@ -159,7 +218,10 @@ const Post = ({ postItems }: PostsItems) => {
         <div className={styles.add_like_cmnt}>
           <p>
             {liked ? (
-              <FaHeart onClick={() => handleLike("dec")} />
+              <FaHeart
+                className={styles.like_icon}
+                onClick={() => handleLike("dec")}
+              />
             ) : (
               <FaRegHeart onClick={() => handleLike("inc")} />
             )}

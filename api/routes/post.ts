@@ -6,9 +6,12 @@ import {
   deletePost,
   getAllPosts,
   getPostById,
+  likePost,
+  unLikePost,
   updPost,
 } from "../controllers/postController";
 import {
+  LikePostMiddleware,
   PostAuthValidator,
   PostValidatioin,
   PostValidatioinHandler,
@@ -42,5 +45,11 @@ router.put(
 
 // delete post
 router.delete("/post/:postid", deletePost);
+
+// like a post
+router.post("/post/like/:postid", LikePostMiddleware, likePost);
+
+// unlike a post
+router.post("/post/unlike/:postid", LikePostMiddleware, unLikePost); // same middleware for unlike controller
 
 export default router;

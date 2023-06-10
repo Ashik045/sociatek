@@ -1,5 +1,8 @@
 .suggestions_component {
   overflow: hidden;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  border-radius: 3px;
   .suggestions_component_title {
     padding: 0px 10px;
     display: flex;

@@ -55,7 +55,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     } else {
       console.log("no user!");
     }
-  }, [userr]);
+  }, [userr, user?._id]);
 
   useEffect(() => {
     // followed && userr?.followers?.length === 0
@@ -122,7 +122,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
   //  ***********  add a follow request to the user profile ***********
   const handleFollow = async (prev: boolean) => {
-    // check if user is not authenticated
+    // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
     if (!user) {
       router.push("/login");
