@@ -75,12 +75,12 @@
   }
   p {
     color: rgba(0, 0, 0, 0.61);
-    font-family: "Varela Round", sans-serif;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
+    font-family: "Varela Round", sans-serif;
     margin-left: 1%;
     margin-right: 1%;
     margin-top: 10px;

@@ -1,17 +1,16 @@
-import { formatDistanceToNow } from "date-fns";
-import Link from "next/link";
-import nophoto from "../../images/no-photo.png";
-import styles from "./post.module.scss";
-
 import { Context } from "Context/Context";
 import axios from "axios";
 import UpdPostModal from "components/UpdPostModal/UpdPostModal";
+import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { FaEllipsisV, FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa";
 import { MdOutlineShortcut } from "react-icons/md";
 import { Post } from "types.global";
+import nophoto from "../../images/no-photo.png";
+import styles from "./post.module.scss";
 
 type PostsItems = {
   postItems: Post;
@@ -197,6 +196,7 @@ const Post = ({ postItems }: PostsItems) => {
             className={styles.post_image}
             objectFit="cover"
             layout="responsive"
+            loading="lazy"
           />
         </Link>
       )}
@@ -223,7 +223,10 @@ const Post = ({ postItems }: PostsItems) => {
                 onClick={() => handleLike("dec")}
               />
             ) : (
-              <FaRegHeart onClick={() => handleLike("inc")} />
+              <FaRegHeart
+                className={styles.unlike_icon}
+                onClick={() => handleLike("inc")}
+              />
             )}
           </p>
           <p>

@@ -1,152 +1,231 @@
+import { Context } from "Context/Context";
 import axios from "axios";
 import Navbar from "components/Navbar/Navbar";
+import UpdPostModal from "components/UpdPostModal/UpdPostModal";
+import { formatDistanceToNow } from "date-fns";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { BiTrash } from "react-icons/bi";
-import { MdBorderColor } from "react-icons/md";
-import Skeleton from "react-loading-skeleton";
-import { SinglePostProp } from "types.global";
-import postt from "../../../images/no-image-available-icon-6.png";
-
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import { FaEllipsisV, FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa";
+import { MdOutlineShortcut } from "react-icons/md";
+import { Post } from "types.global";
+import nophoto from "../../../images/no-photo.png";
 import styles from "../../styles/singlepost.module.scss";
 
-const SinglePost = ({ post }: SinglePostProp) => {
-  const [title, setTitle] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [updMode, setUpdMode] = useState(false);
-  const [user, setUser] = useState(false);
-  // update functionalities
+interface PostProp {
+  post: Post;
+}
+
+const SinglePost = ({ post }: PostProp) => {
+  const [timeAgo, setTimeAgo] = useState("");
+  const [postHandle, setPostHandle] = useState(false);
+  const [updPopup, setUpdPopup] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes?.length);
+  const [cmntCount, setCmntCount] = useState(post.comments?.length);
+  const [liked, setLiked] = useState(false);
+
+  const {
+    _id,
+    categories,
+    username,
+    userid,
+    text,
+    postimage,
+    createdAt,
+    likes,
+    updatedAt,
+  } = post;
+
+  useEffect(() => {
+    const calculateTimeAgo = () => {
+      const now = new Date();
+      const distance = formatDistanceToNow(new Date(createdAt), {
+        addSuffix: true,
+      });
+
+      setTimeAgo(distance);
+    };
+    calculateTimeAgo(); // Update the time immediately
+
+    // Update the time every minute (you can adjust the interval as needed)
+    const intervalId = setInterval(calculateTimeAgo, 60000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [createdAt]);
+
+  const { user } = useContext(Context);
+  const router = useRouter();
+
+  const handleLike = async (value: string) => {
+    // check if user is authenticated
+    const token = localStorage.getItem("jwtToken");
+
+    if (!user) {
+      router.push("/");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    if (value === "inc" && !liked) {
+      try {
+        // add a like request
+        const response = await axios.post(
+          `http://localhost:4000/api/post/like/${_id}`,
+          {},
+          config
+        );
+
+        // Success message
+        console.log(response.data.message);
+
+        setLikeCount(likeCount + 1);
+        setLiked(!liked);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // add a unlike request
+      try {
+        const response = await axios.post(
+          `http://localhost:4000/api/post/unlike/${_id}`,
+          {},
+          config
+        );
+
+        // Success message
+        console.log(response.data.message);
+      } catch (error) {
+        console.error(error.response.data.error);
+      }
+      console.log("Unlike the post");
+      setLikeCount(likeCount - 1);
+      setLiked(!liked);
+    }
+  };
 
   return (
     <div className={styles.singlePost}>
       <Navbar />
       <div className={styles.singlePost_main}>
         <div className={styles.singlePost_detail}>
-          {loading ? (
-            <>
-              <Skeleton height={500} />
-              <Skeleton height={70} />
-              <Skeleton count={5} />
-            </>
-          ) : (
-            <>
-              {post.postimage ? (
+          <div className={styles.post_cat}>
+            <div className={styles.post_user}>
+              <Link href={`/user/${username}`}>
                 <Image
-                  src={post.postimage}
-                  alt="noimg"
-                  height={400}
-                  width={700}
+                  src={user?.profilePicture ? user?.profilePicture : nophoto}
+                  height={40}
+                  width={40}
+                  alt="sociatek"
+                  className={styles.user_profile}
                 />
-              ) : (
-                <Image
-                  src={postt}
-                  alt="sociatek image"
-                  height={400}
-                  width={700}
-                />
-              )}
+              </Link>
 
-              <div className={styles.title_updel}>
-                {updMode ? (
-                  <input
-                    className={styles.post_title_inp}
-                    type="text"
-                    value={post.title}
-                    // eslint-disable-next-line jsx-a11y/no-autofocus
-                    autoFocus
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                ) : (
-                  <h3 className={styles.post_title}>{post.title}</h3>
-                )}
+              <div className={styles.post_user_nameandtime}>
+                <Link
+                  href={`/user/${username}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <p className={styles.username}>{username}</p>
+                </Link>
 
-                {post.username === "ashik00" && (
-                  <div className={styles.updel}>
-                    {!updMode && (
-                      <MdBorderColor
-                        // onClick={updatePost}
-                        size={26}
-                        color="#182747"
-                        style={{ cursor: "pointer" }}
-                        className={styles.updel_btnn}
-                        onClick={() => setUpdMode(true)}
-                      />
-                    )}
-                    <BiTrash
-                      size={26}
-                      color="#E94560"
-                      style={{ marginLeft: "20px", cursor: "pointer" }}
-                      className={styles.updel_btnn}
-                    />
-                  </div>
-                )}
+                <p className={styles.post_date}>{timeAgo}</p>
               </div>
-              <div className={styles.post_text}>
-                <p>
-                  Author:{" "}
+            </div>
+
+            <div className={styles.handle_post}>
+              <p
+                className={styles.edit_icon}
+                onClick={() => setPostHandle(!postHandle)}
+              >
+                <FaEllipsisV />
+              </p>
+
+              {postHandle && (
+                <div className={styles.post_popup}>
                   <Link
-                    href={`/users/?user=${post.username}`}
-                    className={styles.authorName}
+                    href={`/user/${username}`}
+                    style={{ textDecoration: "none" }}
                   >
-                    <b>{post.username}</b>
-                  </Link>{" "}
-                  <i className={styles.text_muted}>
-                    <small style={{ marginLeft: "20px", fontSize: "14px" }}>
-                      {new Date(post.createdAt).toDateString()}
-                    </small>
-                  </i>
+                    <p>View user profile</p>
+                  </Link>
+
+                  {user?.username === username ? (
+                    <p onClick={() => setUpdPopup(!updPopup)}>Edit post</p>
+                  ) : (
+                    <p>Report post</p>
+                  )}
+                </div>
+              )}
+            </div>
+            {updPopup && <UpdPostModal post={post} setUpdPopup={setUpdPopup} />}
+          </div>
+
+          <div className={styles.post_detail}>
+            {post.postimage && (
+              <Image
+                src={post.postimage}
+                alt="noimg"
+                height={400}
+                width={700}
+              />
+            )}
+
+            <div className={styles.post_text}>
+              <p>{text}</p>
+            </div>
+
+            <div className={styles.post_like_cmnt}>
+              <div className={styles.post_like_line}></div>
+              <div className={styles.like_cmnt_count}>
+                <p>
+                  <span
+                    className={
+                      liked ? `${styles.like_animation}` : `${styles.like}`
+                    }
+                  >
+                    {likeCount}
+                  </span>{" "}
+                  {likeCount > 1 ? "likes" : "like"}
+                </p>
+                <p>{cmntCount} comments</p>
+              </div>
+              <div className={styles.post_like_line}></div>
+
+              <div className={styles.add_like_cmnt}>
+                <p>
+                  {liked ? (
+                    <FaHeart
+                      className={styles.like_icon}
+                      onClick={() => handleLike("dec")}
+                    />
+                  ) : (
+                    <FaRegHeart
+                      className={styles.unlike_icon}
+                      onClick={() => handleLike("inc")}
+                    />
+                  )}
+                </p>
+                <p>
+                  <FaRegComment />
                 </p>
 
-                {updMode ? (
-                  <textarea
-                    rows={8}
-                    typeof="text"
-                    value={post.desc}
-                    // onChange={(e) => setDesc(e.target.value)}
-                    className={styles.textDesc_inp}
-                  />
-                ) : (
-                  <p className={styles.textDesc}>
-                    {post.text || <Skeleton count={6} />}
-                  </p>
-                )}
-
-                {updMode && (
-                  <button
-                    type="submit"
-                    // onClick={handleUpdate}
-                    style={{
-                      cursor: loading ? "not-allowed" : "pointer",
-                      position: "relative",
-                    }}
-                    className={styles.update_post}
-                  >
-                    Update Post
-                  </button>
-                )}
+                <p>
+                  <MdOutlineShortcut />
+                </p>
               </div>
-            </>
-          )}
+              <div className={styles.post_like_line}></div>
+            </div>
+          </div>
         </div>
 
         <div className={styles.popular_post_sec}>
-          {/* <h4 style={{ color: '#ff577ec5', letterSpacing: '2px' }}>MOST POPULAR</h4>
-                {loading ? (
-                    <>
-                        <Skeleton height={100} style={{ marginBottom: '15px' }} />
-                        <Skeleton height={100} style={{ marginBottom: '15px' }} />
-                        <Skeleton height={100} style={{ marginBottom: '15px' }} />
-                    </>
-                ) : (
-                    popularPost
-                        .filter((item) => item._id !== post._id)
-                        .slice(0, 3)
-                        .map((popularpost) => (
-                            <PopularPost key={popularpost._id} post={popularpost} />
-                        ))
-                )} */}
           <h3>Popular Posts / Recent Users</h3>
         </div>
       </div>
@@ -156,7 +235,7 @@ const SinglePost = ({ post }: SinglePostProp) => {
 
 export default SinglePost;
 
-export const getServerSideProps: GetServerSideProps<SinglePostProp> = async (
+export const getServerSideProps: GetServerSideProps<PostProp> = async (
   context
 ) => {
   const postId = context.query.postid;
