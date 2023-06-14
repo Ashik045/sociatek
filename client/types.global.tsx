@@ -2,9 +2,11 @@ export interface Postt {
   _id: string;
   categories: string[];
   username: string;
-  title: string;
-  desc: string;
-  photo: string;
+  userid: string;
+  text: string;
+  postimage: string;
+  likes: Array<string>;
+  comments: Array<string>;
   createdAt: Date;
   updatedAt: Date;
 }

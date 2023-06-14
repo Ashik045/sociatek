@@ -25,6 +25,7 @@ const SinglePost = ({ post }: PostProp) => {
   const [likeCount, setLikeCount] = useState(post.likes?.length);
   const [cmntCount, setCmntCount] = useState(post.comments?.length);
   const [liked, setLiked] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const {
     _id,
@@ -37,6 +38,9 @@ const SinglePost = ({ post }: PostProp) => {
     likes,
     updatedAt,
   } = post;
+
+  const { user } = useContext(Context);
+  const router = useRouter();
 
   useEffect(() => {
     const calculateTimeAgo = () => {
@@ -56,15 +60,25 @@ const SinglePost = ({ post }: PostProp) => {
     return () => clearInterval(intervalId);
   }, [createdAt]);
 
-  const { user } = useContext(Context);
-  const router = useRouter();
+  // check if the user is already like the post
+  useEffect(() => {
+    if (post && user?._id) {
+      const isFollower = post.likes?.includes(user?._id);
+
+      if (isFollower) {
+        setLiked(true);
+      }
+    } else {
+      console.log("Not Liked");
+    }
+  }, [post, user?._id]);
 
   const handleLike = async (value: string) => {
     // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
 
     if (!user) {
-      router.push("/");
+      router.push("/login");
     }
 
     const config = {
@@ -102,11 +116,49 @@ const SinglePost = ({ post }: PostProp) => {
         // Success message
         console.log(response.data.message);
       } catch (error) {
-        console.error(error.response.data.error);
+        console.error(error);
       }
       console.log("Unlike the post");
       setLikeCount(likeCount - 1);
       setLiked(!liked);
+    }
+  };
+
+  // delete  a post
+  const handleDelete = () => {
+    setShowPopup(true);
+  };
+
+  const handleCancel = () => {
+    setShowPopup(false);
+  };
+
+  const handleConfirmDelete = async (id: string) => {
+    // check if user is authenticated
+    const token = localStorage.getItem("jwtToken");
+
+    if (!user) {
+      router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      // send a api request
+      const res = await axios.delete(
+        `http://localhost:4000/api/post/${id}`,
+        config
+      );
+
+      console.log(res.data.message);
+      router.push("/");
+
+      setShowPopup(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -161,6 +213,29 @@ const SinglePost = ({ post }: PostProp) => {
                   ) : (
                     <p>Report post</p>
                   )}
+
+                  {user?.username === username && (
+                    <p
+                      onClick={handleDelete}
+                      style={{ color: "rgba(255, 0, 0, 0.682)" }}
+                    >
+                      Delete post
+                    </p>
+                  )}
+
+                  {showPopup && (
+                    <div className={styles.popup}>
+                      <div className={styles.popup_content}>
+                        <p>Are you sure you want to delete this post?</p>
+                        <div>
+                          <button onClick={handleCancel}>Cancel</button>
+                          <button onClick={() => handleConfirmDelete(_id)}>
+                            Confirm Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -174,6 +249,7 @@ const SinglePost = ({ post }: PostProp) => {
                 alt="noimg"
                 height={400}
                 width={700}
+                layout="responsive"
               />
             )}
 
@@ -226,7 +302,7 @@ const SinglePost = ({ post }: PostProp) => {
         </div>
 
         <div className={styles.popular_post_sec}>
-          <h3>Popular Posts / Recent Users</h3>
+          <h3>Other posts of this user(updating)</h3>
         </div>
       </div>
     </div>

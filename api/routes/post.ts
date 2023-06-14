@@ -11,6 +11,7 @@ import {
   updPost,
 } from "../controllers/postController";
 import {
+  DeletePostMilldeware,
   LikePostMiddleware,
   PostAuthValidator,
   PostValidatioin,
@@ -44,7 +45,7 @@ router.put(
 );
 
 // delete post
-router.delete("/post/:postid", deletePost);
+router.delete("/post/:postid", DeletePostMilldeware, deletePost);
 
 // like a post
 router.post("/post/like/:postid", LikePostMiddleware, likePost);

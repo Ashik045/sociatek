@@ -2,7 +2,7 @@ import { Context } from "Context/Context";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FaImage, FaTimes } from "react-icons/fa";
 import styles from "./postpopup.module.scss";
 
@@ -15,9 +15,16 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
   const [postImg, setPostImg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
 
   const { user } = useContext(Context);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, []);
 
   const handleClose = () => {
     setPostPopup(false);
@@ -117,6 +124,7 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
           <form onSubmit={handleForm}>
             <textarea
               name="sociatek post"
+              ref={textareaRef}
               cols={30}
               rows={10}
               placeholder="What do you want to talk about?"

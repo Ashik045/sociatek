@@ -4,7 +4,8 @@ import jwt from "jsonwebtoken";
 
 interface AuthenticatedRequest extends Request {
   user?: {
-    id: string;
+    id?: string;
+    username?: string;
   };
 }
 
@@ -80,6 +81,32 @@ export const LikePostMiddleware = (
       ) as { id: string };
 
       req.user = { id: decodedToken.id }; // Set the user ID on the request object
+      next();
+    } catch (error) {
+      res.status(401).json({ error: "Unauthorized" });
+    }
+  } else {
+    res.status(401).json({ error: "Unauthorized" });
+  }
+};
+
+export const DeletePostMilldeware = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const authorizationHeader = req.headers.authorization;
+
+  if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
+    const token = authorizationHeader.slice(7); // Remove the "Bearer " prefix
+
+    try {
+      const decodedToken = jwt.verify(
+        token,
+        process.env.JWT_SECRET_KEY || ""
+      ) as { username: string };
+
+      req.user = { username: decodedToken.username };
       next();
     } catch (error) {
       res.status(401).json({ error: "Unauthorized" });

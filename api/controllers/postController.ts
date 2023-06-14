@@ -7,6 +7,7 @@ import { Post } from "../models/postmodel";
 interface AuthenticatedRequest extends Request {
   user?: {
     id: string;
+    username: string;
   };
 }
 
@@ -94,12 +95,15 @@ const updPost = async (req: Request, res: Response) => {
 };
 
 // delete a post
-const deletePost = async (req: Request, res: Response) => {
+const deletePost = async (
+  req: AuthenticatedRequest & Request,
+  res: Response
+) => {
   try {
     const post = await Post.findById(req.params.postid);
 
     // check only the user created the post can update it
-    if (post?.username === req.body.username) {
+    if (post?.username === req.user?.username) {
       try {
         await Post.findByIdAndDelete(req.params.postid);
 

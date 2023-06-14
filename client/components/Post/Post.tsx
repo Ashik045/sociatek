@@ -14,15 +14,17 @@ import styles from "./post.module.scss";
 
 type PostsItems = {
   postItems: Post;
+  setAllPosts: React.Dispatch<React.SetStateAction<Post[]>>;
 };
 
-const Post = ({ postItems }: PostsItems) => {
+const Post = ({ postItems, setAllPosts }: PostsItems) => {
   const [timeAgo, setTimeAgo] = useState("");
   const [postHandle, setPostHandle] = useState(false);
   const [updPopup, setUpdPopup] = useState(false);
   const [likeCount, setLikeCount] = useState(postItems.likes?.length);
   const [cmntCount, setCmntCount] = useState(postItems.comments?.length);
   const [liked, setLiked] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const { user } = useContext(Context);
   const router = useRouter();
@@ -42,19 +44,23 @@ const Post = ({ postItems }: PostsItems) => {
   useEffect(() => {
     const calculateTimeAgo = () => {
       const now = new Date();
-      const distance = formatDistanceToNow(new Date(createdAt), {
+      const createdDate = new Date(createdAt); // Convert createdAt to a Date object
+      const distance = formatDistanceToNow(createdDate, {
         addSuffix: true,
       });
 
       setTimeAgo(distance);
     };
-    calculateTimeAgo(); // Update the time immediately
 
-    // Update the time every minute (you can adjust the interval as needed)
-    const intervalId = setInterval(calculateTimeAgo, 60000);
+    if (createdAt) {
+      calculateTimeAgo(); // Update the time immediately
 
-    // Clear the interval when the component unmounts
-    return () => clearInterval(intervalId);
+      // Update the time every minute (you can adjust the interval as needed)
+      const intervalId = setInterval(calculateTimeAgo, 60000);
+
+      // Clear the interval when the component unmounts
+      return () => clearInterval(intervalId);
+    }
   }, [createdAt]);
 
   // check if the user is already like the post
@@ -79,7 +85,7 @@ const Post = ({ postItems }: PostsItems) => {
     const token = localStorage.getItem("jwtToken");
 
     if (!user) {
-      router.push("/");
+      router.push("/login");
     }
 
     const config = {
@@ -117,11 +123,51 @@ const Post = ({ postItems }: PostsItems) => {
         // Success message
         console.log(response.data.message);
       } catch (error) {
-        console.error(error.response.data.error);
+        console.error(error);
       }
       console.log("Unlike the post");
       setLikeCount(likeCount - 1);
       setLiked(!liked);
+    }
+  };
+
+  // delete  a post
+  const handleDelete = () => {
+    setShowPopup(true);
+  };
+
+  const handleCancel = () => {
+    setShowPopup(false);
+  };
+
+  const handleConfirmDelete = async (id: string) => {
+    // check if user is authenticated
+    const token = localStorage.getItem("jwtToken");
+
+    if (!user) {
+      router.push("/login");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      // send a api request
+      const res = await axios.delete(
+        `http://localhost:4000/api/post/${id}`,
+        config
+      );
+
+      // Update the feed by removing the deleted post
+      setAllPosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
+
+      console.log(res.data.message);
+
+      setShowPopup(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -172,6 +218,29 @@ const Post = ({ postItems }: PostsItems) => {
                   <p onClick={() => setUpdPopup(!updPopup)}>Edit Post</p>
                 ) : (
                   <p>Report Post</p>
+                )}
+
+                {user?.username === username && (
+                  <p
+                    onClick={handleDelete}
+                    style={{ color: "rgba(255, 0, 0, 0.682)" }}
+                  >
+                    Delete post
+                  </p>
+                )}
+
+                {showPopup && (
+                  <div className={styles.popup}>
+                    <div className={styles.popup_content}>
+                      <p>Are you sure you want to delete this post?</p>
+                      <div>
+                        <button onClick={handleCancel}>Cancel</button>
+                        <button onClick={() => handleConfirmDelete(_id)}>
+                          Confirm Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             )}
