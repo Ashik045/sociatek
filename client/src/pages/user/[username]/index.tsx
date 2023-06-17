@@ -21,6 +21,7 @@ import styles from "../../../styles/user.module.scss";
 
 import FollowOrFollowingPopup from "components/FollowOrFollowingPopup/FollowOrFollowingPopup";
 import Post from "components/Post/Post";
+import PostComponent from "components/PostComponent/PostComponent";
 import UpdateModal from "components/UpdateModal/UpdateModal";
 import noCover from "../../../../images/no-image-available-icon-6.png";
 import noProfilePhoto from "../../../../images/no-photo.png";
@@ -43,6 +44,14 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [loading, setLoading] = useState(false);
   const [catchFlwrOrFlwing, setcatchFlwrOrFlwing] = useState(false);
   const { user, dispatch } = useContext(Context);
+
+  const [allPosts, setAllPosts] = useState(posts);
+
+  useEffect(() => {
+    setAllPosts(posts);
+  }, [posts]);
+
+  console.log(allPosts);
 
   // check if the user is already a follower
   useEffect(() => {
@@ -248,7 +257,6 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
               <FollowOrFollowingPopup
                 users={catchFlwrOrFlwing ? followersList : followingList}
                 setFollowerOrFollowingPopup={setFollowerOrFollowingPopup}
-                setFollow={handleFollow}
                 catchFlwrOrFlwing={catchFlwrOrFlwing}
               />
             )}
@@ -329,9 +337,26 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
             <p>User Activities. (Page Updating..)</p>
           ) : (
             <div>
-              {posts.map((post) => {
-                return <Post postItems={post} key={post._id} />;
-              })}
+              {allPosts.length > 0 ? (
+                allPosts.map((post) => {
+                  return (
+                    <Post
+                      postItems={post}
+                      key={post._id}
+                      setAllPosts={setAllPosts}
+                    />
+                  );
+                })
+              ) : (
+                <div className={styles.user_posts_empty}>
+                  <p>Haven&apos;t shared any post yet!</p>
+
+                  <p style={{ marginTop: "40px" }}>
+                    <b>Want to share anything?</b>
+                  </p>
+                  <PostComponent />
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -367,7 +392,9 @@ export const getStaticProps: GetStaticProps<UserProps> = async (context) => {
   const res = await axios.get(
     `http://localhost:4000/api/user/${params?.username}`
   );
-  const res2 = await axios.get("https://weblog-backend.onrender.com/api/posts");
+  const res2 = await axios.get(
+    `http://localhost:4000/api/posts/all?user=${params?.username}`
+  );
 
   const data = await res.data.message;
   const data2 = await res2.data.message;

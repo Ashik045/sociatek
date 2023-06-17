@@ -63,8 +63,7 @@
   overflow-x: hidden;
 
   .user_profile_main {
-    width: 100%;
-    max-width: 1200px;
+    max-width: 1150px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 15px;
@@ -205,7 +204,7 @@
         justify-content: start;
         align-items: center;
         border-bottom: 2px solid #e2e3e4;
-        margin-bottom: 10px;
+        margin-bottom: 25px;
 
         .notactive {
           margin: 0px 10px 0px 3px;
@@ -220,6 +219,14 @@
           border-bottom: 3px solid #dbdbdb;
           cursor: pointer;
           font-size: 18px;
+        }
+      }
+
+      .user_posts_empty {
+        width: 70%;
+
+        p {
+          color: rgba(0, 0, 0, 0.755);
         }
       }
     }
@@ -252,13 +259,18 @@
       display: grid;
       grid-template-columns: 100%;
       gap: 25px;
-      margin-left: 10px;
 
       .user_profilee {
         .user_dp {
           position: absolute;
           top: 100px;
           left: 34%;
+        }
+      }
+
+      .user_posts_and_activities {
+        .user_posts_empty {
+          width: 100%;
         }
       }
     }

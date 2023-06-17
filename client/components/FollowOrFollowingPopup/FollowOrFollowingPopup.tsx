@@ -6,14 +6,12 @@ import styles from "./FollowOrFollowingPopup.module.scss";
 interface FollowOrFollowingProp {
   users: User[];
   setFollowerOrFollowingPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  setFollow: React.Dispatch<React.SetStateAction<boolean>>;
   catchFlwrOrFlwing: boolean;
 }
 
 const FollowOrFollowingPopup = ({
   users,
   setFollowerOrFollowingPopup,
-  setFollow,
   catchFlwrOrFlwing,
 }: FollowOrFollowingProp) => {
   // close the popup
@@ -30,7 +28,7 @@ const FollowOrFollowingPopup = ({
       }
     }
 
-    return <UserDiv users={users} setFollow={setFollow} />;
+    return <UserDiv users={users} />;
   };
 
   return (

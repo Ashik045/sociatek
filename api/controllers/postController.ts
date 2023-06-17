@@ -44,10 +44,17 @@ const getPostById = async (req: Request, res: Response) => {
   }
 };
 
-// get all posts from the database
+// get all posts
 const getAllPosts = async (req: Request, res: Response) => {
+  const username = req.query.user;
   try {
-    const posts = await Post.find();
+    let posts;
+
+    if (username) {
+      posts = await Post.find({ username });
+    } else {
+      posts = await Post.find();
+    }
 
     res.status(200).json({
       message: posts,
