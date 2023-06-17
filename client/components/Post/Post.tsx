@@ -1,5 +1,6 @@
 import { Context } from "Context/Context";
 import axios from "axios";
+import ReactorsPopup from "components/ReactorsPopup/ReactorsPopup";
 import UpdPostModal from "components/UpdPostModal/UpdPostModal";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
@@ -8,7 +9,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { FaEllipsisV, FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa";
 import { MdOutlineShortcut } from "react-icons/md";
-import { Post } from "types.global";
+import { Post, User } from "types.global";
 import nophoto from "../../images/no-photo.png";
 import styles from "./post.module.scss";
 
@@ -25,7 +26,9 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
   const [cmntCount, setCmntCount] = useState(postItems.comments?.length);
   const [liked, setLiked] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [reactedUsers, setReactedUsers] = useState<string[]>([]);
+  const [reactedUsers, setReactedUsers] = useState<User[]>([]);
+  const [reactorsPopup, setReactorsPopup] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { user } = useContext(Context);
   const router = useRouter();
@@ -41,14 +44,6 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     likes,
     updatedAt,
   } = postItems;
-
-  console.log(likes);
-
-  useEffect(() => {
-    setReactedUsers(postItems?.likes || []);
-  }, [postItems?.likes]);
-
-  console.log(reactedUsers);
 
   useEffect(() => {
     const calculateTimeAgo = () => {
@@ -180,6 +175,24 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     }
   };
 
+  const handleLikePopup = async (postId: string) => {
+    setReactorsPopup(true);
+
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `http://localhost:4000/api/post/${postId}/reactedusers`
+      );
+      const users = await res.data.message;
+      setReactedUsers(users);
+
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.post_comp}>
       <div className={styles.post_info}>
@@ -282,7 +295,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
       <div className={styles.post_like_cmnt}>
         <div className={styles.post_like_line}></div>
         <div className={styles.like_cmnt_count}>
-          <p>
+          <p onClick={() => handleLikePopup(_id)}>
             <span
               className={liked ? `${styles.like_animation}` : `${styles.like}`}
             >
@@ -292,6 +305,14 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
           </p>
           <p>{cmntCount} comments</p>
         </div>
+
+        {reactorsPopup && reactedUsers.length > 0 && (
+          <ReactorsPopup
+            users={reactedUsers}
+            loading={loading}
+            setReactorsPopup={setReactorsPopup}
+          />
+        )}
 
         <div className={styles.add_like_cmnt}>
           <p>

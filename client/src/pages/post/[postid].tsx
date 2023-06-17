@@ -1,6 +1,7 @@
 import { Context } from "Context/Context";
 import axios from "axios";
 import Navbar from "components/Navbar/Navbar";
+import ReactorsPopup from "components/ReactorsPopup/ReactorsPopup";
 import UpdPostModal from "components/UpdPostModal/UpdPostModal";
 import { formatDistanceToNow } from "date-fns";
 import { GetServerSideProps } from "next";
@@ -10,7 +11,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { FaEllipsisV, FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa";
 import { MdOutlineShortcut } from "react-icons/md";
-import { Post } from "types.global";
+import { Post, User } from "types.global";
 import nophoto from "../../../images/no-photo.png";
 import styles from "../../styles/singlepost.module.scss";
 
@@ -26,6 +27,9 @@ const SinglePost = ({ post }: PostProp) => {
   const [cmntCount, setCmntCount] = useState(post.comments?.length);
   const [liked, setLiked] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [reactedUsers, setReactedUsers] = useState<User[]>([]);
+  const [reactorsPopup, setReactorsPopup] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     _id,
@@ -162,6 +166,24 @@ const SinglePost = ({ post }: PostProp) => {
     }
   };
 
+  const handleLikePopup = async (postId: string) => {
+    setReactorsPopup(true);
+
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `http://localhost:4000/api/post/${postId}/reactedusers`
+      );
+      const users = await res.data.message;
+      setReactedUsers(users);
+
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.singlePost}>
       <Navbar />
@@ -242,6 +264,14 @@ const SinglePost = ({ post }: PostProp) => {
             {updPopup && <UpdPostModal post={post} setUpdPopup={setUpdPopup} />}
           </div>
 
+          {reactorsPopup && reactedUsers.length > 0 && (
+            <ReactorsPopup
+              users={reactedUsers}
+              loading={loading}
+              setReactorsPopup={setReactorsPopup}
+            />
+          )}
+
           <div className={styles.post_detail}>
             {post.postimage && (
               <Image
@@ -260,7 +290,7 @@ const SinglePost = ({ post }: PostProp) => {
             <div className={styles.post_like_cmnt}>
               <div className={styles.post_like_line}></div>
               <div className={styles.like_cmnt_count}>
-                <p>
+                <p onClick={() => handleLikePopup(_id)}>
                   <span
                     className={
                       liked ? `${styles.like_animation}` : `${styles.like}`

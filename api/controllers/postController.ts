@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 
 // internal imports
 import { Post } from "../models/postmodel";
+import { User } from "../models/usermodel";
 
 interface AuthenticatedRequest extends Request {
   user?: {
@@ -207,6 +208,25 @@ const unLikePost = async (
   }
 };
 
+// fetch the reacted users list of a perticular post
+const getReactedUsersList = async (req: Request, res: Response) => {
+  const { postid } = req.params;
+
+  try {
+    const post = await Post.findById(postid);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found!" });
+    }
+
+    const reactedUsersList = await User.find({ _id: { $in: post.likes } });
+    res.status(200).json({
+      message: reactedUsersList,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch reactedusers!" });
+  }
+};
+
 export {
   CreatePost,
   getPostById,
@@ -215,4 +235,5 @@ export {
   deletePost,
   likePost,
   unLikePost,
+  getReactedUsersList,
 };

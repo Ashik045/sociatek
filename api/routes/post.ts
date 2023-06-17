@@ -6,6 +6,7 @@ import {
   deletePost,
   getAllPosts,
   getPostById,
+  getReactedUsersList,
   likePost,
   unLikePost,
   updPost,
@@ -52,5 +53,8 @@ router.post("/post/like/:postid", LikePostMiddleware, likePost);
 
 // unlike a post
 router.post("/post/unlike/:postid", LikePostMiddleware, unLikePost); // same middleware for unlike controller
+
+// fetch the reacted users list of a perticular post
+router.get("/post/:postid/reactedusers", getReactedUsersList);
 
 export default router;

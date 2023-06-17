@@ -1,0 +1,163 @@
+.reactors_popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.76);
+  z-index: 101;
+
+  .popup_main {
+    position: relative;
+    width: 30% !important;
+    background-color: #f6fcfd;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    animation: slide-in 0.3s ease;
+    overflow-y: scroll;
+    padding: 15px 0px;
+    border-radius: 2px;
+    .popup_users {
+      h3 {
+        text-align: center;
+        margin: -5px 0px 20px;
+        color: rgba(0, 0, 0, 0.726);
+      }
+
+      @keyframes slide-in {
+        from {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .loader_div {
+        height: 40px;
+        .loader {
+          width: 48px !important;
+          height: 48px !important;
+          border-radius: 50%;
+          position: relative;
+          animation: rotate 1s linear infinite;
+          margin-left: 20%;
+        }
+        .loader::before {
+          content: "";
+          box-sizing: border-box;
+          position: absolute;
+          inset: 0px;
+          border-radius: 50%;
+          border: 15px solid #fb2577c0;
+          animation: prixClipFix 2s linear infinite;
+        }
+
+        @keyframes rotate {
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes prixClipFix {
+          0% {
+            clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+          }
+          25% {
+            clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+          }
+          50% {
+            clip-path: polygon(
+              50% 50%,
+              0 0,
+              100% 0,
+              100% 100%,
+              100% 100%,
+              100% 100%
+            );
+          }
+          75% {
+            clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+          }
+          100% {
+            clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+          }
+        }
+      }
+    }
+  }
+
+  .close_popup {
+    position: absolute;
+    top: 130px;
+    right: 250px;
+    z-index: 100;
+    cursor: pointer;
+    padding: 7px;
+    font-size: 20px;
+    background-color: rgb(95, 95, 95);
+    color: #f6fcfd;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1999 !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .reactors_popup {
+    .popup_main {
+      width: 45% !important;
+    }
+
+    .close_popup {
+      position: absolute;
+      top: 130px;
+      right: 130px;
+      z-index: 100;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .reactors_popup {
+    .popup_main {
+      width: 60% !important;
+    }
+
+    .close_popup {
+      position: absolute;
+      top: 130px;
+      right: 70px;
+      z-index: 100;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .reactors_popup {
+    .popup_main {
+      width: 85% !important;
+    }
+
+    .close_popup {
+      position: absolute;
+      top: 130px;
+      right: 20px;
+      z-index: 100;
+    }
+  }
+}

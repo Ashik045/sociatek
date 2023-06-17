@@ -34,7 +34,7 @@ export const userLoginHandler = async (
           username: user.username,
           email: user.email,
         };
-        const jwtToken = jwt.sign(payload, jwtSecret, { expiresIn: "1d" });
+        const jwtToken = jwt.sign(payload, jwtSecret, { expiresIn: "3d" });
 
         res.status(200).json({
           message: userDetail,

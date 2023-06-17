@@ -1,0 +1,44 @@
+.reactor_user {
+  margin-top: 10px;
+  text-align: start;
+  margin-bottom: 15px;
+  padding: 0px 10px;
+  display: grid;
+  grid-template-columns: 18% 70% 10%;
+  justify-content: start;
+  align-items: center;
+
+  .user_profile_pic {
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+  }
+
+  .user_uname {
+    padding: 0px 4px !important;
+    .user_username {
+      margin: -5px 0px 0px !important;
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.726) !important;
+      font-size: 15px !important;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-transform: lowercase !important;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .user_txt {
+      margin: 0px;
+      font-size: 14px !important;
+      color: rgba(0, 0, 0, 0.514);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+  }
+}
