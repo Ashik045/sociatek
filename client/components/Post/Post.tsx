@@ -25,6 +25,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
   const [cmntCount, setCmntCount] = useState(postItems.comments?.length);
   const [liked, setLiked] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [reactedUsers, setReactedUsers] = useState<string[]>([]);
 
   const { user } = useContext(Context);
   const router = useRouter();
@@ -40,6 +41,14 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     likes,
     updatedAt,
   } = postItems;
+
+  console.log(likes);
+
+  useEffect(() => {
+    setReactedUsers(postItems?.likes || []);
+  }, [postItems?.likes]);
+
+  console.log(reactedUsers);
 
   useEffect(() => {
     const calculateTimeAgo = () => {

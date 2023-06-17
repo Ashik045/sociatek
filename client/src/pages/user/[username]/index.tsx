@@ -58,9 +58,6 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   }, [userr, user?._id]);
 
   useEffect(() => {
-    // followed && userr?.followers?.length === 0
-    //                 ? userr?.followers?.length + 1
-    //                 : userr?.followers?.length
     if (followed && userr?.followers?.length === 0) {
       setFollowers(userr?.followers?.length + 1);
     } else {
