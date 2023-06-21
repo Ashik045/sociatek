@@ -121,6 +121,11 @@
         p:hover {
           @include menuStyleHover();
         }
+
+        .active {
+          font-weight: 500;
+          color: #fb2577e0;
+        }
       }
 
       .nav_reg {

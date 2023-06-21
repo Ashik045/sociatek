@@ -63,5 +63,5 @@ app.use(
 
 // server running
 app.listen(process.env.APPLICATION_PORT, () => {
-  console.log(`Applicatioin running on port ${process.env.APPLICATION_PORT}`);
+  console.log(`Application running on port ${process.env.APPLICATION_PORT}`);
 });

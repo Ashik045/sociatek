@@ -39,7 +39,7 @@ const Navbar = () => {
 
   // search and get data
   const handleSubmit = (e: any) => {
-    //   e.preventDefault();
+    e.preventDefault();
     //   setInpVal(e.target.value);
     //   if (inpVal?.length > 0) {
     //       navigate('/');
@@ -96,13 +96,27 @@ const Navbar = () => {
 
           <div className={styles.nav_menu}>
             <Link href="/" style={{ textDecoration: "none" }}>
-              <p>Home</p>
+              <p className={router.pathname === "/" ? `${styles.active}` : ""}>
+                Home
+              </p>
             </Link>
             <Link href="/post" style={{ textDecoration: "none" }}>
-              <p>Post</p>
+              <p
+                className={
+                  router.pathname === "/post" ? `${styles.active}` : ""
+                }
+              >
+                Post
+              </p>
             </Link>
             <Link href={`/users`} style={{ textDecoration: "none" }}>
-              <p>Find Users</p>
+              <p
+                className={
+                  router.pathname === "/users" ? `${styles.active}` : ""
+                }
+              >
+                Find Users
+              </p>
             </Link>
           </div>
 
@@ -156,11 +170,25 @@ const Navbar = () => {
               <div className={styles.res_nav_menu}>
                 <div className={styles.res_nav_menuu}>
                   <Link href="/" style={{ textDecoration: "none" }}>
-                    <p onClick={() => setToggler(false)}>Home</p>
+                    <p
+                      onClick={() => setToggler(false)}
+                      className={
+                        router.pathname === "/" ? `${styles.active}` : ""
+                      }
+                    >
+                      Home
+                    </p>
                   </Link>
 
                   <Link href="/post" style={{ textDecoration: "none" }}>
-                    <p onClick={() => setToggler(false)}>Post</p>
+                    <p
+                      onClick={() => setToggler(false)}
+                      className={
+                        router.pathname === "/post" ? `${styles.active}` : ""
+                      }
+                    >
+                      Post
+                    </p>
                   </Link>
 
                   {user && (
@@ -173,7 +201,14 @@ const Navbar = () => {
                   )}
 
                   <Link href={`/users`} style={{ textDecoration: "none" }}>
-                    <p onClick={() => setToggler(false)}>Find Users</p>
+                    <p
+                      onClick={() => setToggler(false)}
+                      className={
+                        router.pathname === "/users" ? `${styles.active}` : ""
+                      }
+                    >
+                      Find Users
+                    </p>
                   </Link>
 
                   <div className={styles.res_nav_reg}>

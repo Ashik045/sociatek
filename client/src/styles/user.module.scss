@@ -107,6 +107,13 @@
         margin-top: 90px;
         text-align: center;
 
+        .user_active_status {
+          p {
+            margin-top: -5px;
+            color: green;
+          }
+        }
+
         h2 {
           margin-bottom: 0px;
           color: rgba(0, 0, 0, 0.726);
@@ -192,6 +199,7 @@
 
           .contact_btm_join {
             display: flex;
+            justify-content: center;
             align-items: center;
           }
         }

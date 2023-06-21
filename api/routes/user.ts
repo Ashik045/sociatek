@@ -24,6 +24,9 @@ const router = express.Router();
 // get all users
 router.get("/users/all", getAllUsers);
 
+// // get user by userid
+// router.get("/user/:userid", getUserById);
+
 // get user by username
 router.get("/user/:username", getUserByUserName);
 

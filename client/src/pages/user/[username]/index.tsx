@@ -44,14 +44,17 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [loading, setLoading] = useState(false);
   const [catchFlwrOrFlwing, setcatchFlwrOrFlwing] = useState(false);
   const { user, dispatch } = useContext(Context);
-
   const [allPosts, setAllPosts] = useState(posts);
+  const [isActive, setIsActive] = useState(false);
+  const [activeuser, setaAtiveUser] = useState(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  const router = useRouter();
+  const userName = router.query.username;
 
   useEffect(() => {
     setAllPosts(posts);
   }, [posts]);
-
-  console.log(allPosts);
 
   // check if the user is already a follower
   useEffect(() => {
@@ -74,9 +77,49 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     }
   }, [followed, userr?.followers?.length]);
 
-  // get the username
-  const router = useRouter();
-  const userName = router.query.username;
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/api/user/${userName}`
+        );
+        const userData = response.data.message;
+
+        // Update the user state
+        setaAtiveUser(userData);
+
+        // Update the isActive status based on last refresh time for this user
+        const lastRefreshTime = localStorage.getItem(
+          `lastRefreshTime_${userName}`
+        );
+        if (lastRefreshTime) {
+          const currentTime = Date.now();
+          const timeDifference = currentTime - Number(lastRefreshTime);
+          const isActiveUser = timeDifference <= 1 * 60 * 1000; // 10 minutes
+          setIsActive(isActiveUser);
+          console.log(isActive);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, [userName]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Save the current time to local storage for this user before the user navigates away or refreshes the page
+      localStorage.setItem(`lastRefreshTime_${userName}`, String(Date.now()));
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [userName]);
 
   // format the date
   const createAt = new Date(userr?.createdAt);
@@ -126,7 +169,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     setFollowerOrFollowingPopup(false);
   };
 
-  //  ***********  add a follow request to the user profile ***********
+  //  *********** follow request to the user ***********
   const handleFollow = async (prev: boolean) => {
     // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
@@ -197,6 +240,10 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
           />
 
           <div className={styles.user_profile_detail}>
+            <div className={styles.user_active_status}>
+              <p>{isActive ? "Online" : "Offline"}</p>
+            </div>
+
             <h2>
               {userr?.fullname}
               <span> ({userr?.username})</span>
@@ -300,7 +347,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                       </Link>
                     </p>
                   ) : (
-                    <p style={{ marginBottom: "4px", marginLeft: "4px" }}>
+                    <p style={{ marginBottom: "4px", marginLeft: "3px" }}>
                       Not Signed!
                     </p>
                   )}
@@ -309,7 +356,8 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
               <div className={styles.contact_btm_join}>
                 <MdOutlineCalendarMonth className={styles.contact_btm_icon} />
-                Joined: {date}
+                Joined:{" "}
+                <p style={{ marginBottom: "4px", marginLeft: "2px" }}>{date}</p>
               </div>
             </div>
           </div>
@@ -351,10 +399,14 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                 <div className={styles.user_posts_empty}>
                   <p>Haven&apos;t shared any post yet!</p>
 
-                  <p style={{ marginTop: "40px" }}>
-                    <b>Want to share anything?</b>
-                  </p>
-                  <PostComponent />
+                  {userName === user?.username && (
+                    <>
+                      <p style={{ marginTop: "40px" }}>
+                        <b>Want to share anything?</b>
+                      </p>
+                      <PostComponent />
+                    </>
+                  )}
                 </div>
               )}
             </div>
