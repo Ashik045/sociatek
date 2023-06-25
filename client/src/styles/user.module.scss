@@ -108,9 +108,14 @@
         text-align: center;
 
         .user_active_status {
-          p {
-            margin-top: -5px;
+          .online {
+            margin-top: -7px;
             color: green;
+          }
+
+          .offline {
+            margin-top: -7px;
+            color: rgba(0, 0, 0, 0.555);
           }
         }
 

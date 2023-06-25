@@ -8,6 +8,7 @@ interface IUser {
   about: string;
   phone: string;
   facebook: string;
+  isActive: boolean;
   location: string;
   profession: "student" | "worker";
   profilePicture?: string;
@@ -39,6 +40,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     phone: { type: String },
     facebook: { type: String },
     location: { type: String },
+    isActive: { type: Boolean, default: false },
     profession: {
       type: String,
       enum: ["student", "worker"],

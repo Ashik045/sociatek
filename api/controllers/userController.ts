@@ -231,3 +231,29 @@ export const followUser = async (
     res.status(500).json({ error: "Error following user!" });
   }
 };
+
+// update the user active status
+export const activeUser = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { isActive: true },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    res.status(200).json({
+      message: "Active status updated successfully.",
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user active status!" });
+  }
+};

@@ -1,6 +1,7 @@
 // external import
 import express from "express";
 import {
+  activeUser,
   deleteUser,
   followUser,
   getAllUsers,
@@ -50,7 +51,12 @@ router.get("/user/:userId/followers", getFollowersValidation, getFollowers);
 // get following of a particular user
 router.get("/user/:userId/followings", getFollowingValidation, getFollowing);
 
-// send a follow request to the database
+// send a follow request to a user
 router.post("/user/follow/:userId", followUserMiddleware, followUser as any);
+
+// send a unfollow request
+
+// update the user active status
+router.get("/user/active/:userId", activeUser);
 
 export default router;

@@ -34,10 +34,10 @@ interface UserProps {
 const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [activity, setActivity] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [followersList, setFollowersList] = useState([]);
-  const [followers, setFollowers] = useState(userr.followers.length);
-  const [followingList, setFollowingList] = useState([]);
-  const [followings, setFollowings] = useState(userr.following.length);
+  const [followersList, setFollowersList] = useState(userr?.followers || []);
+  const [followers, setFollowers] = useState(userr.followers?.length);
+  const [followingList, setFollowingList] = useState(userr?.following || []);
+  const [followings, setFollowings] = useState(userr.following?.length);
   const [followerOrFollowingPopup, setFollowerOrFollowingPopup] =
     useState(false);
   const [followed, setFollowed] = useState(false);
@@ -45,9 +45,6 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [catchFlwrOrFlwing, setcatchFlwrOrFlwing] = useState(false);
   const { user, dispatch } = useContext(Context);
   const [allPosts, setAllPosts] = useState(posts);
-  const [isActive, setIsActive] = useState(false);
-  const [activeuser, setaAtiveUser] = useState(null);
-  const [isScrolling, setIsScrolling] = useState(false);
 
   const router = useRouter();
   const userName = router.query.username;
@@ -77,49 +74,29 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     }
   }, [followed, userr?.followers?.length]);
 
+  // update the user active status
   useEffect(() => {
-    const fetchUser = async () => {
+    // Function to update active status on the server
+    const updateActiveStatus = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4000/api/user/${userName}`
-        );
-        const userData = response.data.message;
-
-        // Update the user state
-        setaAtiveUser(userData);
-
-        // Update the isActive status based on last refresh time for this user
-        const lastRefreshTime = localStorage.getItem(
-          `lastRefreshTime_${userName}`
-        );
-        if (lastRefreshTime) {
-          const currentTime = Date.now();
-          const timeDifference = currentTime - Number(lastRefreshTime);
-          const isActiveUser = timeDifference <= 1 * 60 * 1000; // 10 minutes
-          setIsActive(isActiveUser);
-          console.log(isActive);
-        }
+        // Send a request to the server endpoint /api/user/active
+        await axios.get(`http://localhost:4000/api/user/active/${user?._id}`);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Failed to update active status:", error);
       }
     };
 
-    fetchUser();
-  }, [userName]);
+    // Update active status initially when the component mounts
+    updateActiveStatus();
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      // Save the current time to local storage for this user before the user navigates away or refreshes the page
-      localStorage.setItem(`lastRefreshTime_${userName}`, String(Date.now()));
-    };
+    // Update active status every 10 minutes
+    const interval = setInterval(() => {
+      updateActiveStatus();
+    }, 10 * 60 * 1000); // 10 minutes in milliseconds
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [userName]);
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [user?._id]);
 
   // format the date
   const createAt = new Date(userr?.createdAt);
@@ -241,7 +218,11 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
           <div className={styles.user_profile_detail}>
             <div className={styles.user_active_status}>
-              <p>{isActive ? "Online" : "Offline"}</p>
+              {userr?.isActive ? (
+                <p className={styles.online}>Online</p>
+              ) : (
+                <p className={styles.offline}>Offline</p>
+              )}
             </div>
 
             <h2>

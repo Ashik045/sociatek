@@ -35,6 +35,7 @@ export interface User {
   location: string;
   facebook: string;
   profession: string;
+  isActive: boolean;
   profilePicture: string;
   coverPhoto: string;
   followers: string[];
