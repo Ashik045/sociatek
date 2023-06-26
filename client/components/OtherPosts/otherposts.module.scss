@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+
+.other_posts {
+  margin-bottom: 20px;
+  background-color: #f6fcfd;
+  display: grid;
+  grid-template-columns: 35% 60%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  box-shadow: rgba(99, 99, 99, 0.137) 0px 2px 8px 0px;
+
+  .other_posts_img {
+    object-fit: cover;
+  }
+
+  .other_posts_detail {
+    display: block;
+
+    p {
+      color: rgba(0, 0, 0, 0.61);
+      margin: 0px;
+    }
+
+    .other_post_text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      font-family: "Varela Round", sans-serif;
+      margin-bottom: 7px;
+    }
+
+    .post_date {
+      font-size: 15px;
+    }
+  }
+}

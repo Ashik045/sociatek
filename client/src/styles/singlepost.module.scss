@@ -12,9 +12,9 @@
     padding-right: 15px;
     margin-top: 110px;
     display: grid;
-    grid-template-columns: 65% 33%;
-    grid-gap: 25px;
-    justify-content: space-between;
+    grid-template-columns: 70% 25%;
+    grid-gap: 35px;
+    justify-content: center;
 
     .singlePost_detail {
       .post_cat {
@@ -203,6 +203,13 @@
             }
           }
         }
+      }
+    }
+
+    .popular_post_sec {
+      h3 {
+        color: rgba(0, 0, 0, 0.726);
+        margin-top: 15px;
       }
     }
   }

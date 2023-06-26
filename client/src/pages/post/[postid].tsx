@@ -1,6 +1,7 @@
 import { Context } from "Context/Context";
 import axios from "axios";
 import Navbar from "components/Navbar/Navbar";
+import OtherPosts from "components/OtherPosts/OtherPosts";
 import ReactorsPopup from "components/ReactorsPopup/ReactorsPopup";
 import UpdPostModal from "components/UpdPostModal/UpdPostModal";
 import { formatDistanceToNow } from "date-fns";
@@ -31,8 +32,6 @@ const SinglePost = ({ post, posts }: PostProp) => {
   const [reactedUsers, setReactedUsers] = useState<User[]>([]);
   const [reactorsPopup, setReactorsPopup] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  console.log(posts);
 
   const {
     _id,
@@ -335,7 +334,21 @@ const SinglePost = ({ post, posts }: PostProp) => {
         </div>
 
         <div className={styles.popular_post_sec}>
-          <h3>Other posts of this user.</h3>
+          <h3>Other posts of {username}</h3>
+
+          {posts
+            .filter((item) => item._id !== post._id)
+            .map((post) => {
+              return (
+                <Link
+                  href={post._id}
+                  key={post._id}
+                  style={{ textDecoration: "none" }}
+                >
+                  <OtherPosts post={post} />
+                </Link>
+              );
+            })}
         </div>
       </div>
     </div>
@@ -361,10 +374,19 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
   );
   const data2 = await res2.data.message;
 
+  // Randomly select 5 posts
+  const randomPosts = getRandomPosts(data2, 4);
+
   return {
     props: {
       post: data,
-      posts: data2,
+      posts: randomPosts,
     },
   };
+};
+
+// Utility function to get random posts
+const getRandomPosts = (posts: Post[], count: number): Post[] => {
+  const shuffled = posts.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
 };
