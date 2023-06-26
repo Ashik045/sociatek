@@ -46,22 +46,30 @@ const getPostById = async (req: Request, res: Response) => {
 
 // get all posts
 const getAllPosts = async (req: Request, res: Response) => {
-  const username = req.query.user;
+  const { user, limit, page } = req.query;
   try {
-    let posts;
+    const query: any = user ? { username: user } : {};
+    const options: any = {};
 
-    if (username) {
-      posts = await Post.find({ username });
-    } else {
-      posts = await Post.find();
+    if (limit) {
+      options.limit = parseInt(limit.toString());
     }
+
+    if (page) {
+      const pageNumber = parseInt(page.toString());
+      options.skip = (pageNumber - 1) * options.limit;
+    }
+
+    const posts = await Post.find(query, null, options).sort({ createdAt: -1 });
+    const totalPosts = await Post.countDocuments(query);
 
     res.status(200).json({
       message: posts,
+      totalPages: Math.ceil(totalPosts / options.limit),
     });
   } catch (error) {
     res.status(500).json({
-      error: "Not found any post!",
+      error: "Error retrieving posts",
     });
   }
 };

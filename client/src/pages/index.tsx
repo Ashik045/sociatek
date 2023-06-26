@@ -3,10 +3,11 @@ import { Context } from "Context/Context";
 import axios from "axios";
 import Homepage from "components/Homepage/Homepage";
 import jwtDecode from "jwt-decode";
+import { debounce } from "lodash";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Postt, User } from "types.global";
 import Navbar from "../../components/Navbar/Navbar";
 
@@ -20,6 +21,67 @@ interface HomePageProps {
 export const revalidate = 30;
 
 const Home: NextPage<HomePageProps> = ({ posts, users }) => {
+  const [allPosts, setAllPosts] = useState<Postt[]>([]);
+  const [allPostss, setAllPostss] = useState<Postt[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+
+  console.log(allPosts);
+  console.log(allPostss.length > allPosts.length);
+
+  useEffect(() => {
+    setAllPosts(posts);
+  }, [posts]);
+
+  useEffect(() => {
+    const loadMorePostss = async () => {
+      const res = await axios.get("http://localhost:4000/api/posts/all");
+
+      setAllPostss(res.data.message);
+    };
+
+    loadMorePostss();
+  }, []);
+
+  const handleScroll = () => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 100 && !loading) {
+      loadMorePosts();
+    }
+  };
+
+  const debouncedHandleScroll = debounce(handleScroll, 500);
+
+  useEffect(() => {
+    window.addEventListener("scroll", debouncedHandleScroll);
+    return () => {
+      window.removeEventListener("scroll", debouncedHandleScroll);
+    };
+  }, []);
+
+  const loadMorePosts = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:4000/api/posts/all?limit=10&page=${page + 1}`
+      );
+      const newPosts = res.data.message;
+
+      if (newPosts.length === 0) {
+        // No more posts to fetch
+        window.removeEventListener("scroll", handleScroll);
+        return;
+      }
+
+      setAllPosts((prevPosts) => [...prevPosts, ...newPosts]);
+      setPage((prevPage) => prevPage + 1);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
   const { dispatch } = useContext(Context);
   const router = useRouter();
 
@@ -53,7 +115,7 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
         <Navbar />
 
         {/* main section of this application */}
-        <Homepage posts={posts} users={users} />
+        <Homepage posts={allPosts} users={users} setAllPosts={setAllPosts} />
       </main>
     </>
   );
@@ -63,16 +125,17 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
-  const res = await axios.get("http://localhost:4000/api/posts/all");
+  const res = await axios.get("http://localhost:4000/api/posts/all?limit=10");
   const data = await res.data;
+
   const res2 = await axios.get("http://localhost:4000/api/users/all");
   const data2 = await res2.data;
 
-  const reversePosts = data.message.reverse();
+  const posts = data.message;
 
   return {
     props: {
-      posts: reversePosts,
+      posts,
       users: data2.message.slice(0, 7),
     },
   };

@@ -3,23 +3,19 @@ import Post from "components/Post/Post";
 import PostComponent from "components/PostComponent/PostComponent";
 import Profile from "components/Profile/Profile";
 import Suggestions from "components/Suggestions/Suggestions";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Postt, User } from "types.global";
 import styles from "./homepage.module.scss";
 
 interface PostAndUserProps {
   posts: Postt[];
   users: User[];
+  setAllPosts: React.Dispatch<React.SetStateAction<Post[]>>;
 }
 
-const Homepage = ({ posts, users }: PostAndUserProps) => {
-  const [allPosts, setAllPosts] = useState(posts);
-
-  useEffect(() => {
-    setAllPosts(posts);
-  }, [posts]);
-
+const Homepage = ({ posts, users, setAllPosts }: PostAndUserProps) => {
   const { user } = useContext(Context);
+
   return (
     <div className={styles.homepage}>
       <div className={styles.homepage_profile}>
@@ -40,7 +36,7 @@ const Homepage = ({ posts, users }: PostAndUserProps) => {
 
         {/* render all the posts from database */}
         {posts.length > 0 ? (
-          allPosts.map((post) => {
+          posts.map((post) => {
             return (
               <Post key={post._id} postItems={post} setAllPosts={setAllPosts} />
             );
