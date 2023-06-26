@@ -232,6 +232,55 @@ export const followUser = async (
   }
 };
 
+// POST request to follow a user
+export const unFollowUser = async (
+  req: AuthenticatedRequest & express.Request,
+  res: express.Response
+) => {
+  const { userId } = req.params;
+
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ error: "Unauthorized!" });
+  }
+
+  // get userid
+  const loggedInUserId = req.user.id;
+
+  try {
+    // Find the user to follow
+    const userToUnfollow = await User.findById(userId);
+
+    if (!userToUnfollow) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+    // also find the current user and update his following list
+    const loggedInUser = await User.findById(loggedInUserId);
+
+    if (!loggedInUser) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    // Remove the logedin user ID from the user followers list you want to unfollow
+    const index = userToUnfollow.followers.indexOf(loggedInUserId);
+    if (index !== -1) {
+      userToUnfollow.followers.splice(index, 1);
+    }
+
+    // also remove the unfollowed user from the loggedin user's following list
+    const index2 = loggedInUser?.following.indexOf(userId);
+    if (index2 !== -1) {
+      loggedInUser?.following.splice(index2, 1);
+    }
+
+    await userToUnfollow?.save();
+    await loggedInUser?.save();
+
+    res.status(200).json({ message: loggedInUser });
+  } catch (error) {
+    res.status(500).json({ error: "Error following user!" });
+  }
+};
+
 // update the user active status
 export const activeUser = async (
   req: express.Request,

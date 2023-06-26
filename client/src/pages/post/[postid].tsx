@@ -17,9 +17,10 @@ import styles from "../../styles/singlepost.module.scss";
 
 interface PostProp {
   post: Post;
+  posts: Post[];
 }
 
-const SinglePost = ({ post }: PostProp) => {
+const SinglePost = ({ post, posts }: PostProp) => {
   const [timeAgo, setTimeAgo] = useState("");
   const [postHandle, setPostHandle] = useState(false);
   const [updPopup, setUpdPopup] = useState(false);
@@ -30,6 +31,8 @@ const SinglePost = ({ post }: PostProp) => {
   const [reactedUsers, setReactedUsers] = useState<User[]>([]);
   const [reactorsPopup, setReactorsPopup] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  console.log(posts);
 
   const {
     _id,
@@ -332,7 +335,7 @@ const SinglePost = ({ post }: PostProp) => {
         </div>
 
         <div className={styles.popular_post_sec}>
-          <h3>Other posts of this user(updating)</h3>
+          <h3>Other posts of this user.</h3>
         </div>
       </div>
     </div>
@@ -349,9 +352,19 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
   const res = await axios.get(`http://localhost:4000/api/post/${postId}`);
   const data = await res.data.message;
 
+  // Get the username from the fetched post data
+  const username = data?.username;
+
+  // fetch other posts of the user
+  const res2 = await axios.get(
+    `http://localhost:4000/api/posts/all?user=${username}`
+  );
+  const data2 = await res2.data.message;
+
   return {
     props: {
       post: data,
+      posts: data2,
     },
   };
 };

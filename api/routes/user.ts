@@ -8,6 +8,7 @@ import {
   getFollowers,
   getFollowing,
   getUserByUserName,
+  unFollowUser,
   updateUser,
 } from "../controllers/userController";
 import {
@@ -55,6 +56,11 @@ router.get("/user/:userId/followings", getFollowingValidation, getFollowing);
 router.post("/user/follow/:userId", followUserMiddleware, followUser as any);
 
 // send a unfollow request
+router.post(
+  "/user/unfollow/:userId",
+  followUserMiddleware,
+  unFollowUser as any
+);
 
 // update the user active status
 router.get("/user/active/:userId", activeUser);

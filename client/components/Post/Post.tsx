@@ -29,6 +29,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
   const [reactedUsers, setReactedUsers] = useState<User[]>([]);
   const [reactorsPopup, setReactorsPopup] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [likeLoading, setLikeLoading] = useState(false);
 
   const { user } = useContext(Context);
   const router = useRouter();
@@ -45,6 +46,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     updatedAt,
   } = postItems;
 
+  // Updating the time every minute
   useEffect(() => {
     const calculateTimeAgo = () => {
       const now = new Date();
@@ -85,11 +87,21 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
   }
 
   const handleLike = async (value: string) => {
+    // If likeLoading is true, return immediately to prevent multiple requests
+    if (likeLoading) {
+      return;
+    }
+
+    // Set likeLoading to true
+    setLikeLoading(true);
+
     // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
 
     if (!user) {
       router.push("/login");
+      setLikeLoading(false); // Set likeLoading to false to enable handling likes again
+      return;
     }
 
     const config = {
@@ -107,32 +119,28 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
           config
         );
 
-        // Success message
-        console.log(response.data.message);
-
         setLikeCount(likeCount + 1);
         setLiked(!liked);
       } catch (error) {
         console.log(error);
       }
     } else {
-      // add a unlike request
+      // add an unlike request
       try {
         const response = await axios.post(
           `http://localhost:4000/api/post/unlike/${_id}`,
           {},
           config
         );
-
-        // Success message
-        console.log(response.data.message);
       } catch (error) {
         console.error(error);
       }
-      console.log("Unlike the post");
       setLikeCount(likeCount - 1);
       setLiked(!liked);
     }
+
+    // Set likeLoading to false after the request is completed
+    setLikeLoading(false);
   };
 
   // delete  a post

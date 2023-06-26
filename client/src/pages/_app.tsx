@@ -7,6 +7,8 @@ import styles from "../styles/home.module.scss";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isOnline, setIsOnline] = useState(false);
+
   // for hydration errors
   const [showChild, setShowChild] = useState(false);
 
@@ -14,6 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
     setShowChild(true);
   }, []);
 
+  // loading
   useEffect(() => {
     const handleStart = () => setLoading(true);
     const handleComplete = () => setLoading(false);
@@ -28,6 +31,19 @@ export default function App({ Component, pageProps }: AppProps) {
       router.events.off("routeChangeError", handleComplete);
     };
   }, [router]);
+
+  // check the internet connection
+  // useEffect(() => {
+  //   if (typeof window !== "undefined" && window.navigator.onLine) {
+  //     setIsOnline(true);
+  //   } else {
+  //     setIsOnline(false);
+  //   }
+  // }, []);
+
+  // if (!isOnline) {
+  //   console.log("No internet connection!");
+  // }
 
   if (!showChild) {
     return null;

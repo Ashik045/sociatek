@@ -28,11 +28,7 @@ const FollowOrFollowingPopup = ({
       }
     }
 
-    return (
-      <div onClick={handleClose}>
-        <UserDiv users={users} />
-      </div>
-    );
+    return <UserDiv users={users} />;
   };
 
   return (

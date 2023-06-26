@@ -43,6 +43,12 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
 
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // If loading is true, return immediately to prevent multiple requests
+    if (loading) {
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -52,9 +58,11 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
       // show error if input field is empty
       if (postText === "") {
         setErrorMessage(true);
+        setLoading(false); // Set loading to false to enable submitting again
+        return;
       }
 
-      // upload the image in cloudinary
+      // upload the image to Cloudinary
       if (postImg) {
         const formData = new FormData();
         formData.append("file", postImg);
@@ -77,7 +85,7 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
         userid: user?._id,
       };
 
-      // check if user is not authenticated
+      // check if user is authenticated
       const token = localStorage.getItem("jwtToken");
 
       const config = {
@@ -93,17 +101,16 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
           config
         );
 
-        console.log(res.data.message);
         router.push("/");
       } catch (error) {
         console.log(error);
       }
+
       // send the form data to the server
-      console.log(formInputs);
       setLoading(false);
       setPostPopup(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setLoading(false);
       setPostPopup(false);
     }

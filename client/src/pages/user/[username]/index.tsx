@@ -35,9 +35,9 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [activity, setActivity] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [followersList, setFollowersList] = useState(userr?.followers || []);
-  const [followers, setFollowers] = useState(userr.followers?.length);
+  const [followers, setFollowers] = useState(0);
   const [followingList, setFollowingList] = useState(userr?.following || []);
-  const [followings, setFollowings] = useState(userr.following?.length);
+  const [followings, setFollowings] = useState(0);
   const [followerOrFollowingPopup, setFollowerOrFollowingPopup] =
     useState(false);
   const [followed, setFollowed] = useState(false);
@@ -51,7 +51,15 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
   useEffect(() => {
     setAllPosts(posts);
+    setFollowerOrFollowingPopup(false);
   }, [posts]);
+
+  // set the followings and followers
+  useEffect(() => {
+    setFollowers(userr?.followers.length);
+
+    setFollowings(userr?.following.length);
+  }, [userr?.followers.length, userr?.following.length]);
 
   // check if the user is already a follower
   useEffect(() => {
@@ -61,18 +69,12 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       if (isFollower) {
         setFollowed(true);
       }
+
+      if (!isFollower) setFollowed(false);
     } else {
       console.log("no user!");
     }
   }, [userr, user?._id]);
-
-  useEffect(() => {
-    if (followed && userr?.followers?.length === 0) {
-      setFollowers(userr?.followers?.length + 1);
-    } else {
-      setFollowers(userr?.followers?.length);
-    }
-  }, [followed, userr?.followers?.length]);
 
   // update the user active status
   useEffect(() => {
@@ -146,7 +148,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     setFollowerOrFollowingPopup(false);
   };
 
-  //  *********** follow request to the user ***********
+  // follow or unfollow a user
   const handleFollow = async (prev: boolean) => {
     // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
@@ -157,8 +159,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     try {
       dispatch({ type: "USER_UPDATE_START" });
 
-      setLoading(true);
-      const newFollowed = followed ? prev : !prev;
+      const newFollowed = followed ? !prev : true;
       setFollowed(newFollowed);
       // send a follow request to the database using axios
       const config = {
@@ -167,24 +168,54 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
         },
       };
 
-      const response =
-        !followed &&
-        (await axios.post(
-          `http://localhost:4000/api/user/follow/${userr?._id}`,
-          {},
-          config
-        ));
-      // if successful
-      if (response && response.data) {
-        dispatch({
-          type: "USER_UPDATE_SUCCESS",
-          payload: response.data?.message,
-        });
-      }
+      if (!followed) {
+        if (loading) return; // Do not proceed if already loading
+        setLoading(true);
 
-      setLoading(false);
+        // send a follow request to the user
+        if (!loading) {
+          const response = await axios.post(
+            `http://localhost:4000/api/user/follow/${userr?._id}`,
+            {},
+            config
+          );
+          // if successful
+          if (response && response.data) {
+            setLoading(false);
+            dispatch({
+              type: "USER_UPDATE_SUCCESS",
+              payload: response.data?.message,
+            });
+          }
+          setFollowers((prev) => prev + 1);
+        }
+      } else {
+        if (loading) return;
+        setLoading(true);
+
+        // send a unfollow request to the user
+        if (!loading) {
+          const response = await axios.post(
+            `http://localhost:4000/api/user/unfollow/${userr?._id}`,
+            {},
+            config
+          );
+          // if successful
+          if (response && response.data) {
+            setLoading(false);
+
+            dispatch({
+              type: "USER_UPDATE_SUCCESS",
+              payload: response.data?.message,
+            });
+          }
+
+          setFollowers((prev) => prev - 1);
+        }
+      }
     } catch (error) {
       setLoading(false);
+      console.error(error);
     }
   };
 
@@ -251,9 +282,9 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                     {loading ? (
                       <span className={styles.loader}></span>
                     ) : followed ? (
-                      "Following"
+                      <span>Following</span>
                     ) : (
-                      "Follow"
+                      <span>Follow</span>
                     )}
                   </p>
                 </div>

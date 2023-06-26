@@ -15,6 +15,7 @@ interface UserProp {
 
 const UserDiv = ({ users }: UserProp) => {
   const [followed, setFollowed] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { user, dispatch } = useContext(Context);
   const router = useRouter();
 
@@ -22,7 +23,8 @@ const UserDiv = ({ users }: UserProp) => {
     console.log("user");
   }, [user]);
 
-  const handleFollow = async (prev: boolean, userToFollow: string) => {
+  // follow or unfollow a user
+  const handleFollow = async (prev: boolean, userId: string) => {
     // check if user is not authenticated
     if (!user) router.push("/login");
 
@@ -31,38 +33,61 @@ const UserDiv = ({ users }: UserProp) => {
     try {
       dispatch({ type: "USER_UPDATE_START" });
 
-      const isFollowing = user?.following.includes(userToFollow);
-      if (isFollowing) {
-        // User is already followed, no need to send a follow request
-        return;
-      }
-
-      const newFollowed = followed ? prev : !prev;
-      setFollowed(newFollowed);
-
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
 
-      // send a follow request to the server
-      const response = await axios.post(
-        `http://localhost:4000/api/user/follow/${userToFollow}`,
-        {},
-        config
-      );
+      const isFollowing = user?.following.includes(userId);
+      if (isFollowing) {
+        if (loading) return; // Do not proceed if already loading
 
-      // if successful
-      if (response && response.data) {
-        console.log(response.data?.message);
-        dispatch({
-          type: "USER_UPDATE_SUCCESS",
-          payload: response.data?.message,
-        });
+        setFollowed(false);
+        setLoading(true);
+
+        // send an unfollow request to the user
+        if (!loading) {
+          const response = await axios.post(
+            `http://localhost:4000/api/user/unfollow/${userId}`,
+            {},
+            config
+          );
+
+          // if successful
+          if (response && response.data) {
+            setLoading(false);
+            dispatch({
+              type: "USER_UPDATE_SUCCESS",
+              payload: response.data?.message,
+            });
+          }
+        }
+      } else {
+        if (loading) return; // Do not proceed if already loading
+        setFollowed(true);
+        setLoading(true);
+
+        // send a follow request to the server
+        if (!loading) {
+          const response = await axios.post(
+            `http://localhost:4000/api/user/follow/${userId}`,
+            {},
+            config
+          );
+
+          // if successful
+          if (response && response.data) {
+            setLoading(false);
+            dispatch({
+              type: "USER_UPDATE_SUCCESS",
+              payload: response.data?.message,
+            });
+          }
+        }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -99,12 +124,14 @@ const UserDiv = ({ users }: UserProp) => {
                 <FaUserCheck
                   onClick={() => handleFollow(false, userr._id)}
                   className={styles.followed_btn}
+                  style={{ cursor: loading ? "not-allowed" : "pointer" }}
                 />
               ) : (
                 userr._id !== user?._id && ( // remove the follow icon for the logged in user
                   <FaUserPlus
                     onClick={() => handleFollow(true, userr._id)}
                     className={styles.follow_btn}
+                    style={{ cursor: loading ? "not-allowed" : "pointer" }}
                   />
                 )
               )}
