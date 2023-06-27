@@ -10,6 +10,7 @@ import {
   getUserByUserName,
   unFollowUser,
   updateUser,
+  userActivity,
 } from "../controllers/userController";
 import {
   UserRegValidationHandler,
@@ -64,5 +65,8 @@ router.post(
 
 // update the user active status
 router.get("/user/active/:userId", activeUser);
+
+// get the user activities
+router.get("/user/activities/:userId", userActivity);
 
 export default router;

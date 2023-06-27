@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import express from "express";
 
 // internal import
+import { Post } from "../models/postmodel";
 import { User } from "../models/usermodel";
 
 interface AuthenticatedRequest extends Request {
@@ -304,5 +305,31 @@ export const activeUser = async (
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to update user active status!" });
+  }
+};
+
+// get the user activities
+export const userActivity = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    const likedPosts = await Post.find({ _id: { $in: user.activities } });
+
+    res.status(200).json({
+      message: likedPosts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to fetch the user activity!",
+    });
   }
 };

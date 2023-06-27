@@ -162,10 +162,19 @@ const likePost = async (req: AuthenticatedRequest & Request, res: Response) => {
         return res.status(404).json({ error: "Post not found!" });
       }
 
+      const reactedUser = await User.findById(loggedInUserId);
+      if (!reactedUser) {
+        return res.status(404).json({ error: "User not found!" });
+      }
+
       // Add the user ID to the likes list of the of the post to be liked
       postToLike?.likes.push(loggedInUserId);
 
+      // add the postid to the activities array of a user
+      reactedUser?.activities.push(postToLike._id.toString());
+
       await postToLike?.save();
+      await reactedUser?.save();
 
       res.status(200).json({ message: "Liked the post." });
     } catch (error) {
@@ -202,13 +211,27 @@ const unLikePost = async (
         return res.status(404).json({ error: "Post not found!" });
       }
 
+      const reactedUser = await User.findById(loggedInUserId);
+      if (!reactedUser) {
+        return res.status(404).json({ error: "User not found!" });
+      }
+
       // Remove the user ID from the likes array of the post
       const index = postToUnlike.likes.indexOf(loggedInUserId);
       if (index !== -1) {
         postToUnlike.likes.splice(index, 1);
       }
 
+      // Remove the post ID from the activities array of the user
+      const index2 = reactedUser?.activities.indexOf(
+        postToUnlike._id.toString()
+      );
+      if (index2 !== -1) {
+        reactedUser?.activities.splice(index2, 1);
+      }
+
       await postToUnlike.save();
+      await reactedUser.save();
 
       res.status(200).json({ message: "Unliked the post." });
     } catch (error) {

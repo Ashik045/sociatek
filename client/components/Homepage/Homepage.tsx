@@ -42,7 +42,9 @@ const Homepage = ({ posts, users, setAllPosts }: PostAndUserProps) => {
             );
           })
         ) : (
-          <p>No post found!</p>
+          <div className={styles.loader_div}>
+            <span className={styles.loader}></span>
+          </div>
         )}
       </div>
 

@@ -77,8 +77,6 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
       if (isFollower) {
         setLiked(true);
       }
-    } else {
-      console.log("Not Liked");
     }
   }, [postItems, user?._id]);
 

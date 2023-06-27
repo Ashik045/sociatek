@@ -23,6 +23,7 @@ import FollowOrFollowingPopup from "components/FollowOrFollowingPopup/FollowOrFo
 import Post from "components/Post/Post";
 import PostComponent from "components/PostComponent/PostComponent";
 import UpdateModal from "components/UpdateModal/UpdateModal";
+import UserActivities from "components/UserActivities/UserActivities";
 import noCover from "../../../../images/no-image-available-icon-6.png";
 import noProfilePhoto from "../../../../images/no-photo.png";
 
@@ -42,9 +43,11 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     useState(false);
   const [followed, setFollowed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [catchFlwrOrFlwing, setcatchFlwrOrFlwing] = useState(false);
   const { user, dispatch } = useContext(Context);
   const [allPosts, setAllPosts] = useState(posts);
+  const [activities, setActivities] = useState([]);
 
   const router = useRouter();
   const userName = router.query.username;
@@ -52,6 +55,8 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   useEffect(() => {
     setAllPosts(posts);
     setFollowerOrFollowingPopup(false);
+    setActivities([]);
+    setActivity(false);
   }, [posts]);
 
   // set the followings and followers
@@ -219,6 +224,24 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     }
   };
 
+  const handlePostOrActivity = async (values: string, userId: string) => {
+    if (values === "posts") {
+      setActivity(false);
+    } else {
+      setActivity(true);
+      setLoading2(true);
+      // fetch the activity of a user
+      const res = await axios.get(
+        `http://localhost:4000/api/user/activities/${userId}`
+      );
+
+      const activity = await res.data.message;
+
+      setActivities(activity);
+      setLoading2(false);
+    }
+  };
+
   return (
     <div className={styles.user_profile}>
       <Head>
@@ -380,13 +403,13 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
           <div className={styles.posts_and_activities_nav}>
             <p
               className={activity ? `${styles.notactive}` : `${styles.active}`}
-              onClick={() => setActivity(false)}
+              onClick={() => handlePostOrActivity("posts", userr._id)}
             >
               Posts
             </p>
             <p
               className={activity ? `${styles.active}` : `${styles.notactive}`}
-              onClick={() => setActivity(true)}
+              onClick={() => handlePostOrActivity("activities", userr._id)}
             >
               Activities
             </p>
@@ -394,7 +417,11 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
           {/* conditionally render the posts or activities */}
           {activity ? (
-            <p>User Activities. (Page Updating..)</p>
+            <UserActivities
+              activities={activities}
+              pusername={userr.username}
+              loading={loading2}
+            />
           ) : (
             <div>
               {allPosts.length > 0 ? (

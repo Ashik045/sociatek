@@ -42,52 +42,25 @@
 
       .loader_div {
         height: 40px;
+        display: flex;
+        justify-content: center;
         .loader {
-          width: 48px !important;
-          height: 48px !important;
+          width: 30px;
+          height: 30px;
+          border: 4px solid #fb2577a6;
+          border-bottom-color: transparent;
           border-radius: 50%;
-          position: relative;
-          animation: rotate 1s linear infinite;
-          margin-left: 20%;
-        }
-        .loader::before {
-          content: "";
+          display: inline-block;
           box-sizing: border-box;
-          position: absolute;
-          inset: 0px;
-          border-radius: 50%;
-          border: 15px solid #fb2577c0;
-          animation: prixClipFix 2s linear infinite;
+          animation: rotation 1s linear infinite;
         }
 
-        @keyframes rotate {
+        @keyframes rotation {
+          0% {
+            transform: rotate(0deg);
+          }
           100% {
             transform: rotate(360deg);
-          }
-        }
-
-        @keyframes prixClipFix {
-          0% {
-            clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
-          }
-          25% {
-            clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
-          }
-          50% {
-            clip-path: polygon(
-              50% 50%,
-              0 0,
-              100% 0,
-              100% 100%,
-              100% 100%,
-              100% 100%
-            );
-          }
-          75% {
-            clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
-          }
-          100% {
-            clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
           }
         }
       }

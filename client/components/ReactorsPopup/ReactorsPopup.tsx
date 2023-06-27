@@ -11,8 +11,6 @@ interface ReactorsProps {
 }
 
 const ReactorsPopup = ({ users, setReactorsPopup, loading }: ReactorsProps) => {
-  console.log(loading);
-
   // close the popup
   const handleClose = () => {
     setReactorsPopup(false);
