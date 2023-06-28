@@ -41,6 +41,7 @@ export interface User {
   followers: string[];
   following: string[];
   activities: string[];
+  profileVisitors: string[];
   createdAt: Date;
   updatedAt: Date;
 }

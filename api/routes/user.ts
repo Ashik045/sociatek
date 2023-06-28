@@ -7,7 +7,9 @@ import {
   getAllUsers,
   getFollowers,
   getFollowing,
+  getProfileVisotors,
   getUserByUserName,
+  getVisitingUser,
   unFollowUser,
   updateUser,
   userActivity,
@@ -68,5 +70,11 @@ router.get("/user/active/:userId", activeUser);
 
 // get the user activities
 router.get("/user/activities/:userId", userActivity);
+
+// send the visiting user ID to the server and store it to a user profile
+router.get("/user/visit/:userId", followUserMiddleware, getVisitingUser as any);
+
+// send the visiting user ID to the server and store it to a user profile
+router.get("/user/:userId/visitors", getProfileVisotors);
 
 export default router;

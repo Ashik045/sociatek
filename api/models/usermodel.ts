@@ -16,6 +16,7 @@ interface IUser {
   followers: string[];
   following: string[];
   activities: string[];
+  profileVisitors: string[];
 }
 
 // user schema
@@ -51,6 +52,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     followers: { type: [String], default: [] },
     following: { type: [String], default: [] },
     activities: { type: [String], default: [] },
+    profileVisitors: { type: [String], default: [] },
   },
   { timestamps: true }
 );

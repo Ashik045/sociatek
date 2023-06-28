@@ -333,3 +333,60 @@ export const userActivity = async (
     });
   }
 };
+
+// send the visiting user ID to the server and store it
+export const getVisitingUser = async (
+  req: AuthenticatedRequest & express.Request,
+  res: express.Response
+) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ error: "Unauthorized!" });
+    }
+
+    // get visitorId
+    const visitorId = req.user.id;
+
+    // save the visitor userid to the profilevisitor array of a user
+    user?.profileVisitors?.push(visitorId);
+
+    await user.save();
+
+    res.status(200).json({ message: "Stored the visior to the database." });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to store the visitor!" });
+  }
+};
+
+// get profile visitors of a user
+export const getProfileVisotors = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    const profileVisitors = await User.find({
+      _id: { $in: user.profileVisitors },
+    });
+
+    res.status(200).json({
+      message: profileVisitors,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch profile visitor!" });
+  }
+};
