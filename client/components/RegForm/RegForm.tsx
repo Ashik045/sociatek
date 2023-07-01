@@ -30,11 +30,20 @@ type PageProp = {
   setLoading(value: boolean): void;
 };
 
+interface ErrorResponse {
+  errors: Array<{
+    value: any;
+    msg: string;
+    param: string;
+    location: string;
+  }>;
+}
+
 const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [coverImg, setCoverImg] = useState<File | null>(null);
 
-  const [errorsss, setErrorsss] = useState({});
+  const [errorsss, setErrorsss] = useState<Array<{ msg: string }>>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -125,17 +134,17 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
         if (user.data.message) {
           router.push("/login");
         }
-      } catch (error: AxiosError) {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error
-        ) {
-          console.log(error.response.data.error);
-          setErrorsss(error.response.data.error);
-        } else {
-          console.log("An error occurred while making the request:", error);
-          // Handle other types of errors
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError<ErrorResponse>;
+          if (
+            axiosError.response &&
+            axiosError.response.data &&
+            axiosError.response.data.errors
+          ) {
+            console.log(axiosError.response.data.errors);
+            setErrorsss(axiosError.response.data.errors);
+          }
         }
         setLoading(false);
 
@@ -264,7 +273,8 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                   pattern: {
                     value:
                       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|~\-=`{}[\]:;<>?,.@#])[a-zA-Z\d!@#$%^&*()_+|~\-=`{}[\]:;<>?,.@#]{6,}$/,
-                    message: "Provide a strong password. Ex: #$As@34jhW@&",
+                    message:
+                      "Provide at least 6 characters & should contain at least 1 lowercase, 1 upper case, 1 number & 1 symbol!",
                   },
                   minLength: {
                     value: 6,
@@ -345,6 +355,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 className={styles.textarea}
                 rows={3}
                 cols={70}
+                required
               />
               {/* error message */}
               <span className={styles.form_err}>{errors.about?.message}</span>
@@ -460,8 +471,8 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
 
       {/* not working */}
       <div>
-        {Object.keys(errorsss).map((key) => (
-          <p key={key}>{(errorsss as Record<string, any>)[key].msg}</p>
+        {errorsss.map((error, index) => (
+          <p key={index}>{error.msg}</p>
         ))}
       </div>
     </div>

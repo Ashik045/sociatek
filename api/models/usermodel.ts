@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema<IUser>(
       trim: true,
       unique: true,
     },
-    fullname: { type: String, default: "Unnamed User" },
+    fullname: { type: String, required: true, default: "Unnamed User" },
     email: {
       type: String,
       required: true,
