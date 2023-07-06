@@ -13,6 +13,12 @@ interface AuthenticatedRequest extends Request {
 }
 
 export const UserRegValidation = [
+  check("fullname")
+    .isLength({ min: 1 })
+    .withMessage("Fullname is required!")
+    .trim(),
+  check("about").isLength({ min: 1 }).withMessage("About field is required!"),
+  check("location").isLength({ min: 1 }).withMessage("Location is required!"),
   check("username")
     .isLength({ min: 3, max: 15 })
     .withMessage("Username should be 3-15 characters!")
@@ -27,10 +33,6 @@ export const UserRegValidation = [
         throw createError("Username already in use!");
       }
     }),
-  check("fullname")
-    .isLength({ min: 1 })
-    .withMessage("Fullname is required!")
-    .trim(),
   check("email")
     .isEmail()
     .withMessage("Invalid email address!")
@@ -50,7 +52,6 @@ export const UserRegValidation = [
     .withMessage(
       "Password should be at least 6 characters & should contain at least 1 lowercase, 1 upper case, 1 number & 1 symbol"
     ),
-  check("about").isLength({ min: 1 }).withMessage("About field is required!"),
 ];
 
 export const UserUpdValidation = [

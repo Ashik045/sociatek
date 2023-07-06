@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import axios, { AxiosError } from "axios";
+import Loader from "components/Loader/Loader";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -46,13 +47,8 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
     watch,
     reset,
     trigger,
+    clearErrors,
   } = useForm<Inputs>();
-  const [isFormValid, setIsFormValid] = useState<boolean>(isValid);
-  useEffect(() => {
-    setIsFormValid(isValid);
-  }, [isValid]);
-
-  console.log(isFormValid);
 
   const password = watch("password", "");
 
@@ -72,16 +68,10 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
     }
   };
 
+  // handle the form
   const onSubmit = async (data: Inputs) => {
     setLoading(true);
     const { confirmPassword, ...others } = data;
-
-    if (isValid) {
-      // Perform form submission
-      console.log("Form submitted:", data);
-    } else {
-      console.log("Form is not valid. Please fill in all required fields.");
-    }
 
     try {
       let profilePicture = "";
@@ -89,11 +79,41 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
       let newUser = {};
 
       // Upload profile picture and cover photo code...
+      if (profilePic) {
+        const formData = new FormData();
+        formData.append("file", profilePic);
+        formData.append("upload_preset", "uploads");
+
+        const {
+          data: { url },
+        } = await axios.post(
+          "https://api.cloudinary.com/v1_1/dqctmbhde/image/upload",
+          formData
+        );
+
+        profilePicture = url;
+      }
+
+      if (coverImg) {
+        const formData = new FormData();
+        formData.append("file", coverImg);
+        formData.append("upload_preset", "uploads");
+
+        const {
+          data: { url },
+        } = await axios.post(
+          "https://api.cloudinary.com/v1_1/dqctmbhde/image/upload",
+          formData
+        );
+
+        coverPhoto = url;
+      }
 
       newUser = {
         ...others,
         profilePicture: profilePicture,
         coverPhoto: coverPhoto,
+        profession: others.profession || "student",
       };
 
       try {
@@ -104,9 +124,9 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
         console.log(response.data.message);
         setLoading(false);
 
-        reset();
         if (response.data.message) {
           router.push("/login");
+          reset();
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -117,13 +137,12 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
             axiosError.response.data.errors
           ) {
             const { errors } = axiosError.response.data;
-            console.log(errors);
+            // console.log(errors);
             setErrorMessages(errors);
           }
         }
 
         setLoading(false);
-        reset({ ...others });
       }
     } catch (error) {
       console.log(error);
@@ -131,19 +150,15 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
     }
   };
 
-  const fullnameRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    if (fullnameRef.current) {
-      fullnameRef.current.focus();
-    }
-  }, []);
-
   const PageTitle = [
     "Email & Pass",
     "Fullname, Username & Bio",
     "Phone, Facebook & Profession",
   ];
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.form_container}>
@@ -222,7 +237,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 className={styles.exact_form_inp}
               />
               <span className={styles.form_err}>
-                {touchedFields.username && formErrors?.username?.message}
+                {formErrors?.username?.message}
               </span>
 
               <input
@@ -300,7 +315,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                     message: "Minimum length is 3 characters!",
                   },
                   maxLength: {
-                    value: 20,
+                    value: 25,
                     message: "Maximum length is 25 characters!",
                   },
                 })}
@@ -309,9 +324,6 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                   trigger("fullname");
                 }}
                 className={styles.exact_form_inp}
-                // ref={(el) => {
-                //   fullnameRef.current = el;
-                // }}
               />
               {/* error message */}
               <span className={styles.form_err}>
@@ -346,11 +358,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
 
               <input
                 {...register("phone", {
-                  required: "Phone is required!",
-                  pattern: {
-                    value: /^[\d+]+$/,
-                    message: "Invalid phone number!",
-                  },
+                  required: false,
                 })}
                 placeholder="Phone Number"
                 onBlur={() => {
@@ -397,7 +405,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                   type="radio"
                   value="student"
                   {...register("profession", {
-                    required: "Profession is required!",
+                    required: false,
                   })}
                 />{" "}
                 Student
@@ -405,7 +413,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                   type="radio"
                   value="worker"
                   {...register("profession", {
-                    required: "Profession is required!",
+                    required: false,
                   })}
                 />{" "}
                 Worker
@@ -444,9 +452,8 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
             value={loading ? "Loading..." : "Submit"}
             className={styles.submit_btn}
             style={{
-              cursor: loading || !isFormValid ? "not-allowed" : "pointer",
+              cursor: loading ? "not-allowed" : "pointer",
             }}
-            disabled={!isFormValid}
           />
         )}
 
@@ -457,7 +464,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           </Link>
         </p>
 
-        {Object.keys(formErrors).length > 0 && (
+        {/* {Object.keys(formErrors).length > 0 && (
           <div className={styles.form_errorss}>
             {Object.values(formErrors).map((error, index) => (
               <p key={index} className={styles.f_error}>
@@ -465,24 +472,14 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
               </p>
             ))}
           </div>
-        )}
-
-        {(formErrors.fullname ||
-          formErrors.about ||
-          formErrors.location ||
-          formErrors.username ||
-          formErrors.email ||
-          formErrors.password) &&
-          !isFormValid && (
-            <p className={styles.required_error}>
-              Please fill all the required* fields.
-            </p>
-          )}
+        )} */}
       </form>
 
       {/* not working */}
       {errorMessages.map((errorMessage, index) => (
-        <p key={index}>{errorMessage}</p>
+        <p key={index} className={styles.f_errors}>
+          {errorMessage}
+        </p>
       ))}
     </div>
   );

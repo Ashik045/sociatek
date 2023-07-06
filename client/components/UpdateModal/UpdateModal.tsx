@@ -156,8 +156,8 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
                 message: "Minimum length is 3 characters!",
               },
               maxLength: {
-                value: 20,
-                message: "Maximum length is 20 characters!",
+                value: 25,
+                message: "Maximum length is 25 characters!",
               },
             })}
             placeholder={user?.fullname ? user?.fullname : "Fullname"}
@@ -208,11 +208,7 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
 
           <input
             {...register("phone", {
-              required: "Phone is required!",
-              pattern: {
-                value: /^[\d+]+$/,
-                message: "Invalid phone number!",
-              },
+              required: false,
             })}
             placeholder={user?.phone ? user?.phone : "Phone Number"}
             value={values.phone ? values.phone : user?.phone}

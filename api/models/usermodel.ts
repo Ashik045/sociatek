@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     about: { type: String, required: true },
     phone: { type: String },
     facebook: { type: String },
-    location: { type: String },
+    location: { type: String, required: true },
     isActive: { type: Boolean, default: false },
     profession: {
       type: String,

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import Loader from "components/Loader/Loader";
 import Navbar from "components/Navbar/Navbar";
 import RegForm from "components/RegForm/RegForm";
 import Head from "next/head";
@@ -9,10 +8,6 @@ import styles from "../../styles/registration.module.scss";
 const index = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <div className={styles.registration_page}>
