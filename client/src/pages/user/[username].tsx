@@ -23,6 +23,7 @@ import FollowOrFollowingPopup from "components/FollowOrFollowingPopup/FollowOrFo
 import Post from "components/Post/Post";
 import PostComponent from "components/PostComponent/PostComponent";
 import ProfileVisitors from "components/ProfileVisitors/ProfileVisitors";
+import ReactorsPopup from "components/ReactorsPopup/ReactorsPopup";
 import UpdateModal from "components/UpdateModal/UpdateModal";
 import UserActivities from "components/UserActivities/UserActivities";
 import noCover from "../../../images/no-image-available-icon-6.png";
@@ -51,6 +52,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [allPosts, setAllPosts] = useState(posts);
   const [activities, setActivities] = useState([]);
   const [profileVisitors, setProfileVisitors] = useState([]);
+  const [visitorsPopup, setVisitorsPopup] = useState(false);
   const visitedRef = useRef(false);
 
   const router = useRouter();
@@ -61,6 +63,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     setFollowerOrFollowingPopup(false);
     setActivities([]);
     setActivity(false);
+    setVisitorsPopup(false);
   }, [posts]);
 
   // send the visiting userId to the server
@@ -306,6 +309,24 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     }
   };
 
+  // handle the profile visitor popup
+  const handleVisitorsPopup = async (postId: string) => {
+    setVisitorsPopup(true);
+
+    try {
+      setLoading3(true);
+      const res = await axios.get(
+        `http://localhost:4000/api/user/${userr?._id}/visitors`
+      );
+      setProfileVisitors(res.data?.message);
+
+      setLoading3(false);
+    } catch (error) {
+      console.error(error);
+      setLoading3(false);
+    }
+  };
+
   return (
     <div className={styles.user_profile}>
       <Head>
@@ -468,7 +489,21 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
           </div>
 
           <div className={styles.profile_visitors}>
-            <h3>Profile Visitors</h3>
+            <div className={styles.profile_visitor_top}>
+              <h3>Profile Visitors</h3>
+
+              <p onClick={() => handleVisitorsPopup(userr._id)}>See All</p>
+            </div>
+
+            {visitorsPopup && profileVisitors.length > 0 && (
+              <ReactorsPopup
+                users={profileVisitors}
+                loading={loading3}
+                setReactorsPopup={setVisitorsPopup}
+                visitor={true}
+              />
+            )}
+
             {loading3 ? (
               <div className={styles.profile_visitors_loader}>
                 <span className={styles.loader}></span>

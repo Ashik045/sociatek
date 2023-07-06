@@ -60,7 +60,7 @@ const Profile = () => {
           <div className={styles.user_activities}>
             <div className={styles.follow_sec}>
               <ThumbUpAltIcon className={styles.user_act_icon} />
-              <span>{user?.activities?.length}</span>
+              <span>{user?.activities.length}</span>
             </div>
             <div className={styles.follow_sec}>
               <GroupAddIcon className={styles.user_act_icon} />

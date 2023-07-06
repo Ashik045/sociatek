@@ -220,10 +220,22 @@
       border-radius: 3px;
       padding-bottom: 10px;
 
-      h3 {
+      .profile_visitor_top {
         color: rgba(0, 0, 0, 0.658);
-        margin-top: 15px;
-        text-align: center;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        h3 {
+          margin-top: 15px;
+          text-align: center;
+        }
+
+        p {
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
       }
 
       .profile_visitors_loader {

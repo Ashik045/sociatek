@@ -224,8 +224,8 @@ export const followUser = async (
     // save the followed userId to the current user's following field
     loggedInUser?.following.push(userId);
 
-    await userToFollow?.save();
-    await loggedInUser?.save();
+    await userToFollow.save();
+    await loggedInUser.save();
 
     res.status(200).json({ message: loggedInUser });
   } catch (error) {
@@ -381,7 +381,9 @@ export const getProfileVisotors = async (
 
     const profileVisitors = await User.find({
       _id: { $in: user.profileVisitors },
-    });
+    })
+      .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+      .exec();
 
     res.status(200).json({
       message: profileVisitors,

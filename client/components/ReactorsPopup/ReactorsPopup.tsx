@@ -8,9 +8,15 @@ interface ReactorsProps {
   users: User[];
   setReactorsPopup: React.Dispatch<React.SetStateAction<boolean>>;
   loading: boolean;
+  visitor?: boolean;
 }
 
-const ReactorsPopup = ({ users, setReactorsPopup, loading }: ReactorsProps) => {
+const ReactorsPopup = ({
+  users,
+  setReactorsPopup,
+  loading,
+  visitor,
+}: ReactorsProps) => {
   // close the popup
   const handleClose = () => {
     setReactorsPopup(false);
@@ -23,7 +29,7 @@ const ReactorsPopup = ({ users, setReactorsPopup, loading }: ReactorsProps) => {
       </span>
       <div className={styles.popup_main}>
         <div className={styles.popup_users}>
-          <h3>Reactions</h3>
+          <h3>{visitor ? "Profile Visitors" : "Reactions"} </h3>
 
           {loading ? (
             <div className={styles.loader_div}>

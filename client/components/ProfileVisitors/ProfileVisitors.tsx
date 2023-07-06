@@ -17,7 +17,7 @@ const ProfileVisitors = ({ visitors }: ProfileVisitorProp) => {
           This profile has not been visited by anyone.
         </p>
       ) : (
-        visitors.map((visitor) => {
+        visitors.slice(0, 4).map((visitor) => {
           return (
             <div className={styles.profile_visitor} key={visitor._id}>
               <Link href={`/user/${visitor?.username}`}>

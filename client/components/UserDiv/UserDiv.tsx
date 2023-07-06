@@ -43,11 +43,10 @@ const UserDiv = ({ users }: UserProp) => {
       if (isFollowing) {
         if (loading) return; // Do not proceed if already loading
 
-        setFollowed(false);
-        setLoading(true);
+        setLoading(true); // Set loading to true before making the request
 
         // send an unfollow request to the user
-        if (!loading) {
+        try {
           const response = await axios.post(
             `http://localhost:4000/api/user/unfollow/${userId}`,
             {},
@@ -56,20 +55,24 @@ const UserDiv = ({ users }: UserProp) => {
 
           // if successful
           if (response && response.data) {
-            setLoading(false);
+            setLoading(false); // Set loading to false after the request is complete
+            setFollowed(false);
             dispatch({
               type: "USER_UPDATE_SUCCESS",
               payload: response.data?.message,
             });
           }
+        } catch (error) {
+          setLoading(false); // Set loading to false if there's an error
+          console.error(error);
         }
       } else {
         if (loading) return; // Do not proceed if already loading
-        setFollowed(true);
-        setLoading(true);
+
+        setLoading(true); // Set loading to true before making the request
 
         // send a follow request to the server
-        if (!loading) {
+        try {
           const response = await axios.post(
             `http://localhost:4000/api/user/follow/${userId}`,
             {},
@@ -78,12 +81,16 @@ const UserDiv = ({ users }: UserProp) => {
 
           // if successful
           if (response && response.data) {
-            setLoading(false);
+            setLoading(false); // Set loading to false after the request is complete
+            setFollowed(true);
             dispatch({
               type: "USER_UPDATE_SUCCESS",
               payload: response.data?.message,
             });
           }
+        } catch (error) {
+          setLoading(false); // Set loading to false if there's an error
+          console.error(error);
         }
       }
     } catch (error) {

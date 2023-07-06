@@ -13,6 +13,7 @@
   .popup_main {
     position: relative;
     width: 40% !important;
+    max-height: 350px;
     background-color: #f6fcfd;
     overflow: hidden;
     display: flex;
