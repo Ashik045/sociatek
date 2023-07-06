@@ -66,32 +66,34 @@ export const UserUpdValidation = [
   check("about").isLength({ min: 1 }).withMessage("About field is required!"),
 ];
 
+// validation handler
 export const UserRegValidationHandler = function (
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   const errors = validationResult(req);
-  const mappedErrs = errors.mapped();
 
-  if (Object.keys(mappedErrs).length === 0) {
+  if (errors.isEmpty()) {
     next();
   } else {
+    const errorMessages = errors.array().map((error) => error.msg);
     res.status(500).json({
-      error: mappedErrs,
+      errors: errorMessages,
     });
   }
-
-  // format of mapped errors
-  // mappedErrs = {
-  // name: {
-  // msg: "Name is required"
-  // },
-  // email: {
-  // msg: "Invalid email address"
-  // }
-  // }
 };
+
+// format of mapped errors
+// mappedErrs = {
+// name: {
+// msg: "Name is required"
+// },
+// email: {
+// msg: "Invalid email address"
+// }
+// }
+// };
 
 // Validation handler for the getFollowers route
 export const getFollowersValidation = [

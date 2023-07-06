@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import axios, { AxiosError } from "axios";
 import Image from "next/image";
@@ -30,34 +30,29 @@ type PageProp = {
   setLoading(value: boolean): void;
 };
 
-interface ErrorResponse {
-  errors: Array<{
-    value: any;
-    msg: string;
-    param: string;
-    location: string;
-  }>;
-}
-
 const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [coverImg, setCoverImg] = useState<File | null>(null);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
-  const [errorsss, setErrorsss] = useState<Array<{ msg: string }>>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    console.log("errors:", errorsss);
-  }, [errorsss]);
+  console.log("Errors:", errorMessages);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors: formErrors, touchedFields, isValid },
     watch,
     reset,
     trigger,
   } = useForm<Inputs>();
+  const [isFormValid, setIsFormValid] = useState<boolean>(isValid);
+  useEffect(() => {
+    setIsFormValid(isValid);
+  }, [isValid]);
+
+  console.log(isFormValid);
 
   const password = watch("password", "");
 
@@ -81,40 +76,19 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
     setLoading(true);
     const { confirmPassword, ...others } = data;
 
+    if (isValid) {
+      // Perform form submission
+      console.log("Form submitted:", data);
+    } else {
+      console.log("Form is not valid. Please fill in all required fields.");
+    }
+
     try {
       let profilePicture = "";
       let coverPhoto = "";
       let newUser = {};
 
-      if (profilePic) {
-        const formData = new FormData();
-        formData.append("file", profilePic);
-        formData.append("upload_preset", "uploads");
-
-        const {
-          data: { url },
-        } = await axios.post(
-          "https://api.cloudinary.com/v1_1/dqctmbhde/image/upload",
-          formData
-        );
-
-        profilePicture = url;
-      }
-
-      if (coverImg) {
-        const formData = new FormData();
-        formData.append("file", coverImg);
-        formData.append("upload_preset", "uploads");
-
-        const {
-          data: { url },
-        } = await axios.post(
-          "https://api.cloudinary.com/v1_1/dqctmbhde/image/upload",
-          formData
-        );
-
-        coverPhoto = url;
-      }
+      // Upload profile picture and cover photo code...
 
       newUser = {
         ...others,
@@ -123,44 +97,47 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
       };
 
       try {
-        const user = await axios.post(
+        const response = await axios.post(
           "http://localhost:4000/api/auth/signup",
           newUser
         );
-        console.log(user.data.message);
+        console.log(response.data.message);
         setLoading(false);
 
         reset();
-        if (user.data.message) {
+        if (response.data.message) {
           router.push("/login");
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          const axiosError = error as AxiosError<ErrorResponse>;
+          const axiosError = error as AxiosError;
           if (
             axiosError.response &&
             axiosError.response.data &&
             axiosError.response.data.errors
           ) {
-            console.log(axiosError.response.data.errors);
-            setErrorsss(axiosError.response.data.errors);
+            const { errors } = axiosError.response.data;
+            console.log(errors);
+            setErrorMessages(errors);
           }
         }
-        setLoading(false);
 
-        // not showing the errorss
+        setLoading(false);
         reset({ ...others });
       }
-
-      // console.log(newUser);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
-
-    setLoading(false);
-    reset({ ...others });
   };
+
+  const fullnameRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (fullnameRef.current) {
+      fullnameRef.current.focus();
+    }
+  }, []);
 
   const PageTitle = [
     "Email & Pass",
@@ -238,14 +215,14 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                     message: "Maximum length is 15 characters!",
                   },
                 })}
-                placeholder="username"
+                placeholder="Username*"
                 onBlur={() => {
                   trigger("username");
                 }}
                 className={styles.exact_form_inp}
               />
               <span className={styles.form_err}>
-                {errors.username?.message}
+                {touchedFields.username && formErrors?.username?.message}
               </span>
 
               <input
@@ -256,14 +233,16 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                     message: "Invalid email address",
                   },
                 })}
-                placeholder="Email"
+                placeholder="Email*"
                 onBlur={() => {
                   trigger("email");
                 }}
                 className={styles.exact_form_inp}
               />
               {/* error message */}
-              <span className={styles.form_err}>{errors.email?.message}</span>
+              <span className={styles.form_err}>
+                {formErrors?.email?.message}
+              </span>
 
               <input
                 type="password"
@@ -281,14 +260,14 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                     message: "Minimum length is 6 characters!",
                   },
                 })}
-                placeholder="Password"
+                placeholder="Password*"
                 onBlur={() => {
                   trigger("password");
                 }}
                 className={styles.exact_form_inp}
               />
               <span className={styles.form_err}>
-                {errors.password?.message}
+                {formErrors?.password?.message}
               </span>
 
               <input
@@ -298,14 +277,14 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                   validate: (value) =>
                     value === password || "Password doesn't matched!",
                 })}
-                placeholder="Re-enter your password"
+                placeholder="Re-enter your password*"
                 onBlur={() => {
                   trigger("confirmPassword");
                 }}
                 className={styles.exact_form_inp}
               />
               <span className={styles.form_err}>
-                {errors.confirmPassword?.message}
+                {formErrors?.confirmPassword?.message}
               </span>
             </>
           )}
@@ -322,18 +301,21 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                   },
                   maxLength: {
                     value: 20,
-                    message: "Maximum length is 20 characters!",
+                    message: "Maximum length is 25 characters!",
                   },
                 })}
-                placeholder="Fullname"
+                placeholder="Fullname*"
                 onBlur={() => {
                   trigger("fullname");
                 }}
                 className={styles.exact_form_inp}
+                // ref={(el) => {
+                //   fullnameRef.current = el;
+                // }}
               />
               {/* error message */}
               <span className={styles.form_err}>
-                {errors.fullname?.message}
+                {formErrors?.fullname?.message}
               </span>
 
               <textarea
@@ -348,7 +330,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                     message: "Maximum length is 400 characters!",
                   },
                 })}
-                placeholder="About yourself"
+                placeholder="About yourself*"
                 onBlur={() => {
                   trigger("about");
                 }}
@@ -358,7 +340,9 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 required
               />
               {/* error message */}
-              <span className={styles.form_err}>{errors.about?.message}</span>
+              <span className={styles.form_err}>
+                {formErrors?.about?.message}
+              </span>
 
               <input
                 {...register("phone", {
@@ -374,7 +358,9 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 }}
                 className={styles.exact_form_inp}
               />
-              <span className={styles.form_err}>{errors.phone?.message}</span>
+              <span className={styles.form_err}>
+                {formErrors?.phone?.message}
+              </span>
             </>
           )}
 
@@ -385,14 +371,14 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 {...register("location", {
                   required: "Location is required!",
                 })}
-                placeholder="Location"
+                placeholder="Location*"
                 onBlur={() => {
                   trigger("location");
                 }}
                 className={styles.exact_form_inp}
               />
               <span className={styles.form_err}>
-                {errors.location?.message}
+                {formErrors?.location?.message}
               </span>
               <input
                 {...register("facebook", {
@@ -402,7 +388,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 className={styles.exact_form_inp}
               />
               <span className={styles.form_err}>
-                {errors.facebook?.message}
+                {formErrors?.facebook?.message}
               </span>
 
               <label className={styles.form_profession}>
@@ -425,7 +411,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                 Worker
               </label>
               <span className={styles.form_err}>
-                {errors.profession?.message}
+                {formErrors?.profession?.message}
               </span>
             </>
           )}
@@ -457,7 +443,10 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
             type="submit"
             value={loading ? "Loading..." : "Submit"}
             className={styles.submit_btn}
-            style={{ cursor: loading ? "not-allowed" : "pointer" }}
+            style={{
+              cursor: loading || !isFormValid ? "not-allowed" : "pointer",
+            }}
+            disabled={!isFormValid}
           />
         )}
 
@@ -467,14 +456,34 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
             Already have an account? Log in here..
           </Link>
         </p>
+
+        {Object.keys(formErrors).length > 0 && (
+          <div className={styles.form_errorss}>
+            {Object.values(formErrors).map((error, index) => (
+              <p key={index} className={styles.f_error}>
+                {error.message}
+              </p>
+            ))}
+          </div>
+        )}
+
+        {(formErrors.fullname ||
+          formErrors.about ||
+          formErrors.location ||
+          formErrors.username ||
+          formErrors.email ||
+          formErrors.password) &&
+          !isFormValid && (
+            <p className={styles.required_error}>
+              Please fill all the required* fields.
+            </p>
+          )}
       </form>
 
       {/* not working */}
-      <div>
-        {errorsss.map((error, index) => (
-          <p key={index}>{error.msg}</p>
-        ))}
-      </div>
+      {errorMessages.map((errorMessage, index) => (
+        <p key={index}>{errorMessage}</p>
+      ))}
     </div>
   );
 };
