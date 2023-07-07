@@ -87,7 +87,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
           };
 
           const res = await axios.get(
-            `http://localhost:4000/api/user/visit/${userr?._id}`,
+            `https://sociatek-api.onrender.com/api/user/visit/${userr?._id}`,
             config
           );
 
@@ -111,7 +111,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       setLoading3(true);
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/user/${userr?._id}/visitors`
+          `https://sociatek-api.onrender.com/api/user/${userr?._id}/visitors`
         );
         setProfileVisitors(res.data?.message);
 
@@ -154,7 +154,9 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     const updateActiveStatus = async () => {
       try {
         // Send a request to the server endpoint /api/user/active
-        await axios.get(`http://localhost:4000/api/user/active/${user?._id}`);
+        await axios.get(
+          `https://sociatek-api.onrender.com/api/user/active/${user?._id}`
+        );
       } catch (error) {
         console.error("Failed to update active status:", error);
       }
@@ -187,7 +189,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const handleFollowersClick = async (userId: string) => {
     // You can use the user's followers array to display the list
     const response = await axios.get(
-      `http://localhost:4000/api/user/${userId}/followers`
+      `https://sociatek-api.onrender.com/api/user/${userId}/followers`
     );
     const followers = await response.data.message;
     setFollowersList(followers);
@@ -203,7 +205,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const handleFollowingClick = async (userId: string) => {
     // You can use the user's following array to display the list
     const response = await axios.get(
-      `http://localhost:4000/api/user/${userId}/followings`
+      `https://sociatek-api.onrender.com/api/user/${userId}/followings`
     );
     const followings = await response.data.message;
     setFollowingList(followings);
@@ -247,7 +249,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
         // send a follow request to the user
         if (!loading) {
           const response = await axios.post(
-            `http://localhost:4000/api/user/follow/${userr?._id}`,
+            `https://sociatek-api.onrender.com/api/user/follow/${userr?._id}`,
             {},
             config
           );
@@ -268,7 +270,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
         // send a unfollow request to the user
         if (!loading) {
           const response = await axios.post(
-            `http://localhost:4000/api/user/unfollow/${userr?._id}`,
+            `https://sociatek-api.onrender.com/api/user/unfollow/${userr?._id}`,
             {},
             config
           );
@@ -299,7 +301,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       setLoading2(true);
       // fetch the activity of a user
       const res = await axios.get(
-        `http://localhost:4000/api/user/activities/${userId}`
+        `https://sociatek-api.onrender.com/api/user/activities/${userId}`
       );
 
       const activity = await res.data.message;
@@ -316,7 +318,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     try {
       setLoading3(true);
       const res = await axios.get(
-        `http://localhost:4000/api/user/${userr?._id}/visitors`
+        `https://sociatek-api.onrender.com/api/user/${userr?._id}/visitors`
       );
       setProfileVisitors(res.data?.message);
 
@@ -576,7 +578,9 @@ export default Index;
 
 // Fetch the list of user IDs from an API or database
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axios.get("http://localhost:4000/api/users/all");
+  const res = await axios.get(
+    "https://sociatek-api.onrender.com/api/users/all"
+  );
   const users = await res.data.message;
 
   const paths = users.map((user: User) => ({
@@ -597,10 +601,10 @@ export const getStaticProps: GetStaticProps<UserProps> = async (context) => {
   // console.log(params);
 
   const res = await axios.get(
-    `http://localhost:4000/api/user/${params?.username}`
+    `https://sociatek-api.onrender.com/api/user/${params?.username}`
   );
   const res2 = await axios.get(
-    `http://localhost:4000/api/posts/all?user=${params?.username}`
+    `https://sociatek-api.onrender.com/api/posts/all?user=${params?.username}`
   );
 
   const data = await res.data.message;

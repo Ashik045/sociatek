@@ -112,7 +112,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
       try {
         // add a like request
         const response = await axios.post(
-          `http://localhost:4000/api/post/like/${_id}`,
+          `https://sociatek-api.onrender.com/api/post/like/${_id}`,
           {},
           config
         );
@@ -126,7 +126,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
       // add an unlike request
       try {
         const response = await axios.post(
-          `http://localhost:4000/api/post/unlike/${_id}`,
+          `https://sociatek-api.onrender.com/api/post/unlike/${_id}`,
           {},
           config
         );
@@ -166,7 +166,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     try {
       // send a api request
       const res = await axios.delete(
-        `http://localhost:4000/api/post/${id}`,
+        `https://sociatek-api.onrender.com/api/post/${id}`,
         config
       );
 
@@ -187,7 +187,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:4000/api/post/${postId}/reactedusers`
+        `https://sociatek-api.onrender.com/api/post/${postId}/reactedusers`
       );
       const users = await res.data.message;
       setReactedUsers(users);

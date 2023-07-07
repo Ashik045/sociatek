@@ -93,14 +93,14 @@ const UpdPostModal = ({ post, setUpdPopup }: PostUpdProp) => {
       // if everything is good then send the data to the server
       try {
         const res = await axios.put(
-          `http://localhost:4000/api/post/${post._id}`,
+          `https://sociatek-api.onrender.com/api/post/${post._id}`,
           formInputs,
           config
         );
 
         router.push(`/post/${res.data?.message._id}`);
         setUpdPopup(false);
-      } catch (error) {
+      } catch (error: any) {
         console.log(error?.response?.data.error);
       }
 

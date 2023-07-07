@@ -49,7 +49,7 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   //   setLoading(true);
   //   try {
   //     const res = await axios.get(
-  //       `http://localhost:4000/api/posts/all?limit=10&page=${page + 1}`
+  //       `https://sociatek-api.onrender.com/api/posts/all?limit=10&page=${page + 1}`
   //     );
   //     const newPosts = res.data.message;
 
@@ -110,10 +110,14 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
-  const res = await axios.get("http://localhost:4000/api/posts/all");
+  const res = await axios.get(
+    "https://sociatek-api.onrender.com/api/posts/all"
+  );
   const data = await res.data;
 
-  const res2 = await axios.get("http://localhost:4000/api/users/all");
+  const res2 = await axios.get(
+    "https://sociatek-api.onrender.com/api/users/all"
+  );
   const data2 = await res2.data;
 
   const posts = data.message;

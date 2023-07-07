@@ -96,7 +96,7 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
 
       try {
         const res = await axios.post(
-          "http://localhost:4000/api/post/create",
+          "https://sociatek-api.onrender.com/api/post/create",
           formInputs,
           config
         );

@@ -11,6 +11,7 @@ import styles from "./userdiv.module.scss";
 
 interface UserProp {
   users: User[];
+  setFollow?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UserDiv = ({ users }: UserProp) => {
@@ -48,7 +49,7 @@ const UserDiv = ({ users }: UserProp) => {
         // send an unfollow request to the user
         try {
           const response = await axios.post(
-            `http://localhost:4000/api/user/unfollow/${userId}`,
+            `https://sociatek-api.onrender.com/api/user/unfollow/${userId}`,
             {},
             config
           );
@@ -74,7 +75,7 @@ const UserDiv = ({ users }: UserProp) => {
         // send a follow request to the server
         try {
           const response = await axios.post(
-            `http://localhost:4000/api/user/follow/${userId}`,
+            `https://sociatek-api.onrender.com/api/user/follow/${userId}`,
             {},
             config
           );

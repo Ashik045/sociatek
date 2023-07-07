@@ -66,14 +66,14 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
         // if everything is good then send the data to the server
         try {
           const res = await axios.put(
-            `http://localhost:4000/api/user/${user?.username}`,
+            `https://sociatek-api.onrender.com/api/user/${user?.username}`,
             values
           );
           dispatch({ type: "USER_UPDATE_SUCCESS", payload: res.data?.message });
           router.push(`/user/${res.data?.message.username}`);
           setOpenModal(false);
-        } catch (error) {
-          console.log(error.response.data.error);
+        } catch (error: any) {
+          console.log(error?.response.data.error);
         }
       }
 

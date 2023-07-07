@@ -35,7 +35,7 @@ const index = () => {
     try {
       dispatch({ type: "LOGIN_START" });
       const res = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://sociatek-api.onrender.com/api/auth/login",
         data
       );
 
@@ -50,9 +50,8 @@ const index = () => {
       router.push(`/user/${res.data?.message.username}`);
       setError(null);
       setLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       // some code that may throw error
-      console.log(error.response.data?.error);
       setError(error.response.data?.error);
       dispatch({ type: "LOGIN_FAILURE", payload: error.response.data.error });
       setLoading(false);

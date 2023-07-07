@@ -118,7 +118,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
 
       try {
         const response = await axios.post(
-          "http://localhost:4000/api/auth/signup",
+          "https://sociatek-api.onrender.com/api/auth/signup",
           newUser
         );
         console.log(response.data.message);
@@ -130,7 +130,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          const axiosError = error as AxiosError;
+          const axiosError = error as AxiosError<{ errors?: any }>;
           if (
             axiosError.response &&
             axiosError.response.data &&
