@@ -37,9 +37,9 @@ interface UserProps {
 const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [activity, setActivity] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [followersList, setFollowersList] = useState(userr?.followers || []);
+  const [followersList, setFollowersList] = useState<User[]>([]);
   const [followers, setFollowers] = useState(0);
-  const [followingList, setFollowingList] = useState(userr?.following || []);
+  const [followingList, setFollowingList] = useState<User[]>([]);
   const [followings, setFollowings] = useState(0);
   const [followerOrFollowingPopup, setFollowerOrFollowingPopup] =
     useState(false);
@@ -126,11 +126,50 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   }, [userr?._id, user]);
 
   // set the followings and followers
-  useEffect(() => {
-    setFollowers(userr?.followers.length);
+  // useEffect(() => {
+  //   setFollowers(userr?.followers?.length);
 
-    setFollowings(userr?.following.length);
-  }, [userr?.followers.length, userr?.following.length]);
+  //   setFollowings(userr?.following?.length);
+  // }, [userr?.followers.length, userr?.following.length]);
+
+  // set the followings and followers
+  useEffect(() => {
+    const fetchFollowers = async () => {
+      try {
+        // Fetch the followers data from the server
+        const response = await axios.get(
+          `https://sociatek-api.onrender.com/api/user/${userr._id}/followers`
+        );
+        const followers = await response.data.message;
+
+        // Update the followers list state
+        setFollowersList(followers);
+        setFollowers(followers.length);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const fetchFollowing = async () => {
+      try {
+        // Fetch the following data from the server
+        const response = await axios.get(
+          `https://sociatek-api.onrender.com/api/user/${userr._id}/followings`
+        );
+        const followings = await response.data.message;
+
+        // Update the following list state
+        setFollowingList(followings);
+        setFollowings(followings.length);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // Call the fetch functions
+    fetchFollowers();
+    fetchFollowing();
+  }, [userr._id]);
 
   // check if the user is already a follower
   useEffect(() => {
@@ -591,14 +630,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: "blocking",
   };
 };
 
 //  Fetch the user data based on the ID from an API or database
 export const getStaticProps: GetStaticProps<UserProps> = async (context) => {
   const { params } = context;
-  // console.log(params);
 
   const res = await axios.get(
     `https://sociatek-api.onrender.com/api/user/${params?.username}`

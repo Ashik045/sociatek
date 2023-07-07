@@ -23,11 +23,11 @@
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.3"
+    "typescript": "^5.1.6"
   },
   "scripts": {
     "dev": "SET NODE_ENV= development & nodemon index.ts",
-    "build": "tsc",
+    "build": "npm install && tsc",
     "start": "node dist/index.js"
   }
 }

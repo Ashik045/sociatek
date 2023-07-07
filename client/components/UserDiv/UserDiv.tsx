@@ -128,7 +128,7 @@ const UserDiv = ({ users }: UserProp) => {
             </div>
 
             <span className={styles.follow_btns}>
-              {user?.following.includes(userr._id) ? (
+              {user?.following?.includes(userr._id) ? (
                 <FaUserCheck
                   onClick={() => handleFollow(false, userr._id)}
                   className={styles.followed_btn}

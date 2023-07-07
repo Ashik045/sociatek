@@ -22,7 +22,7 @@ const Homepage = ({ posts, users, setAllPosts }: PostAndUserProps) => {
         {user ? (
           <Profile />
         ) : (
-          <p>
+          <p style={{ padding: "10px" }}>
             Banner / Intro of this application. Sign in to achieve all the
             features of Sociatek.
           </p>

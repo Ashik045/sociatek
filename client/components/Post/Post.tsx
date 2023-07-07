@@ -30,6 +30,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
   const [reactorsPopup, setReactorsPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
+  const [userProfilePic, setUserProfilePic] = useState("");
 
   const { user } = useContext(Context);
   const router = useRouter();
@@ -68,6 +69,19 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
       return () => clearInterval(intervalId);
     }
   }, [createdAt]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await axios.get(
+        `https://sociatek-api.onrender.com/api/user/${username}`
+      );
+      const data = res.data.message;
+
+      setUserProfilePic(data.profilePicture);
+    };
+
+    fetchUser();
+  }, [username]);
 
   // check if the user is already like the post
   useEffect(() => {
@@ -206,7 +220,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
           <div className={styles.post_user}>
             <Link href={`/user/${username}`}>
               <Image
-                src={user?.profilePicture ? user?.profilePicture : nophoto}
+                src={userProfilePic ? userProfilePic : nophoto}
                 height={40}
                 width={40}
                 alt="sociatek"

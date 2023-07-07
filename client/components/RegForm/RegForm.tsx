@@ -121,7 +121,6 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           "https://sociatek-api.onrender.com/api/auth/signup",
           newUser
         );
-        console.log(response.data.message);
         setLoading(false);
 
         if (response.data.message) {
