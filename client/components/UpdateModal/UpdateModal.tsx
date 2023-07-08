@@ -26,6 +26,7 @@ interface PageProp {
 
 const UpdateModal = ({ user, setOpenModal }: PageProp) => {
   const [loading, setLoading] = useState(false);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [values, setValues] = useState<Inputs>({
     username: user?.username || "",
     email: user?.email || "",
@@ -37,6 +38,7 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
     profession: user?.profession || "",
   });
   const [uncngError, setUncngError] = useState(false);
+  const [usernameErr, setUsernameErr] = useState(false);
 
   const {
     register,
@@ -69,11 +71,15 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
             `https://sociatek-api.onrender.com/api/user/${user?.username}`,
             values
           );
-          dispatch({ type: "USER_UPDATE_SUCCESS", payload: res.data?.message });
+          const returneduser = await res?.data?.message;
+          dispatch({ type: "USER_UPDATE_SUCCESS", payload: returneduser });
+
           router.push(`/user/${res.data?.message.username}`);
           setOpenModal(false);
         } catch (error: any) {
           console.log(error?.response.data.error);
+          setUsernameErr(true);
+          setErrorMessages(error?.response.data.errors);
         }
       }
 
@@ -109,8 +115,8 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
                 message: "Maximum length is 15 characters!",
               },
             })}
-            placeholder={user?.username ? user?.username : "Username"}
-            value={values.username ? values.username : user?.username}
+            placeholder={user?.username ? user?.username : "Username*"}
+            value={values.username ? values.username : ""}
             onChange={(e) =>
               setValues((prevValues) => ({
                 ...prevValues,
@@ -132,8 +138,8 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
                 message: "Invalid email address",
               },
             })}
-            placeholder={user?.email ? user?.email : "Email"}
-            value={values.email ? values.email : user?.email}
+            placeholder={user?.email ? user?.email : "Email*"}
+            value={values.email ? values.email : ""}
             onChange={(e) =>
               setValues((prevValues) => ({
                 ...prevValues,
@@ -160,8 +166,8 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
                 message: "Maximum length is 25 characters!",
               },
             })}
-            placeholder={user?.fullname ? user?.fullname : "Fullname"}
-            value={values.fullname ? values.fullname : user?.fullname}
+            placeholder={user?.fullname ? user?.fullname : "Fullname*"}
+            value={values.fullname ? values.fullname : ""}
             onChange={(e) =>
               setValues((prevValues) => ({
                 ...prevValues,
@@ -188,8 +194,8 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
                 message: "Maximum length is 400 characters!",
               },
             })}
-            placeholder={user?.about ? user?.about : "About yourself"}
-            value={values.about ? values.about : user?.about}
+            placeholder={user?.about ? user?.about : "About yourself*"}
+            value={values.about ? values.about : ""}
             onChange={(e) =>
               setValues((prevValues) => ({
                 ...prevValues,
@@ -211,7 +217,7 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
               required: false,
             })}
             placeholder={user?.phone ? user?.phone : "Phone Number"}
-            value={values.phone ? values.phone : user?.phone}
+            value={values.phone ? values.phone : ""}
             onChange={(e) =>
               setValues((prevValues) => ({
                 ...prevValues,
@@ -229,8 +235,8 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
             {...register("location", {
               required: "Location is required!",
             })}
-            placeholder={user?.location ? user?.location : "Location"}
-            value={values.location ? values.location : user?.location}
+            placeholder={user?.location ? user?.location : "Location*"}
+            value={values.location ? values.location : ""}
             onChange={(e) =>
               setValues((prevValues) => ({
                 ...prevValues,
@@ -303,6 +309,17 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
               You haven&apos;t made any changes!
             </p>
           )}
+
+          {usernameErr && (
+            <p className={styles.usernameErr}>Username already in use!</p>
+          )}
+
+          {/* not working */}
+          {errorMessages?.map((errorMessage, index) => (
+            <p key={index} className={styles.f_errors}>
+              {errorMessage}
+            </p>
+          ))}
         </form>
       </div>
     </div>

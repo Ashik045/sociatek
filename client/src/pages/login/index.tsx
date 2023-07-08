@@ -27,7 +27,7 @@ const index = () => {
     reset,
     trigger,
   } = useForm<LoginInputs>();
-  const { dispatch } = useContext(Context);
+  const { dispatch, user } = useContext(Context);
 
   const onSubmit = async (data: LoginInputs) => {
     setLoading(true);
@@ -86,6 +86,7 @@ const index = () => {
                 trigger("emailOrUsername");
               }}
               className={styles.exact_form_inp}
+              style={{ textTransform: "lowercase" }}
             />
             {/* error message */}
             <span className={styles.form_err}>

@@ -234,6 +234,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                   trigger("username");
                 }}
                 className={styles.exact_form_inp}
+                style={{ textTransform: "lowercase" }}
               />
               <span className={styles.form_err}>
                 {formErrors?.username?.message}
@@ -252,6 +253,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
                   trigger("email");
                 }}
                 className={styles.exact_form_inp}
+                style={{ textTransform: "lowercase" }}
               />
               {/* error message */}
               <span className={styles.form_err}>

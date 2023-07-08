@@ -1,7 +1,8 @@
 .form_container {
   .upload_imgs {
     display: grid;
-    grid-template-columns: 40% 40%;
+    grid-template-columns: 45% 45%;
+    gap: 20px;
     justify-content: center;
     align-items: center;
     margin: 15px 0px 20px;
@@ -13,6 +14,7 @@
       .img {
         object-fit: cover;
         border-radius: 50%;
+        margin-left: 10px;
       }
       label {
         display: flex;
@@ -152,5 +154,60 @@
     margin-right: auto;
     color: red;
     font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form_container {
+    .upload_imgs {
+      display: grid;
+      grid-template-columns: 45% 45%;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+      margin: 15px 0px 20px;
+
+      .form_inp_profile_pic {
+        .img {
+          width: 80px;
+          height: 80px;
+        }
+        label {
+          font-size: 15px;
+
+          .file_icon {
+            font-size: 28px;
+          }
+        }
+      }
+
+      .form_inp_profile_cover {
+        .cover_img {
+          object-fit: cover;
+          border-radius: 4px;
+          height: 80px;
+          width: 170px;
+        }
+        label {
+          color: rgba(0, 0, 0, 0.651);
+          font-size: 15px;
+
+          .file_icon {
+            font-size: 28px;
+          }
+        }
+      }
+    }
+
+    .form_body {
+      .exact_form_inp {
+        display: block;
+        width: 90%;
+      }
+
+      .textarea {
+        max-width: 90%;
+      }
+    }
   }
 }

@@ -183,13 +183,13 @@
 
         .contact_btm {
           display: flex;
-          justify-content: center;
+          justify-content: space-around;
           color: rgba(0, 0, 0, 0.726);
 
           .contact_btmm {
             display: flex;
             align-items: center;
-            margin: 0px 5px;
+            margin: 0px 3px;
 
             .contact_btm_fb {
               display: flex;

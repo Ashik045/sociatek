@@ -65,6 +65,7 @@ export const UserUpdValidation = [
     .trim(),
   check("email").isEmail().withMessage("Invalid email address!").trim(),
   check("about").isLength({ min: 1 }).withMessage("About field is required!"),
+  check("location").isLength({ min: 1 }).withMessage("Location is required!"),
 ];
 
 // validation handler

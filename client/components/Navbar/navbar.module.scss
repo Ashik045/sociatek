@@ -208,7 +208,7 @@
 
           .res_nav_menuu {
             position: relative;
-            width: 70%;
+            width: 75%;
             background-color: #f6fcfd;
             overflow: hidden;
             height: 100vh;
@@ -370,8 +370,8 @@
               display: none; /* Hide the popup by default */
               position: absolute; /* Set position to absolute to position the popup relative to its parent */
               bottom: -60px; /* Position the popup 50px below the parent */
-              width: 80px;
-              left: -10px;
+              width: 90px;
+              left: -25px;
 
               p {
                 font-size: 15px;

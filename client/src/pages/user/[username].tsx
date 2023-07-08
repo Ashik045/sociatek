@@ -1,7 +1,7 @@
 import { Context } from "Context/Context";
 import axios from "axios";
 import Navbar from "components/Navbar/Navbar";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -173,22 +173,32 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
   // check if the user is already a follower
   useEffect(() => {
-    if (userr && user?._id) {
-      const isFollower = userr.followers.includes(user?._id);
+    const userCall = async () => {
+      const res = await axios.get(
+        `https://sociatek-api.onrender.com/api/user/${userr?.username}`
+      );
 
-      if (isFollower) {
-        setFollowed(true);
+      const userrr = await res.data?.message;
+
+      if (userrr && user?._id) {
+        const isFollower = userrr.followers?.includes(user?._id);
+        if (isFollower) {
+          setFollowed(true);
+        } else {
+          setFollowed(false);
+        }
+      } else {
+        console.log("no user!");
       }
+    };
 
-      if (!isFollower) setFollowed(false);
-    } else {
-      console.log("no user!");
-    }
+    userCall();
   }, [userr, user?._id]);
 
   // update the user active status
   useEffect(() => {
     if (!user) return;
+    if (user.username === userr.username) return;
     // Function to update active status on the server
     const updateActiveStatus = async () => {
       try {
@@ -211,7 +221,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(interval);
-  }, [user?._id, user]);
+  }, [user?._id, user, userr.username]);
 
   // format the date
   const createAt = new Date(userr?.createdAt);
@@ -495,7 +505,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                   Facebook:
                   <div className={styles.contact_btm_fb}>
                     {userr?.facebook ? (
-                      <p style={{ cursor: "pointer" }}>
+                      <p style={{ cursor: "pointer", fontSize: "15px" }}>
                         <Link
                           href={userr?.facebook}
                           style={{ color: "rgba(0, 0, 0, 0.795)" }}
@@ -504,14 +514,19 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                           <MdOutbond
                             style={{
                               marginBottom: "-13px",
-                              fontSize: "25px",
-                              marginLeft: "4px",
+                              fontSize: "23px",
                             }}
                           />
                         </Link>
                       </p>
                     ) : (
-                      <p style={{ marginBottom: "4px", marginLeft: "3px" }}>
+                      <p
+                        style={{
+                          marginBottom: "4px",
+                          marginLeft: "2px",
+                          fontSize: "15px",
+                        }}
+                      >
                         Not Signed!
                       </p>
                     )}
@@ -521,7 +536,13 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
                 <div className={styles.contact_btm_join}>
                   <MdOutlineCalendarMonth className={styles.contact_btm_icon} />
                   Joined:{" "}
-                  <p style={{ marginBottom: "4px", marginLeft: "2px" }}>
+                  <p
+                    style={{
+                      marginBottom: "4px",
+                      marginLeft: "2px",
+                      fontSize: "15px",
+                    }}
+                  >
                     {date}
                   </p>
                 </div>
@@ -616,26 +637,28 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 export default Index;
 
 // Fetch the list of user IDs from an API or database
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await axios.get(
-    "https://sociatek-api.onrender.com/api/users/all"
-  );
-  const users = await res.data.message;
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const res = await axios.get(
+//     "https://sociatek-api.onrender.com/api/users/all"
+//   );
+//   const users = await res.data.message;
 
-  const paths = users.map((user: User) => ({
-    params: {
-      username: user.username,
-    },
-  }));
+//   const paths = users.map((user: User) => ({
+//     params: {
+//       username: user.username,
+//     },
+//   }));
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
-};
+//   return {
+//     paths,
+//     fallback: "blocking",
+//   };
+// };
 
 //  Fetch the user data based on the ID from an API or database
-export const getStaticProps: GetStaticProps<UserProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<UserProps> = async (
+  context
+) => {
   const { params } = context;
 
   const res = await axios.get(

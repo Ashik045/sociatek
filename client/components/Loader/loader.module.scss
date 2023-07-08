@@ -54,3 +54,19 @@
     transform: rotate(15deg);
   }
 }
+
+@media screen and (max-width: 768px) {
+  .loader {
+    display: block;
+    height: 32px;
+    width: 120px;
+    border-bottom: 5px solid black;
+    box-sizing: border-box;
+    animation: balancing 2s linear infinite alternate;
+    transform-origin: 50% 100%;
+    position: absolute;
+    top: 40%;
+    left: 38%;
+    transform: translate(-40%, -38%);
+  }
+}
