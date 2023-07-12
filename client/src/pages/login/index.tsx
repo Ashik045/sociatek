@@ -30,13 +30,18 @@ const index = () => {
   const { dispatch, user } = useContext(Context);
 
   const onSubmit = async (data: LoginInputs) => {
+    const { emailOrUsername, password } = data;
+
     setLoading(true);
 
     try {
       dispatch({ type: "LOGIN_START" });
       const res = await axios.post(
         "https://sociatek-api.onrender.com/api/auth/login",
-        data
+        {
+          emailOrUsername: emailOrUsername.toLocaleLowerCase(),
+          password: password,
+        }
       );
 
       const { message, jwtToken } = res.data;

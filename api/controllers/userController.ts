@@ -18,7 +18,17 @@ export const getAllUsers = async (
   res: express.Response
 ) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
+    const { limit } = req.query;
+    let users;
+
+    if (limit) {
+      // If limit parameter is provided, fetch limited data
+      const parsedLimit = parseInt(limit as string, 10);
+      users = await User.find().sort({ createdAt: -1 }).limit(parsedLimit);
+    } else {
+      // Fetch all data
+      users = await User.find().sort({ createdAt: -1 });
+    }
 
     res.status(200).json({
       message: users,

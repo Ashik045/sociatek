@@ -71,7 +71,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   // handle the form
   const onSubmit = async (data: Inputs) => {
     setLoading(true);
-    const { confirmPassword, ...others } = data;
+    const { confirmPassword, username, email, ...others } = data;
 
     try {
       let profilePicture = "";
@@ -111,6 +111,8 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
 
       newUser = {
         ...others,
+        username: username.toLocaleLowerCase(),
+        email: email.toLocaleLowerCase(),
         profilePicture: profilePicture,
         coverPhoto: coverPhoto,
         profession: others.profession || "student",
@@ -122,6 +124,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
           newUser
         );
         setLoading(false);
+        console.log(response.data.message);
 
         if (response.data.message) {
           router.push("/login");

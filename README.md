@@ -18,3 +18,8 @@
 #### Errors to be fixed in future:
 
 - Based on the user scroll, fetch the posts part by part rather than fetch them all in the first load.
+
+#### Upcoming Features
+
+- Notifications functionality.
+- Add comment to any post.
