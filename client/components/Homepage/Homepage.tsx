@@ -4,7 +4,7 @@ import Post from "components/Post/Post";
 import PostComponent from "components/PostComponent/PostComponent";
 import Profile from "components/Profile/Profile";
 import Suggestions from "components/Suggestions/Suggestions";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Postt, User } from "types.global";
 import styles from "./homepage.module.scss";
@@ -26,13 +26,17 @@ const Homepage = ({
 }: PostAndUserProps) => {
   const [allPosts, setAllPosts] = useState(initialPosts);
 
+  useEffect(() => {
+    setAllPosts(initialPosts);
+  }, [initialPosts]);
+
   const fetchMoreData = async () => {
     try {
       const lastPost = allPosts[allPosts.length - 1]; // Get the last post in the current list
 
-      // Fetch more data from the API using the createdAt of the last post
+      // Fetch more data from the API using the _id of the last post
       const res = await axios.get(
-        `http://localhost:4000/api/posts/all?limit=10&createdAt=${lastPost.createdAt}`
+        `http://localhost:4000/api/posts/all?limit=10&lastPostId=${lastPost._id}`
       );
 
       const newPosts = res.data.message;
@@ -47,8 +51,6 @@ const Homepage = ({
       console.log("Error fetching more data:", error);
     }
   };
-
-  console.log(allPosts);
 
   const { user } = useContext(Context);
 

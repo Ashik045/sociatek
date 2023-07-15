@@ -46,19 +46,21 @@ const getPostById = async (req: Request, res: Response) => {
 
 // get all posts
 const getAllPosts = async (req: Request, res: Response) => {
-  const { limit, page } = req.query;
+  const { limit, lastPostId } = req.query;
   try {
+    const query: any = {};
+
+    if (lastPostId) {
+      query._id = { $lt: lastPostId };
+    }
+
     const options: any = {};
 
     if (limit) {
       options.limit = parseInt(limit.toString());
     }
 
-    if (page) {
-      options.skip = parseInt(page.toString());
-    }
-
-    const posts = await Post.find({}, null, options).sort({ createdAt: -1 });
+    const posts = await Post.find(query, null, options).sort({ createdAt: -1 });
 
     res.status(200).json({
       message: posts,

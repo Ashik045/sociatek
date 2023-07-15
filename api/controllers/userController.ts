@@ -18,17 +18,24 @@ export const getAllUsers = async (
   res: express.Response
 ) => {
   try {
-    const { limit } = req.query;
+    const { limit, lastPostId } = req.query;
     let users;
+
+    const query: any = {};
+
+    if (lastPostId) {
+      // If lastPostId parameter is provided, fetch data after the specified user
+      query._id = { $lt: lastPostId };
+    }
+
+    const options: any = {};
 
     if (limit) {
       // If limit parameter is provided, fetch limited data
-      const parsedLimit = parseInt(limit as string, 10);
-      users = await User.find().sort({ createdAt: -1 }).limit(parsedLimit);
-    } else {
-      // Fetch all data
-      users = await User.find().sort({ createdAt: -1 });
+      options.limit = parseInt(limit.toString());
     }
+
+    users = await User.find(query, null, options).sort({ createdAt: -1 });
 
     res.status(200).json({
       message: users,

@@ -25,8 +25,6 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
     setUserss(users);
   }, [users]);
 
-  //  ***********  add a follow request to the user profile ***********
-
   // reveive the nav data when user clicks on it
   const handleUserNav = async (nav: string) => {
     setUserNav(nav);
@@ -132,7 +130,7 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
         {loading ? (
           <span className={styles.loader}></span>
         ) : (
-          <UserDiv users={userss} />
+          <UserDiv users={userss} userNav={userNav} />
         )}
       </div>
     </div>
@@ -145,9 +143,7 @@ export default Users;
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
-  const res2 = await axios.get(
-    "https://sociatek-api.onrender.com/api/users/all"
-  );
+  const res2 = await axios.get("http://localhost:4000/api/users/all?limit=15");
   const data2 = await res2.data;
 
   return {

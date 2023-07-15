@@ -126,13 +126,6 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   }, [userr?._id, user]);
 
   // set the followings and followers
-  // useEffect(() => {
-  //   setFollowers(userr?.followers?.length);
-
-  //   setFollowings(userr?.following?.length);
-  // }, [userr?.followers.length, userr?.following.length]);
-
-  // set the followings and followers
   useEffect(() => {
     const fetchFollowers = async () => {
       try {

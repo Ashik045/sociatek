@@ -14,9 +14,6 @@
 - Personalized profile visitor functionality, enabling users to see who has viewed their profile..
 - Ensured data security through server-side and client-side validation.
 - Dynamically rendered user navigation highlighting users, followers, and followings,
-
-#### Errors to be fixed in future:
-
 - Based on the user scroll, fetch the posts part by part rather than fetch them all in the first load.
 
 #### Upcoming Features
