@@ -46,9 +46,8 @@ const getPostById = async (req: Request, res: Response) => {
 
 // get all posts
 const getAllPosts = async (req: Request, res: Response) => {
-  const { user, limit, page } = req.query;
+  const { limit, page } = req.query;
   try {
-    const query: any = user ? { username: user } : {};
     const options: any = {};
 
     if (limit) {
@@ -56,16 +55,13 @@ const getAllPosts = async (req: Request, res: Response) => {
     }
 
     if (page) {
-      const pageNumber = parseInt(page.toString());
-      options.skip = (pageNumber - 1) * options.limit;
+      options.skip = parseInt(page.toString());
     }
 
-    const posts = await Post.find(query, null, options).sort({ createdAt: -1 });
-    const totalPosts = await Post.countDocuments(query);
+    const posts = await Post.find({}, null, options).sort({ createdAt: -1 });
 
     res.status(200).json({
       message: posts,
-      totalPages: Math.ceil(totalPosts / options.limit),
     });
   } catch (error) {
     res.status(500).json({

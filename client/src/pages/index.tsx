@@ -6,7 +6,7 @@ import jwtDecode from "jwt-decode";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Postt, User } from "types.global";
 import Navbar from "../../components/Navbar/Navbar";
 
@@ -20,13 +20,10 @@ interface HomePageProps {
 export const revalidate = 30;
 
 const Home: NextPage<HomePageProps> = ({ posts, users }) => {
-  const [allPosts, setAllPosts] = useState<Postt[]>([]);
+  const [allPosts, setAllPosts] = useState(posts);
+  const [hasMore, setHasMore] = useState(true);
   // const [loading, setLoading] = useState(false);
   // const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    setAllPosts(posts);
-  }, [posts]);
 
   const { dispatch } = useContext(Context);
   const router = useRouter();
@@ -61,7 +58,13 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
         <Navbar />
 
         {/* main section of this application */}
-        <Homepage posts={allPosts} users={users} setAllPosts={setAllPosts} />
+        <Homepage
+          initialPosts={posts}
+          users={users}
+          setAllPosts={setAllPosts}
+          hasMore={hasMore}
+          setHasMore={setHasMore}
+        />
       </main>
     </>
   );
@@ -73,8 +76,8 @@ export const getServerSideProps: GetServerSideProps<
 > = async () => {
   try {
     const [postsRes, usersRes] = await Promise.all([
-      axios.get("https://sociatek-api.onrender.com/api/posts/all"),
-      axios.get("http://localhost:4000/api/users/all?limit=7"),
+      axios.get("http://localhost:4000/api/posts/all?limit=10"),
+      axios.get("https://sociatek-api.onrender.com/api/users/all?limit=7"),
     ]);
 
     const posts = postsRes.data.message;
