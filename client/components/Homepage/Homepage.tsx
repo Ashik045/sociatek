@@ -36,7 +36,7 @@ const Homepage = ({
 
       // Fetch more data from the API using the _id of the last post
       const res = await axios.get(
-        `http://localhost:4000/api/posts/all?limit=10&lastPostId=${lastPost._id}`
+        `https://sociatek-api.onrender.com/api/posts/all?limit=10&lastPostId=${lastPost._id}`
       );
 
       const newPosts = res.data.message;
@@ -77,7 +77,11 @@ const Homepage = ({
           dataLength={allPosts.length}
           next={fetchMoreData}
           hasMore={hasMore}
-          loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+          loader={
+            <div className={styles.loader_div}>
+              <span className={styles.loader}></span>
+            </div>
+          }
         >
           {allPosts.length > 0 ? (
             allPosts.map((post) => {

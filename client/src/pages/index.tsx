@@ -76,7 +76,7 @@ export const getServerSideProps: GetServerSideProps<
 > = async () => {
   try {
     const [postsRes, usersRes] = await Promise.all([
-      axios.get("http://localhost:4000/api/posts/all?limit=10"),
+      axios.get("https://sociatek-api.onrender.com/api/posts/all?limit=10"),
       axios.get("https://sociatek-api.onrender.com/api/users/all?limit=7"),
     ]);
 

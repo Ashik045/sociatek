@@ -26,6 +26,7 @@ import ProfileVisitors from "components/ProfileVisitors/ProfileVisitors";
 import ReactorsPopup from "components/ReactorsPopup/ReactorsPopup";
 import UpdateModal from "components/UpdateModal/UpdateModal";
 import UserActivities from "components/UserActivities/UserActivities";
+import InfiniteScroll from "react-infinite-scroll-component";
 import noCover from "../../../images/no-image-available-icon-6.png";
 import noProfilePhoto from "../../../images/no-photo.png";
 
@@ -54,6 +55,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const [profileVisitors, setProfileVisitors] = useState([]);
   const [visitorsPopup, setVisitorsPopup] = useState(false);
   const visitedRef = useRef(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const router = useRouter();
   const userName = router.query.username;
@@ -343,7 +345,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       setLoading2(true);
       // fetch the activity of a user
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/user/activities/${userId}`
+        `https://sociatek-api.onrender.com/api/user/activities/${userId}?limit=10`
       );
 
       const activity = await res.data.message;
@@ -368,6 +370,29 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     } catch (error) {
       console.error(error);
       setLoading3(false);
+    }
+  };
+
+  // fetcj more data when user scrolls
+  const fetchMoreData = async () => {
+    try {
+      const lastPost = allPosts[allPosts.length - 1]; // Get the last post in the current list
+
+      // Fetch more data from the API using the _id of the last post
+      const res = await axios.get(
+        `https://sociatek-api.onrender.com/api/posts/all?user=${userName}&limit=10&lastPostId=${lastPost._id}`
+      );
+
+      const newPosts = res.data.message;
+
+      if (newPosts.length === 0) {
+        setHasMore(false); // Stop fetching if there are no more posts
+      } else {
+        // Update the state with the new posts
+        setAllPosts((prevPosts) => [...prevPosts, ...newPosts]);
+      }
+    } catch (error) {
+      console.log("Error fetching more data:", error);
     }
   };
 
@@ -591,34 +616,48 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
             <UserActivities
               activities={activities}
               pusername={userr.username}
+              userId={userr?._id}
               loading={loading2}
             />
           ) : (
             <div>
-              {allPosts.length > 0 ? (
-                allPosts.map((post) => {
-                  return (
-                    <Post
-                      postItems={post}
-                      key={post._id}
-                      setAllPosts={setAllPosts}
-                    />
-                  );
-                })
-              ) : (
-                <div className={styles.user_posts_empty}>
-                  <p>Haven&apos;t shared any post yet!</p>
+              <InfiniteScroll
+                dataLength={allPosts.length}
+                next={fetchMoreData}
+                hasMore={hasMore}
+                loader={
+                  allPosts.length > 0 && (
+                    <div className={styles.loader_div}>
+                      <span className={styles.loader}></span>
+                    </div>
+                  )
+                }
+              >
+                {allPosts.length > 0 ? (
+                  allPosts.map((post) => {
+                    return (
+                      <Post
+                        postItems={post}
+                        key={post._id}
+                        setAllPosts={setAllPosts}
+                      />
+                    );
+                  })
+                ) : (
+                  <div className={styles.user_posts_empty}>
+                    <p>Haven&apos;t shared any post yet!</p>
 
-                  {userName === user?.username && (
-                    <>
-                      <p style={{ marginTop: "40px" }}>
-                        <b>Want to share anything?</b>
-                      </p>
-                      <PostComponent />
-                    </>
-                  )}
-                </div>
-              )}
+                    {userName === user?.username && (
+                      <>
+                        <p style={{ marginTop: "40px" }}>
+                          <b>Want to share anything?</b>
+                        </p>
+                        <PostComponent />
+                      </>
+                    )}
+                  </div>
+                )}
+              </InfiniteScroll>
             </div>
           )}
         </div>
@@ -658,7 +697,7 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
     `https://sociatek-api.onrender.com/api/user/${params?.username}`
   );
   const res2 = await axios.get(
-    `https://sociatek-api.onrender.com/api/posts/all?user=${params?.username}`
+    `https://sociatek-api.onrender.com/api/posts/all?user=${params?.username}&limit=10`
   );
 
   const data = await res.data.message;

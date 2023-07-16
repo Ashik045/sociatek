@@ -46,9 +46,9 @@ const getPostById = async (req: Request, res: Response) => {
 
 // get all posts
 const getAllPosts = async (req: Request, res: Response) => {
-  const { limit, lastPostId } = req.query;
+  const { user, limit, lastPostId } = req.query;
   try {
-    const query: any = {};
+    const query: any = user ? { username: user } : {};
 
     if (lastPostId) {
       query._id = { $lt: lastPostId };

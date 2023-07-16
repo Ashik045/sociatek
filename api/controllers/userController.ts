@@ -331,6 +331,7 @@ export const userActivity = async (
   res: express.Response
 ) => {
   const { userId } = req.params;
+  const { limit, lastPostId } = req.query;
 
   try {
     const user = await User.findById(userId);
@@ -339,7 +340,21 @@ export const userActivity = async (
       return res.status(404).json({ error: "User not found!" });
     }
 
-    const likedPosts = await Post.find({ _id: { $in: user.activities } });
+    const query: any = { _id: { $in: user.activities } };
+
+    if (lastPostId) {
+      query._id = { $lt: lastPostId };
+    }
+
+    let options: any = {};
+
+    if (limit) {
+      options.limit = parseInt(limit.toString());
+    }
+
+    const likedPosts = await Post.find(query, null, options).sort({
+      createdAt: -1,
+    });
 
     res.status(200).json({
       message: likedPosts,

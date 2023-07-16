@@ -36,7 +36,7 @@ const UserDiv = ({ users, userNav }: UserProp) => {
       // Fetch more data from the API using the _id of the last post
       if (userNav === "allusers") {
         const res = await axios.get(
-          `http://localhost:4000/api/users/all?limit=15&lastPostId=${lastPost._id}`
+          `https://sociatek-api.onrender.com/api/users/all?limit=15&lastPostId=${lastPost._id}`
         );
 
         const newPosts = res.data.message;
@@ -136,7 +136,11 @@ const UserDiv = ({ users, userNav }: UserProp) => {
         dataLength={allUsers.length}
         next={fetchMoreData}
         hasMore={hasMore}
-        loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+        loader={
+          <div className={styles.loader_div}>
+            <span className={styles.loader}></span>
+          </div>
+        }
       >
         {(router.pathname === "/"
           ? allUsers.filter((item) => item._id !== user?._id)

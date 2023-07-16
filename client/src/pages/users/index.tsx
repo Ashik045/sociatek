@@ -143,7 +143,9 @@ export default Users;
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
-  const res2 = await axios.get("http://localhost:4000/api/users/all?limit=15");
+  const res2 = await axios.get(
+    "https://sociatek-api.onrender.com/api/users/all?limit=15"
+  );
   const data2 = await res2.data;
 
   return {
