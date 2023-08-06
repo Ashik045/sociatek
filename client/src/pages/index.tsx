@@ -1,4 +1,3 @@
-import { Inter } from "@next/font/google";
 import { Context } from "Context/Context";
 import axios from "axios";
 import Homepage from "components/Homepage/Homepage";
@@ -10,8 +9,6 @@ import { useContext, useState } from "react";
 import { Postt, User } from "types.global";
 import Navbar from "../../components/Navbar/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
-
 interface HomePageProps {
   posts: Postt[];
   users: User[];
@@ -22,8 +19,6 @@ export const revalidate = 30;
 const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   const [allPosts, setAllPosts] = useState(posts);
   const [hasMore, setHasMore] = useState(true);
-  // const [loading, setLoading] = useState(false);
-  // const [page, setPage] = useState(1);
 
   const { dispatch } = useContext(Context);
   const router = useRouter();
@@ -70,15 +65,19 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   );
 };
 
+export default Home;
+
 // SSR - get called on every request
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
   try {
-    const [postsRes, usersRes] = await Promise.all([
-      axios.get("https://sociatek-api.onrender.com/api/posts/all?limit=10"),
-      axios.get("https://sociatek-api.onrender.com/api/users/all?limit=7"),
-    ]);
+    const postsRes = await axios.get(
+      "https://sociatek-api.onrender.com/api/posts/all?limit=10"
+    );
+    const usersRes = await axios.get(
+      "https://sociatek-api.onrender.com/api/users/all?limit=7"
+    );
 
     const posts = postsRes.data.message;
     const users = usersRes.data.message;
@@ -100,5 +99,3 @@ export const getServerSideProps: GetServerSideProps<
     };
   }
 };
-
-export default Home;

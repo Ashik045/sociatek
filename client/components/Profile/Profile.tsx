@@ -1,6 +1,4 @@
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import { GroupAdd, GroupRemove, ThumbUpAlt } from "@mui/icons-material";
 import { Context } from "Context/Context";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,15 +57,15 @@ const Profile = () => {
 
           <div className={styles.user_activities}>
             <div className={styles.follow_sec}>
-              <ThumbUpAltIcon className={styles.user_act_icon} />
+              <ThumbUpAlt className={styles.user_act_icon} />
               <span>{user?.activities?.length}</span>
             </div>
             <div className={styles.follow_sec}>
-              <GroupAddIcon className={styles.user_act_icon} />
+              <GroupAdd className={styles.user_act_icon} />
               <span>{user?.followers?.length}</span>
             </div>
             <div className={styles.follow_sec}>
-              <GroupRemoveIcon className={styles.user_act_icon} />
+              <GroupRemove className={styles.user_act_icon} />
               <span>{user?.following?.length}</span>
             </div>
           </div>

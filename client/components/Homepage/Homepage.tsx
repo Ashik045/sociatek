@@ -61,8 +61,7 @@ const Homepage = ({
           <Profile />
         ) : (
           <p style={{ padding: "10px" }}>
-            Banner / Intro of this application. Sign in to achieve all the
-            features of Sociatek.
+            Please sign in to achieve all the features of Sociatek.
           </p>
         )}
       </div>

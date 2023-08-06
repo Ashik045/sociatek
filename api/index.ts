@@ -17,6 +17,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Edge Functions
+
 // connnect ot database
 mongoose
   .connect(`${process.env.MONGODB_CONNECTION_STRING}`)
