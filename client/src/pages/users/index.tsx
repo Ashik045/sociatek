@@ -35,7 +35,7 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
 
       try {
         const response = await axios.get(
-          `https://sociatek-api.onrender.com/api/user/${user?._id}/followers`
+          `https://sociatek.onrender.com/api/user/${user?._id}/followers`
         );
         const followers = response.data.message;
         setUserss(followers);
@@ -50,7 +50,7 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
 
       try {
         const response = await axios.get(
-          `https://sociatek-api.onrender.com/api/user/${user?._id}/followings`
+          `https://sociatek.onrender.com/api/user/${user?._id}/followings`
         );
         const followings = response.data.message;
         setUserss(followings);
@@ -144,7 +144,7 @@ export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
   const res2 = await axios.get(
-    "https://sociatek-api.onrender.com/api/users/all?limit=15"
+    "https://sociatek.onrender.com/api/users/all?limit=15"
   );
   const data2 = await res2.data;
 

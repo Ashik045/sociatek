@@ -97,7 +97,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
       try {
         // add a like request
         const response = await axios.post(
-          `https://sociatek-api.onrender.com/api/post/like/${_id}`,
+          `https://sociatek.onrender.com/api/post/like/${_id}`,
           {},
           config
         );
@@ -114,7 +114,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
       // add a unlike request
       try {
         const response = await axios.post(
-          `https://sociatek-api.onrender.com/api/post/unlike/${_id}`,
+          `https://sociatek.onrender.com/api/post/unlike/${_id}`,
           {},
           config
         );
@@ -155,7 +155,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
     try {
       // send a api request
       const res = await axios.delete(
-        `https://sociatek-api.onrender.com/api/post/${id}`,
+        `https://sociatek.onrender.com/api/post/${id}`,
         config
       );
 
@@ -174,7 +174,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/post/${postId}/reactedusers`
+        `https://sociatek.onrender.com/api/post/${postId}/reactedusers`
       );
       const users = await res.data.message;
       setReactedUsers(users);
@@ -362,7 +362,7 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
 ) => {
   const postId = context.query.postid;
 
-  const res = await axios.get(`https://sociatek-api.onrender.com/api/post/${postId}`);
+  const res = await axios.get(`https://sociatek.onrender.com/api/post/${postId}`);
   const data = await res.data.message;
 
   // Get the username from the fetched post data
@@ -370,7 +370,7 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
 
   // fetch other posts of the user
   const res2 = await axios.get(
-    `https://sociatek-api.onrender.com/api/posts/all?user=${username}`
+    `https://sociatek.onrender.com/api/posts/all?user=${username}`
   );
   const data2 = await res2.data.message;
 

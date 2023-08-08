@@ -120,7 +120,7 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
 
       try {
         const response = await axios.post(
-          "https://sociatek-api.onrender.com/api/auth/signup",
+          "https://sociatek.onrender.com/api/auth/signup",
           newUser
         );
         setLoading(false);

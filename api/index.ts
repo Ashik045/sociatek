@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // connnect ot database
 mongoose
-  .connect(`${process.env.MONGODB_CONNECTION_STRING}`)
+  .connect(`${process.env.MONGODB_CONNECTION_STRING_MAIN}`)
   .then(() => {
     console.log("MongoDB connection successful");
   })
@@ -30,8 +30,8 @@ mongoose
   });
 
 // routes
-app.get("/api", (req: express.Request, res: express.Response) => {
-  return res.status(200).send({ message: "OK" });
+app.get("/", (req: express.Request, res: express.Response) => {
+  return res.status(200).json({ message: "OK" });
 });
 // login and register
 app.use("/api", authUserRoute);
@@ -58,7 +58,7 @@ app.use(
     next: express.NextFunction
   ) => {
     res.status(500).json({
-      error: err.message,
+      error: "Internal Server Error!",
     });
   }
 );

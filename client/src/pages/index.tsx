@@ -73,10 +73,10 @@ export const getServerSideProps: GetServerSideProps<
 > = async () => {
   try {
     const postsRes = await axios.get(
-      "https://sociatek-api.onrender.com/api/posts/all?limit=10"
+      "https://sociatek.onrender.com/api/posts/all?limit=10"
     );
     const usersRes = await axios.get(
-      "https://sociatek-api.onrender.com/api/users/all?limit=7"
+      "https://sociatek.onrender.com/api/users/all?limit=7"
     );
 
     const posts = postsRes.data.message;

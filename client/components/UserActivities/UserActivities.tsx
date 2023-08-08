@@ -35,7 +35,7 @@ const UserActivities = ({
 
       // Fetch more activities from the API using the last activity ID
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/user/activities/${userId}?limit=10&lastPostId=${lastPost._id}`
+        `https://sociatek.onrender.com/api/user/activities/${userId}?limit=10&lastPostId=${lastPost._id}`
       );
 
       const newActivities = res.data.message;

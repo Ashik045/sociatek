@@ -89,7 +89,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
           };
 
           const res = await axios.get(
-            `https://sociatek-api.onrender.com/api/user/visit/${userr?._id}`,
+            `https://sociatek.onrender.com/api/user/visit/${userr?._id}`,
             config
           );
 
@@ -113,7 +113,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       setLoading3(true);
       try {
         const res = await axios.get(
-          `https://sociatek-api.onrender.com/api/user/${userr?._id}/visitors`
+          `https://sociatek.onrender.com/api/user/${userr?._id}/visitors`
         );
         setProfileVisitors(res.data?.message);
 
@@ -133,7 +133,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       try {
         // Fetch the followers data from the server
         const response = await axios.get(
-          `https://sociatek-api.onrender.com/api/user/${userr._id}/followers`
+          `https://sociatek.onrender.com/api/user/${userr._id}/followers`
         );
         const followers = await response.data.message;
 
@@ -149,7 +149,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       try {
         // Fetch the following data from the server
         const response = await axios.get(
-          `https://sociatek-api.onrender.com/api/user/${userr._id}/followings`
+          `https://sociatek.onrender.com/api/user/${userr._id}/followings`
         );
         const followings = await response.data.message;
 
@@ -170,7 +170,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   useEffect(() => {
     const userCall = async () => {
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/user/${userr?.username}`
+        `https://sociatek.onrender.com/api/user/${userr?.username}`
       );
 
       const userrr = await res.data?.message;
@@ -199,7 +199,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       try {
         // Send a request to the server endpoint /api/user/active
         await axios.get(
-          `https://sociatek-api.onrender.com/api/user/active/${user?._id}`
+          `https://sociatek.onrender.com/api/user/active/${user?._id}`
         );
       } catch (error) {
         console.error("Failed to update active status:", error);
@@ -233,7 +233,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const handleFollowersClick = async (userId: string) => {
     // You can use the user's followers array to display the list
     const response = await axios.get(
-      `https://sociatek-api.onrender.com/api/user/${userId}/followers`
+      `https://sociatek.onrender.com/api/user/${userId}/followers`
     );
     const followers = await response.data.message;
     setFollowersList(followers);
@@ -249,7 +249,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   const handleFollowingClick = async (userId: string) => {
     // You can use the user's following array to display the list
     const response = await axios.get(
-      `https://sociatek-api.onrender.com/api/user/${userId}/followings`
+      `https://sociatek.onrender.com/api/user/${userId}/followings`
     );
     const followings = await response.data.message;
     setFollowingList(followings);
@@ -293,7 +293,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
         // send a follow request to the user
         if (!loading) {
           const response = await axios.post(
-            `https://sociatek-api.onrender.com/api/user/follow/${userr?._id}`,
+            `https://sociatek.onrender.com/api/user/follow/${userr?._id}`,
             {},
             config
           );
@@ -314,7 +314,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
         // send a unfollow request to the user
         if (!loading) {
           const response = await axios.post(
-            `https://sociatek-api.onrender.com/api/user/unfollow/${userr?._id}`,
+            `https://sociatek.onrender.com/api/user/unfollow/${userr?._id}`,
             {},
             config
           );
@@ -345,7 +345,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
       setLoading2(true);
       // fetch the activity of a user
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/user/activities/${userId}?limit=10`
+        `https://sociatek.onrender.com/api/user/activities/${userId}?limit=10`
       );
 
       const activity = await res.data.message;
@@ -362,7 +362,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     try {
       setLoading3(true);
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/user/${userr?._id}/visitors`
+        `https://sociatek.onrender.com/api/user/${userr?._id}/visitors`
       );
       setProfileVisitors(res.data?.message);
 
@@ -380,7 +380,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
 
       // Fetch more data from the API using the _id of the last post
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/posts/all?user=${userName}&limit=10&lastPostId=${lastPost._id}`
+        `https://sociatek.onrender.com/api/posts/all?user=${userName}&limit=10&lastPostId=${lastPost._id}`
       );
 
       const newPosts = res.data.message;
@@ -671,7 +671,7 @@ export default Index;
 // Fetch the list of user IDs from an API or database
 // export const getStaticPaths: GetStaticPaths = async () => {
 //   const res = await axios.get(
-//     "https://sociatek-api.onrender.com/api/users/all"
+//     "https://sociatek.onrender.com/api/users/all"
 //   );
 //   const users = await res.data.message;
 
@@ -694,10 +694,10 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
   const { params } = context;
 
   const res = await axios.get(
-    `https://sociatek-api.onrender.com/api/user/${params?.username}`
+    `https://sociatek.onrender.com/api/user/${params?.username}`
   );
   const res2 = await axios.get(
-    `https://sociatek-api.onrender.com/api/posts/all?user=${params?.username}&limit=10`
+    `https://sociatek.onrender.com/api/posts/all?user=${params?.username}&limit=10`
   );
 
   const data = await res.data.message;

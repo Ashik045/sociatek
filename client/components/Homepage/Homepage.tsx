@@ -36,7 +36,7 @@ const Homepage = ({
 
       // Fetch more data from the API using the _id of the last post
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/posts/all?limit=10&lastPostId=${lastPost._id}`
+        `https://sociatek.onrender.com/api/posts/all?limit=10&lastPostId=${lastPost._id}`
       );
 
       const newPosts = res.data.message;

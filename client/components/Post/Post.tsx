@@ -73,7 +73,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/user/${username}`
+        `https://sociatek.onrender.com/api/user/${username}`
       );
       const data = res.data.message;
 
@@ -126,7 +126,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
       try {
         // add a like request
         const response = await axios.post(
-          `https://sociatek-api.onrender.com/api/post/like/${_id}`,
+          `https://sociatek.onrender.com/api/post/like/${_id}`,
           {},
           config
         );
@@ -140,7 +140,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
       // add an unlike request
       try {
         const response = await axios.post(
-          `https://sociatek-api.onrender.com/api/post/unlike/${_id}`,
+          `https://sociatek.onrender.com/api/post/unlike/${_id}`,
           {},
           config
         );
@@ -180,7 +180,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     try {
       // send a api request
       const res = await axios.delete(
-        `https://sociatek-api.onrender.com/api/post/${id}`,
+        `https://sociatek.onrender.com/api/post/${id}`,
         config
       );
 
@@ -201,7 +201,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://sociatek-api.onrender.com/api/post/${postId}/reactedusers`
+        `https://sociatek.onrender.com/api/post/${postId}/reactedusers`
       );
       const users = await res.data.message;
       setReactedUsers(users);
@@ -323,7 +323,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
             </span>{" "}
             {likeCount > 1 ? "likes" : "like"}
           </p>
-          <p>{cmntCount} comments</p>
+          <p className={styles.cmnt_count}>{cmntCount} comments</p>
         </div>
 
         {reactorsPopup && reactedUsers.length > 0 && (

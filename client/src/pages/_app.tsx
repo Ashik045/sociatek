@@ -35,16 +35,19 @@ export default function App({ Component, pageProps }: AppProps) {
     return null;
   }
 
-  return (
-    <>
-      {loading ? (
+  if (loading) {
+    return (
+      <ContextProvider>
         <div className={styles.loader_bg}>
           <span className={styles.loader}></span>
         </div>
-      ) : null}
-      <ContextProvider>
-        <Component {...pageProps} />
       </ContextProvider>
-    </>
+    );
+  }
+
+  return (
+    <ContextProvider>
+      <Component {...pageProps} />
+    </ContextProvider>
   );
 }

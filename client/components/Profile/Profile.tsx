@@ -1,8 +1,9 @@
-import { GroupAdd, GroupRemove, ThumbUpAlt } from "@mui/icons-material";
 import { Context } from "Context/Context";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
+import { FaThumbsUp } from "react-icons/fa";
+import { MdGroupAdd, MdGroupRemove } from "react-icons/md";
 import noCover from "../../images/no-image-available-icon-6.png";
 import noPhoto from "../../images/no-photo.png";
 import styles from "./profile.module.scss";
@@ -57,15 +58,15 @@ const Profile = () => {
 
           <div className={styles.user_activities}>
             <div className={styles.follow_sec}>
-              <ThumbUpAlt className={styles.user_act_icon} />
+              <FaThumbsUp className={styles.user_act_icon} size={16} />
               <span>{user?.activities?.length}</span>
             </div>
             <div className={styles.follow_sec}>
-              <GroupAdd className={styles.user_act_icon} />
+              <MdGroupAdd className={styles.user_act_icon} />
               <span>{user?.followers?.length}</span>
             </div>
             <div className={styles.follow_sec}>
-              <GroupRemove className={styles.user_act_icon} />
+              <MdGroupRemove className={styles.user_act_icon} />
               <span>{user?.following?.length}</span>
             </div>
           </div>

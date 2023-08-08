@@ -36,7 +36,7 @@ const UserDiv = ({ users, userNav }: UserProp) => {
       // Fetch more data from the API using the _id of the last post
       if (userNav === "allusers") {
         const res = await axios.get(
-          `https://sociatek-api.onrender.com/api/users/all?limit=15&lastPostId=${lastPost._id}`
+          `https://sociatek.onrender.com/api/users/all?limit=15&lastPostId=${lastPost._id}`
         );
 
         const newPosts = res.data.message;
@@ -80,7 +80,7 @@ const UserDiv = ({ users, userNav }: UserProp) => {
         // send an unfollow request to the user
         try {
           const response = await axios.post(
-            `https://sociatek-api.onrender.com/api/user/unfollow/${userId}`,
+            `https://sociatek.onrender.com/api/user/unfollow/${userId}`,
             {},
             config
           );
@@ -106,7 +106,7 @@ const UserDiv = ({ users, userNav }: UserProp) => {
         // send a follow request to the server
         try {
           const response = await axios.post(
-            `https://sociatek-api.onrender.com/api/user/follow/${userId}`,
+            `https://sociatek.onrender.com/api/user/follow/${userId}`,
             {},
             config
           );

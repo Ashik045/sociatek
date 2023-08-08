@@ -93,7 +93,7 @@ const UpdPostModal = ({ post, setUpdPopup }: PostUpdProp) => {
       // if everything is good then send the data to the server
       try {
         const res = await axios.put(
-          `https://sociatek-api.onrender.com/api/post/${post._id}`,
+          `https://sociatek.onrender.com/api/post/${post._id}`,
           formInputs,
           config
         );
