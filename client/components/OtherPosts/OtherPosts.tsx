@@ -11,6 +11,7 @@ type PostProp = {
 const OtherPosts = ({ post }: PostProp) => {
   const [timeAgo, setTimeAgo] = useState("");
 
+  /* The `useEffect` hook in this code is used to calculate and update the time ago for a post. */
   useEffect(() => {
     const calculateTimeAgo = () => {
       const now = new Date();

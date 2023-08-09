@@ -26,7 +26,13 @@ const UpdPostModal = ({ post, setUpdPopup }: PostUpdProp) => {
     setUpdPopup(false);
   };
 
-  // handle the post picture
+  /**
+   * The function `handlePostImage` is used to handle the event when a user selects an image file to be
+   * uploaded.
+   * @param e - The parameter `e` is of type `React.ChangeEvent<HTMLInputElement>`. This is an event
+   * object that is triggered when the value of an input element of type `file` changes. It contains
+   * information about the selected file(s) in the `target.files` property.
+   */
   const handlePostImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
@@ -37,6 +43,15 @@ const UpdPostModal = ({ post, setUpdPopup }: PostUpdProp) => {
     }
   };
 
+  /**
+   * The `handleForm` function is responsible for handling form submission in a React TypeScript
+   * application, including uploading an image to Cloudinary and sending the form data to the server
+   * for updating a post.
+   * @param e - The parameter `e` is of type `React.FormEvent`. It represents the form event that is
+   * triggered when the form is submitted.
+   * @returns The function `handleForm` does not have a return statement, so it does not explicitly
+   * return anything.
+   */
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
 

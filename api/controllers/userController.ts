@@ -12,7 +12,10 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
-// get all users
+/**
+ * The getAllUsers function is an asynchronous function that retrieves a list of users based on optional
+ * query parameters such as limit and lastPostId.
+ */
 export const getAllUsers = async (
   req: express.Request,
   res: express.Response
@@ -47,7 +50,13 @@ export const getAllUsers = async (
   }
 };
 
-// get user by userId
+/**
+ * The function `getUserById` retrieves a user by their user ID and returns their information,
+ * excluding their password, if found.
+ * @returns a JSON response with the user information if the user is found. If the user is not found,
+ * it returns a JSON response with an error message. If there is an error during the process, it
+ * returns a JSON response with an error message.
+ */
 export const getUserById = async (
   req: express.Request,
   res: express.Response
@@ -69,7 +78,9 @@ export const getUserById = async (
   }
 };
 
-// get user by userName
+/**
+ * The function `getUserByUserName` is an asynchronous function that retrieves a user by their username
+ */
 export const getUserByUserName = async (
   req: express.Request,
   res: express.Response
@@ -93,7 +104,10 @@ export const getUserByUserName = async (
   }
 };
 
-// update user
+/**
+ * The updateUser function updates a user's information in a database, including their username and password, and
+ * returns the updated user object.
+ */
 export const updateUser = async (
   req: express.Request,
   res: express.Response
@@ -139,7 +153,10 @@ export const updateUser = async (
   }
 };
 
-// delete user
+/**
+ * The deleteUser function is an asynchronous function that deletes a user from the database based on
+ * the provided user ID, and returns a success message if the deletion is successful.
+ */
 export const deleteUser = async (
   req: express.Request,
   res: express.Response
@@ -164,7 +181,10 @@ export const deleteUser = async (
   }
 };
 
-// get followers of a particular user
+/**
+ * The function `getFollowers` is an asynchronous function that retrieves the followers of a user
+ * specified by their `userId` and returns them as a JSON response.
+ */
 export const getFollowers = async (
   req: express.Request,
   res: express.Response
@@ -186,7 +206,10 @@ export const getFollowers = async (
   }
 };
 
-// get followings of a particular user
+/**
+ * The function `getFollowing` is an asynchronous function that retrieves the followings of a user
+ * specified by their `userId` and returns them as a JSON response.
+ */
 export const getFollowing = async (
   req: express.Request,
   res: express.Response
@@ -208,7 +231,11 @@ export const getFollowing = async (
   }
 };
 
-// POST request to follow a user
+/**
+ * The `followUser` function allows a logged-in user to follow another user by updating their
+ * respective follower and following lists.
+ * @returns a JSON response with a message containing the logged-in user object.
+ */
 export const followUser = async (
   req: AuthenticatedRequest & express.Request,
   res: express.Response
@@ -250,7 +277,10 @@ export const followUser = async (
   }
 };
 
-// POST request to follow a user
+/**
+ * The `unFollowUser` function allows a logged-in user to unfollow another user by removing their IDs
+ * from each other's followers and following lists.
+ */
 export const unFollowUser = async (
   req: AuthenticatedRequest & express.Request,
   res: express.Response
@@ -299,7 +329,12 @@ export const unFollowUser = async (
   }
 };
 
-// update the user active status
+/**
+ * The `activeUser` function updates the active status of a user in the database and returns a success
+ * message if the update is successful.
+ * If the user is not found, it returns a JSON response with an error message. If there is an error
+ * during the update process, it returns a JSON response with an error message.
+ */
 export const activeUser = async (
   req: express.Request,
   res: express.Response
@@ -325,7 +360,10 @@ export const activeUser = async (
   }
 };
 
-// get the user activities
+/**
+ * The userActivity function retrieves a user's liked posts based on the provided user ID, limit, and
+ * last post ID.
+ */
 export const userActivity = async (
   req: express.Request,
   res: express.Response
@@ -366,7 +404,11 @@ export const userActivity = async (
   }
 };
 
-// send the visiting user ID to the server and store it
+// sending the visiting user ID to the server and store it
+/**
+ * The function `getVisitingUser` is an asynchronous function that retrieves a user's profile and
+ * stores the visitor's ID in the user's profileVisitors array.
+ */
 export const getVisitingUser = async (
   req: AuthenticatedRequest & express.Request,
   res: express.Response
@@ -398,7 +440,10 @@ export const getVisitingUser = async (
   }
 };
 
-// get profile visitors of a user
+/**
+ * The function `getProfileVisitors` retrieves the profile visitors of a user and returns them in
+ * descending order of creation.
+ */
 export const getProfileVisotors = async (
   req: express.Request,
   res: express.Response

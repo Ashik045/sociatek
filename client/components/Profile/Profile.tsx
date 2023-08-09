@@ -13,14 +13,6 @@ const Profile = () => {
 
   const { user } = useContext(Context);
 
-  // useEffect(() => {
-  //   const userData = localStorage.getItem("user");
-
-  //   if (typeof window !== "undefined" && userData) {
-  //     setUser(JSON.parse(userData));
-  //   }
-  // }, []);
-
   return (
     <div className={styles.profile_component}>
       <div className={styles.profile_owner}>

@@ -38,6 +38,8 @@ const PostComponent = () => {
         onClick={handlePopUp}
       />
 
+      {/* `{postPopup && <PostPopup setPostPopup={setPostPopup} />}` is a conditional rendering
+      statement in JSX.  */}
       {postPopup && <PostPopup setPostPopup={setPostPopup} />}
     </div>
   );

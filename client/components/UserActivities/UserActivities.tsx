@@ -29,6 +29,10 @@ const UserActivities = ({
 
   const { user } = useContext(Context);
 
+  /**
+   * The function fetches more activities from an API based on the last activity ID and updates the
+   * state with the new activities.
+   */
   const fetchMoreActivities = async () => {
     try {
       const lastPost = allActivities[allActivities.length - 1]; // Get the last activity in the current list

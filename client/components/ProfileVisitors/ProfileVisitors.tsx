@@ -12,6 +12,8 @@ const ProfileVisitors = ({ visitors }: ProfileVisitorProp) => {
   //
   return (
     <div className={styles.profile_visitors}>
+      {/* The code block `{visitors.length <= 0 ? ... : ...}` is a conditional statement that checks if
+      the `visitors` array is empty or not.  */}
       {visitors.length <= 0 ? (
         <p className={styles.no_profile_visitor}>
           This profile has not been visited by anyone.

@@ -50,6 +50,12 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
 
   const { dispatch } = useContext(Context);
 
+  /**
+   * The function onSubmit is used to update user data by sending a PUT request to the server, and it
+   * includes error handling and validation checks.
+   * @param {Inputs} data - The `data` parameter is an object of type `Inputs`. It represents the
+   * updated user data that will be sent to the server.
+   */
   const onSubmit = async (data: Inputs) => {
     try {
       setLoading(true);

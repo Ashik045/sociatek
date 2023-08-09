@@ -12,6 +12,9 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
+/* The `UserRegValidation` constant is an array of validation checks for user registration. Each
+element in the array is a validation check using the `check` function from the `express-validator`
+library. */
 export const UserRegValidation = [
   check("fullname")
     .isLength({ min: 1 })
@@ -54,6 +57,9 @@ export const UserRegValidation = [
     ),
 ];
 
+/* The `UserUpdValidation` constant is an array of validation checks for user update. Each
+element in the array is a validation check using the `check` function from the `express-validator`
+library. */
 export const UserUpdValidation = [
   check("username")
     .isLength({ min: 3, max: 15 })
@@ -98,6 +104,9 @@ export const UserRegValidationHandler = function (
 // };
 
 // Validation handler for the getFollowers route
+/* The `getFollowersValidation` constant is an array of validation checks for the `getFollowers` route.
+It includes a validation check for the `userId` parameter using the `param` function from the
+`express-validator` library. */
 export const getFollowersValidation = [
   param("userId").notEmpty().withMessage("User ID is required"),
   (req: Request, res: Response, next: NextFunction) => {
@@ -109,7 +118,9 @@ export const getFollowersValidation = [
   },
 ];
 
-// Validation handler for the getFollowing route
+/* The `getFollowingValidation` constant is an array of validation checks for the `getFollowing` route.
+It includes a validation check for the `userId` parameter using the `param` function from the
+`express-validator` library. */
 export const getFollowingValidation = [
   param("userId").notEmpty().withMessage("User ID is required"),
   (req: Request, res: Response, next: NextFunction) => {
@@ -121,6 +132,9 @@ export const getFollowingValidation = [
   },
 ];
 
+/**
+ * The followUserMiddleware function is a TypeScript middleware that checks if a user is authenticated by verifying their JWT token.
+ */
 export const followUserMiddleware = (
   req: AuthenticatedRequest,
   res: Response,

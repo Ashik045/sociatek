@@ -69,6 +69,8 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   }, [posts]);
 
   // send the visiting userId to the server
+  /* The above code is a useEffect hook in a TypeScript React component. It is responsible for sending a
+request to the server to record a user visit when certain conditions are met. */
   useEffect(() => {
     const alreadyVisited =
       userr?.profileVisitors && user?._id
@@ -106,6 +108,8 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   }, [userr?._id, user?._id, userr.profileVisitors, user]);
 
   // get the profile visitors
+  /* The above code is a useEffect hook in a TypeScript React component. It is responsible for fetching
+  profile visitors data from an API endpoint. */
   useEffect(() => {
     if (!user) return;
 
@@ -128,6 +132,10 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   }, [userr?._id, user]);
 
   // set the followings and followers
+  /* The above code is a useEffect hook in a TypeScript React component. It is fetching the followers and
+following data from a server API and updating the state variables `followersList`, `followers`,
+`followingList`, and `followings` with the fetched data. The useEffect hook is triggered whenever
+the `userr._id` value changes. */
   useEffect(() => {
     const fetchFollowers = async () => {
       try {
@@ -167,6 +175,8 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   }, [userr._id]);
 
   // check if the user is already a follower
+  /* The above code is a useEffect hook in a TypeScript React component. It is making an asynchronous API
+call to retrieve user data from a specific endpoint. */
   useEffect(() => {
     const userCall = async () => {
       const res = await axios.get(
@@ -190,6 +200,7 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     userCall();
   }, [userr, user?._id]);
 
+  /* The above code is a React useEffect hook that updates the active status of a user. */
   // update the user active status
   useEffect(() => {
     if (!user) return;
@@ -266,6 +277,14 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
     setFollowerOrFollowingPopup(false);
   };
 
+  /**
+   * The above function handles the follow/unfollow functionality for a user, making API requests to
+   * the server and updating the state accordingly.
+   * @param {boolean} prev - The `prev` parameter is a boolean value that represents the previous state
+   * of the follow status. It indicates whether the user was previously followed or not.
+   * @returns The function `handleFollow` does not have a return statement, so it does not explicitly
+   * return anything.
+   */
   // follow or unfollow a user
   const handleFollow = async (prev: boolean) => {
     // check if user is authenticated
@@ -356,6 +375,11 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   };
 
   // handle the profile visitor popup
+  /**
+   * The function `handleVisitorsPopup` sets a state variable to display a visitors popup, then makes
+   * an API call to retrieve the profile visitors for a specific post.
+   * @param {string} postId - The `postId` parameter is a string that represents the ID of a post.
+   */
   const handleVisitorsPopup = async (postId: string) => {
     setVisitorsPopup(true);
 
@@ -374,6 +398,10 @@ const Index: React.FC<UserProps> = ({ userr, posts }) => {
   };
 
   // fetcj more data when user scrolls
+  /**
+   * The function fetches more data from an API based on the ID of the last post in the current list
+   * and updates the state with the new posts.
+   */
   const fetchMoreData = async () => {
     try {
       const lastPost = allPosts[allPosts.length - 1]; // Get the last post in the current list

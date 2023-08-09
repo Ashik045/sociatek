@@ -25,7 +25,13 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
     setUserss(users);
   }, [users]);
 
-  // reveive the nav data when user clicks on it
+  /**
+   * The function `handleUserNav` is used to handle navigation options for a user, such as fetching
+   * followers or followings, and resetting to all users if no specific navigation option is selected.
+   * @param {string} nav - The `nav` parameter is a string that represents the navigation option selected
+   * by the user. It can have three possible values: "followers", "followings", or any other value.
+   * @returns The function does not have a return statement, so it does not explicitly return anything.
+   */
   const handleUserNav = async (nav: string) => {
     setUserNav(nav);
 

@@ -29,6 +29,12 @@ const index = () => {
   } = useForm<LoginInputs>();
   const { dispatch, user } = useContext(Context);
 
+  /**
+   * The `onSubmit` function is used to handle the login form submission, making an API request to
+   * authenticate the user and store the JWT token in localStorage.
+   * @param {LoginInputs} data - The `data` parameter is an object of type `LoginInputs`. It contains
+   * the following properties:
+   */
   const onSubmit = async (data: LoginInputs) => {
     const { emailOrUsername, password } = data;
 

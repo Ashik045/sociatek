@@ -30,7 +30,11 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
     setPostPopup(false);
   };
 
-  // handle the post picture
+  /**
+   * The function `handlePostImage` is used to handle the event of selecting a picture file and setting
+   * the image as the post image.
+   * @param e - React.ChangeEvent<HTMLInputElement>
+   */
   const handlePostImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
@@ -41,6 +45,13 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
     }
   };
 
+  /**
+   * The handleForm function is responsible for handling form submission, including uploading an image
+   * to Cloudinary, checking if the input field is empty, and sending the form data to the server.
+   * @param e - The parameter `e` is of type `React.FormEvent`. It represents the form event that is
+   * triggered when the form is submitted.
+   * @returns nothing.
+   */
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -78,6 +89,8 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
         postImage = url;
       }
 
+      /* The `formInputs` object is created to store the form data that will be sent to the server. It
+      includes the following properties: */
       formInputs = {
         text: postText,
         postimage: postImage,

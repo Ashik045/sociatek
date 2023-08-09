@@ -12,7 +12,10 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
-// create a post
+/**
+ * The function `CreatePost` creates a new post and saves it to the database, returning the created
+ * post in the response.
+ */
 const CreatePost = async (req: Request, res: Response) => {
   try {
     const newPost = await new Post({ ...req.body });
@@ -29,7 +32,10 @@ const CreatePost = async (req: Request, res: Response) => {
   }
 };
 
-// get a post by id
+/**
+ * The function `getPostById` retrieves a post by its ID and sends a response with the post data if
+ * found, or an error message if not found.
+ */
 const getPostById = async (req: Request, res: Response) => {
   try {
     const post = await Post.findById(req.params.postid);
@@ -44,7 +50,9 @@ const getPostById = async (req: Request, res: Response) => {
   }
 };
 
-// get all posts
+/**
+ * The function `getAllPosts` retrieves posts based on the provided query parameters and returns them in descending order of creation.
+ */
 const getAllPosts = async (req: Request, res: Response) => {
   const { user, limit, lastPostId } = req.query;
   try {
@@ -72,7 +80,9 @@ const getAllPosts = async (req: Request, res: Response) => {
   }
 };
 
-// update post
+/**
+ * The `updPost` function updates a post if the user who created it is the one making the request.
+ */
 const updPost = async (req: Request, res: Response) => {
   try {
     const post = await Post.findById(req.params.postid);
@@ -108,7 +118,9 @@ const updPost = async (req: Request, res: Response) => {
   }
 };
 
-// delete a post
+/**
+ * The `deletePost` function deletes a post if the user who created it is the one making the request.
+ */
 const deletePost = async (
   req: AuthenticatedRequest & Request,
   res: Response
@@ -141,7 +153,9 @@ const deletePost = async (
   }
 };
 
-// like a post
+/**
+ * The `likePost` function allows a logged-in user to like a post by adding their user ID to the likes list of the post and adding the post ID to the activities array of the user.
+ */
 const likePost = async (req: AuthenticatedRequest & Request, res: Response) => {
   try {
     const { postid } = req.params;
@@ -187,7 +201,9 @@ const likePost = async (req: AuthenticatedRequest & Request, res: Response) => {
   }
 };
 
-// unlike a post
+/**
+ * The `unLikePost` function allows a logged-in user to unlike a post by removing their user ID from the post's likes array and removing the post ID from the user's activities array.
+ */
 const unLikePost = async (
   req: AuthenticatedRequest & Request,
   res: Response
@@ -244,7 +260,9 @@ const unLikePost = async (
   }
 };
 
-// fetch the reacted users list of a perticular post
+/**
+ * The function `getReactedUsersList` retrieves a list of users who have reacted to a specific post.
+ */
 const getReactedUsersList = async (req: Request, res: Response) => {
   const { postid } = req.params;
 
@@ -265,11 +283,11 @@ const getReactedUsersList = async (req: Request, res: Response) => {
 
 export {
   CreatePost,
-  getPostById,
-  getAllPosts,
-  updPost,
   deletePost,
+  getAllPosts,
+  getPostById,
+  getReactedUsersList,
   likePost,
   unLikePost,
-  getReactedUsersList,
+  updPost,
 };

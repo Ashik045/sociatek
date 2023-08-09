@@ -29,6 +29,10 @@ const UserDiv = ({ users, userNav }: UserProp) => {
     console.log("user");
   }, [user, users]);
 
+  /**
+   * The function fetches more data from an API based on the last post ID and updates the state with the
+   * new posts.
+   */
   const fetchMoreData = async () => {
     try {
       const lastPost = allUsers[allUsers.length - 1]; // Get the last post in the current list
@@ -55,7 +59,16 @@ const UserDiv = ({ users, userNav }: UserProp) => {
     }
   };
 
-  // follow or unfollow a user
+  /**
+  * The function `handleFollow` is used to handle the follow/unfollow functionality for a user in a
+  * React application, making API requests to the server and updating the user's state accordingly.
+  * @param {boolean} prev - The `prev` parameter is a boolean value that represents the previous state
+  * of the follow action. It indicates whether the user was previously following the specified `userId`
+  * or not.
+  * @param {string} userId - The `userId` parameter is a string that represents the ID of the user that
+  * the follow/unfollow action is being performed on.
+  
+  */
   const handleFollow = async (prev: boolean, userId: string) => {
     // check if user is not authenticated
     if (!user) router.push("/login");

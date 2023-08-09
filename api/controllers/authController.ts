@@ -6,7 +6,10 @@ import jwt, { Secret } from "jsonwebtoken";
 // internal import
 import { User } from "../models/usermodel";
 
-// login handler
+/**
+ * The userLoginHandler function is responsible for handling user login requests, checking if the
+ * provided email or username matches an existing user, verifying the password, and generating a JWT token for authentication.
+ */
 export const userLoginHandler = async (
   req: express.Request,
   res: express.Response
@@ -57,7 +60,10 @@ export const userLoginHandler = async (
   }
 };
 
-// user register handler
+/**
+ * The userRegHandler function handles user registration by checking if the email and username are
+ * already in use, hashing the password, creating a new user object, and saving it to the database.
+ */
 export const userRegHandler = async (
   req: express.Request,
   res: express.Response

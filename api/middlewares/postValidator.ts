@@ -9,6 +9,9 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
+/**
+ * The function `PostAuthValidator` is a middleware function that checks if the request has a valid JWT
+ */
 export const PostAuthValidator = async (
   req: Request,
   res: Response,
@@ -31,12 +34,17 @@ export const PostAuthValidator = async (
   }
 };
 
+/* Defining an array of validation checks for the "text" field in a post
+request. */
 export const PostValidatioin = [
   check("text")
     .isLength({ min: 1 })
     .withMessage("This input field is required!"),
 ];
 
+/**
+ * The function is a middleware that checks if there are any validation errors in the request and sends a response with the errors if there are any, otherwise it calls the next middleware.
+ */
 export const PostValidatioinHandler = function (
   req: Request,
   res: Response,
@@ -64,6 +72,10 @@ export const PostValidatioinHandler = function (
   // }
 };
 
+/**
+ * The LikePostMiddleware function checks if the request has a valid JWT token in the authorization
+ * header and sets the user ID on the request object if the token is valid.
+ */
 export const LikePostMiddleware = (
   req: AuthenticatedRequest,
   res: Response,
@@ -90,6 +102,10 @@ export const LikePostMiddleware = (
   }
 };
 
+/**
+ * The DeletePostMiddleware function checks if the request has a valid JWT token in the authorization
+ * header and sets the username in the request object if the token is valid, otherwise it returns an unauthorized error response.
+ */
 export const DeletePostMilldeware = (
   req: AuthenticatedRequest,
   res: Response,

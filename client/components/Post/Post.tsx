@@ -70,6 +70,8 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     }
   }, [createdAt]);
 
+  /* The `useEffect` hook is used to fetch the user's profile picture from the server and update the
+`userProfilePic` state variable. */
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(
@@ -84,6 +86,8 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
   }, [username]);
 
   // check if the user is already like the post
+  /* The `useEffect` hook is used to check if the current user has already liked the post. It runs
+  whenever the `postItems` or `user?._id` (user ID) dependencies change. */
   useEffect(() => {
     if (postItems && user?._id) {
       const isFollower = postItems.likes?.includes(user?._id);
@@ -98,6 +102,13 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     setTimeAgo(timeAgo.slice(5));
   }
 
+  /**
+   * The function `handleLike` is used to handle like and unlike requests for a post, updating the like
+   * count and liked status accordingly.
+   * @param {string} value - The `value` parameter is a string that represents the action to be
+   * performed. It can have two possible values: "inc" or any other value.
+   * @returns The function `handleLike` returns a Promise.
+   */
   const handleLike = async (value: string) => {
     // If likeLoading is true, return immediately to prevent multiple requests
     if (likeLoading) {
@@ -164,6 +175,12 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     setShowPopup(false);
   };
 
+  /**
+   * The function `handleConfirmDelete` is used to delete a post by sending an API request with the post
+   * ID and updating the feed by removing the deleted post.
+   * @param {string} id - The `id` parameter is a string that represents the unique identifier of a
+   * post. It is used to specify which post should be deleted from the server.
+   */
   const handleConfirmDelete = async (id: string) => {
     // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
@@ -195,6 +212,12 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
     }
   };
 
+  /**
+   * The function `handleLikePopup` is used to fetch and display a list of users who have reacted to a
+   * specific post.
+   * @param {string} postId - The `postId` parameter is a string that represents the unique identifier
+   * of a post. It is used to fetch the list of users who have reacted to that post.
+   */
   const handleLikePopup = async (postId: string) => {
     setReactorsPopup(true);
 

@@ -9,6 +9,7 @@ interface PostType {
   comments: string[];
 }
 
+/* The code is defining a Mongoose schema for a Post document in a MongoDB database. */
 const PostSchema = new mongoose.Schema<PostType>(
   {
     text: {

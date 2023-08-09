@@ -24,6 +24,13 @@ type Inputs = {
   profession: string;
 };
 
+/**
+ * The above type represents the props for a page component in a TypeScript React application,
+ * including the page number, functions to set the page and loading state, and a loading flag.
+ * @property {number} page - The "page" property is a number that represents the current page number.
+ * @property {boolean} loading - The `loading` property is a boolean value that indicates whether the
+ * page is currently loading or not.
+ */
 type PageProp = {
   page: number;
   setPage(value: number): void;
@@ -38,8 +45,6 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
 
   const router = useRouter();
 
-  console.log("Errors:", errorMessages);
-
   const {
     register,
     handleSubmit,
@@ -53,6 +58,12 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   const password = watch("password", "");
 
   // handle the profile picture
+  /**
+   * The above code defines two functions in TypeScript React for handling profile picture and cover
+   * photo changes.
+   * @param e - The parameter "e" is of type React.ChangeEvent<HTMLInputElement>. It represents the
+   * event object that is triggered when the input element's value changes.
+   */
   const handleProfilePictureChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -69,6 +80,13 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
   };
 
   // handle the form
+  /**
+   * The `onSubmit` function is responsible for handling form submission, including uploading profile
+   * pictures and cover photos, and making a POST request to the server to create a new user.
+   * @param {Inputs} data - The `data` parameter is an object of type `Inputs`. It contains the form
+   * data submitted by the user, including properties such as `confirmPassword`, `username`, `email`,
+   * and `others`.
+   */
   const onSubmit = async (data: Inputs) => {
     setLoading(true);
     const { confirmPassword, username, email, ...others } = data;
@@ -467,16 +485,6 @@ const RegForm = ({ page, setPage, loading, setLoading }: PageProp) => {
             Already have an account? Log in here..
           </Link>
         </p>
-
-        {/* {Object.keys(formErrors).length > 0 && (
-          <div className={styles.form_errorss}>
-            {Object.values(formErrors).map((error, index) => (
-              <p key={index} className={styles.f_error}>
-                {error.message}
-              </p>
-            ))}
-          </div>
-        )} */}
       </form>
 
       {/* not working */}

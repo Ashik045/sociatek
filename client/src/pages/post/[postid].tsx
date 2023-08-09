@@ -67,6 +67,11 @@ const SinglePost = ({ post, posts }: PostProp) => {
   }, [createdAt]);
 
   // check if the user is already like the post
+  /* The above code is a useEffect hook in a TypeScript React component. It is checking if a post and a
+ user are present, and if so, it checks if the user's ID is included in the post's likes array. If
+ the user's ID is found in the likes array, it sets the state variable "liked" to true. If either
+ the post or the user is not present, it logs "Not Liked" to the console. The useEffect hook is
+ triggered whenever the post or user ID changes. */
   useEffect(() => {
     if (post && user?._id) {
       const isFollower = post.likes?.includes(user?._id);
@@ -79,6 +84,13 @@ const SinglePost = ({ post, posts }: PostProp) => {
     }
   }, [post, user?._id]);
 
+  /**
+   * The function `handleLike` is used to handle the like and unlike functionality for a post, making
+   * API requests to add or remove a like and updating the like count accordingly.
+   * @param {string} value - The `value` parameter is a string that determines the action to be
+   * performed. It can have two possible values: "inc" or any other value. If the value is "inc", it
+   * means the user wants to increment the like count and like the post. If the value is any other value
+   */
   const handleLike = async (value: string) => {
     // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
@@ -139,6 +151,12 @@ const SinglePost = ({ post, posts }: PostProp) => {
     setShowPopup(false);
   };
 
+  /**
+   * The function `handleConfirmDelete` is used to delete a post by sending an API request with the
+   * post ID and an authorization token, and then redirecting the user to the home page.
+   * @param {string} id - The `id` parameter is a string that represents the unique identifier of the
+   * post that needs to be deleted.
+   */
   const handleConfirmDelete = async (id: string) => {
     // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
@@ -168,6 +186,12 @@ const SinglePost = ({ post, posts }: PostProp) => {
     }
   };
 
+  /**
+   * The function `handleLikePopup` is used to fetch and display a list of users who have reacted to a
+   * specific post.
+   * @param {string} postId - The `postId` parameter is a string that represents the unique identifier
+   * of a post. It is used to fetch the list of users who have reacted to that post.
+   */
   const handleLikePopup = async (postId: string) => {
     setReactorsPopup(true);
 
@@ -265,7 +289,10 @@ const SinglePost = ({ post, posts }: PostProp) => {
             </div>
             {updPopup && <UpdPostModal post={post} setUpdPopup={setUpdPopup} />}
           </div>
-
+          {/* The above code is conditionally rendering a React component called
+          "ReactorsPopup" if the following conditions are met: 1. The value of
+          the "reactorsPopup" variable is truthy. 2. The length of the
+          "reactedUsers" array is greater than 0. */}
           {reactorsPopup && reactedUsers.length > 0 && (
             <ReactorsPopup
               users={reactedUsers}
@@ -273,7 +300,6 @@ const SinglePost = ({ post, posts }: PostProp) => {
               setReactorsPopup={setReactorsPopup}
             />
           )}
-
           <div className={styles.post_detail}>
             {post.postimage && (
               <Image
@@ -357,12 +383,26 @@ const SinglePost = ({ post, posts }: PostProp) => {
 
 export default SinglePost;
 
+/**
+ * The above function is a server-side function in a TypeScript React application that fetches a
+ * specific post and related posts from an API.
+ * @param context - The `context` parameter in the `getServerSideProps` function is an object that
+ * contains information about the current request, such as the request parameters, headers, and
+ * cookies. It is provided by Next.js and can be used to fetch data from an external API or perform any
+ * other server-side operations
+ * @returns The function `getServerSideProps` is returning an object with a `props` property. The
+ * `props` property contains two properties: `post` and `posts`. The `post` property contains the
+ * fetched post data from the API, and the `posts` property contains an array of randomly selected
+ * posts from the same user.
+ */
 export const getServerSideProps: GetServerSideProps<PostProp> = async (
   context
 ) => {
   const postId = context.query.postid;
 
-  const res = await axios.get(`https://sociatek.onrender.com/api/post/${postId}`);
+  const res = await axios.get(
+    `https://sociatek.onrender.com/api/post/${postId}`
+  );
   const data = await res.data.message;
 
   // Get the username from the fetched post data
@@ -385,6 +425,15 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
   };
 };
 
+/**
+ * The getRandomPosts function takes an array of posts and a count, shuffles the posts randomly, and
+ * returns a new array with the specified number of random posts.
+ * @param {Post[]} posts - An array of Post objects. Each Post object represents a post with various
+ * properties such as title, content, author, etc.
+ * @param {number} count - The `count` parameter in the `getRandomPosts` function is the number of
+ * random posts that you want to retrieve from the `posts` array.
+ * @returns The function `getRandomPosts` returns an array of `Post` objects.
+ */
 // Utility function to get random posts
 const getRandomPosts = (posts: Post[], count: number): Post[] => {
   const shuffled = posts.sort(() => 0.5 - Math.random());

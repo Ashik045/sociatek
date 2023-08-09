@@ -30,6 +30,10 @@ const Homepage = ({
     setAllPosts(initialPosts);
   }, [initialPosts]);
 
+  /**
+   * The function fetches more data from an API based on the user's scroll and ID of the last post in the current list and
+   * updates the state with the new posts.
+   */
   const fetchMoreData = async () => {
     try {
       const lastPost = allPosts[allPosts.length - 1]; // Get the last post in the current list
@@ -72,6 +76,8 @@ const Homepage = ({
         <PostComponent />
 
         {/* render all the posts from database */}
+        {/* The `<InfiniteScroll>` component is a wrapper component that enables infinite scrolling
+        functionality. It allows you to load more data as the user scrolls down the page.  */}
         <InfiniteScroll
           dataLength={allPosts.length}
           next={fetchMoreData}

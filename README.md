@@ -6,15 +6,16 @@
 
 #### Chalanges | Features
 
-- Smooth user onboarding with a simplified multi-step registration form.
-- Real-time user activity tracking, displaying individual active status within their own browser.
 - Enhanced social connections: follow/unfollow users and explore their followers and followings.
 - Authenticated users can effortlessly share stories, photos, and update or remove their posts. Also can react to any post.
 - Engaging user activity feed showcasing the latest user actions.
 - Personalized profile visitor functionality, enabling users to see who has viewed their profile.
-- Ensured data security through server-side and client-side validation.
-- Dynamically rendered user navigation highlighting users, followers, and followings,
+- Real-time user activity tracking, displaying individual active status within their own browser.
+- Smooth user onboarding with a simplified multi-step registration form.
 - Based on the user scroll, fetch the posts & users part by part rather than fetch them all in the first load.
+- Ensured data security through server-side and client-side validation.
+- Dynamically rendered user navigation highlighting users, followers, and followings.
+- Highly documented and easily maintainable codes.
 
 #### Upcoming Features
 

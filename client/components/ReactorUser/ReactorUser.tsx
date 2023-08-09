@@ -26,6 +26,8 @@ type ReactorUser = {
 };
 
 const ReactorUser = ({ user }: ReactorUser) => {
+  /* The line `const { _id, profilePicture, username, about } = user;` is using object destructuring to extract the values of the properties `_id`, `profilePicture`, `username`, and `about` from the
+`user` object. */
   const { _id, profilePicture, username, about } = user;
 
   return (

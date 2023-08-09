@@ -9,6 +9,10 @@ import { useContext, useState } from "react";
 import { Postt, User } from "types.global";
 import Navbar from "../../components/Navbar/Navbar";
 
+/* The `interface HomePageProps` is defining the shape of the props that the `Home` component will
+receive. It specifies that the `posts` prop should be an array of `Postt` objects and the `users`
+prop should be an array of `User` objects. This allows TypeScript to enforce type checking and
+provide autocomplete suggestions when accessing these props within the component. */
 interface HomePageProps {
   posts: Postt[];
   users: User[];
@@ -26,6 +30,7 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   const token =
     typeof window !== "undefined" && localStorage.getItem("jwtToken"); // Retrieve the token from localStorage or wherever it is stored
 
+  /* This code block is checking if a token exists and if it is expired. */
   if (token) {
     const decodedToken = jwtDecode(token) as { exp: number }; // Type assertion to define the shape of the decoded token
     const expirationTime = decodedToken.exp * 1000; // Convert expiration time to milliseconds

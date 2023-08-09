@@ -19,6 +19,15 @@ const FollowOrFollowingPopup = ({
     setFollowerOrFollowingPopup(false);
   };
 
+  /**
+   * The function "renderUsers" checks if there are any users and returns a message based on whether the
+   * user is being followed by anyone or if they haven't followed anyone yet, otherwise it renders a
+   * component with the list of users.
+   * @returns The function `renderUsers` returns either a `<p>` element with the text "Currently not
+   * being followed by anyone!" if `users` array is empty and `catchFlwrOrFlwing` is true, or a `<p>`
+   * element with the text "Haven't followed anyone yet!" if `users` array is empty and
+   * `catchFlwrOrFlwing` is false. If
+   */
   const renderUsers = () => {
     if (users.length === 0) {
       if (catchFlwrOrFlwing) {
