@@ -11,8 +11,8 @@
 - Engaging user activity feed showcasing the latest user actions.
 - Personalized profile visitor functionality, enabling users to see who has viewed their profile.
 - Real-time user activity tracking, displaying individual active status within their own browser.
-- Smooth user onboarding with a simplified multi-step registration form.
 - Based on the user scroll, fetch the posts & users part by part rather than fetch them all in the first load.
+- Smooth user onboarding with a simplified multi-step registration form.
 - Ensured data security through server-side and client-side validation.
 - Dynamically rendered user navigation highlighting users, followers, and followings.
 - Highly documented and easily maintainable codes.

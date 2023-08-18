@@ -18,12 +18,13 @@ interface HomePageProps {
   users: User[];
 }
 
-export const revalidate = 30;
+// export const revalidate = 30;
+// export const runtime = "edge"; // 'nodejs' (default) | 'edge'
+// export const runtime = "experimental-edge"; // 'nodejs' (default) | 'experimental-edge'
 
 const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   const [allPosts, setAllPosts] = useState(posts);
   const [hasMore, setHasMore] = useState(true);
-
   const { dispatch } = useContext(Context);
   const router = useRouter();
 

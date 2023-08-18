@@ -63,6 +63,7 @@ app.use(
 );
 
 // server running
+/* listening for incoming requests on the specified port. */
 app.listen(process.env.APPLICATION_PORT, () => {
   console.log(`Application running on port ${process.env.APPLICATION_PORT}`);
 });
