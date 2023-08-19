@@ -160,3 +160,17 @@ export const getServerSideProps: GetServerSideProps<
     },
   };
 };
+
+// export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+//   const res2 = await axios.get(
+//     "https://sociatek.onrender.com/api/users/all?limit=15"
+//   );
+//   const data2 = await res2.data;
+
+//   return {
+//     props: {
+//       users: data2.message,
+//     },
+//     revalidate: 2, // in 2 seconds
+//   };
+// };

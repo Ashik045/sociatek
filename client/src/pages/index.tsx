@@ -74,6 +74,14 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
 export default Home;
 
 // SSR - get called on every request
+/**
+ * The above function is an implementation of the `getServerSideProps` function in a TypeScript React
+ * application, which fetches posts and users data from an API and returns them as props for the home
+ * page component.
+ * @returns The `getServerSideProps` function is returning an object with a `props` property. The
+ * `props` property contains the `posts` and `users` data fetched from the API. If there is an error
+ * during the API request, it will return an object with empty arrays for `posts` and `users`.
+ */
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
@@ -105,3 +113,35 @@ export const getServerSideProps: GetServerSideProps<
     };
   }
 };
+
+// using SSG for avoiding "504 - server timeout" error
+// export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+//   try {
+//     const postsRes = await axios.get(
+//       "https://sociatek.onrender.com/api/posts/all?limit=10"
+//     );
+//     const usersRes = await axios.get(
+//       "https://sociatek.onrender.com/api/users/all?limit=7"
+//     );
+
+//     const posts = postsRes.data.message;
+//     const users = usersRes.data.message;
+
+//     return {
+//       props: {
+//         posts,
+//         users,
+//       },
+//       revalidate: 2, // in 2 seconds
+//     };
+//   } catch (error) {
+//     // Handle errors
+//     console.error(error);
+//     return {
+//       props: {
+//         posts: [],
+//         users: [],
+//       },
+//     };
+//   }
+// };

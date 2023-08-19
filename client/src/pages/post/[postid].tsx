@@ -383,18 +383,6 @@ const SinglePost = ({ post, posts }: PostProp) => {
 
 export default SinglePost;
 
-/**
- * The above function is a server-side function in a TypeScript React application that fetches a
- * specific post and related posts from an API.
- * @param context - The `context` parameter in the `getServerSideProps` function is an object that
- * contains information about the current request, such as the request parameters, headers, and
- * cookies. It is provided by Next.js and can be used to fetch data from an external API or perform any
- * other server-side operations
- * @returns The function `getServerSideProps` is returning an object with a `props` property. The
- * `props` property contains two properties: `post` and `posts`. The `post` property contains the
- * fetched post data from the API, and the `posts` property contains an array of randomly selected
- * posts from the same user.
- */
 export const getServerSideProps: GetServerSideProps<PostProp> = async (
   context
 ) => {
@@ -424,6 +412,54 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
     },
   };
 };
+
+// using SSG for avoiding "504 - server timeout" error
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const res = await axios.get("https://sociatek.onrender.com/api/posts/all");
+
+//   const posts = await res.data?.message;
+
+//   const paths = posts?.map((post: Post) => {
+//     return {
+//       params: {
+//         postid: post._id,
+//       },
+//     };
+//   });
+
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// };
+
+// export const getStaticProps: GetStaticProps<PostProp> = async ({ params }) => {
+//   const postId = params?.postid;
+
+//   const res = await axios.get(
+//     `https://sociatek.onrender.com/api/post/${postId}`
+//   );
+//   const data = await res.data.message;
+
+//   // Get the username from the fetched post data
+//   const username = data?.username;
+
+//   // fetch other posts of the user
+//   const res2 = await axios.get(
+//     `https://sociatek.onrender.com/api/posts/all?user=${username}`
+//   );
+//   const data2 = await res2.data.message;
+
+//   // Randomly select 5 posts
+//   const randomPosts = getRandomPosts(data2, 4);
+
+//   return {
+//     props: {
+//       post: data,
+//       posts: randomPosts,
+//     },
+//   };
+// };
 
 /**
  * The getRandomPosts function takes an array of posts and a count, shuffles the posts randomly, and

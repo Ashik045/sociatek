@@ -94,7 +94,7 @@ const Homepage = ({
                 <Post
                   key={post._id}
                   postItems={post}
-                  setAllPosts={setAllPostsState}
+                  setAllPosts={setAllPosts}
                 />
               );
             })

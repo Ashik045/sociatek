@@ -285,7 +285,6 @@ call to retrieve user data from a specific endpoint. */
    * @returns The function `handleFollow` does not have a return statement, so it does not explicitly
    * return anything.
    */
-  // follow or unfollow a user
   const handleFollow = async (prev: boolean) => {
     // check if user is authenticated
     const token = localStorage.getItem("jwtToken");
@@ -696,26 +695,6 @@ call to retrieve user data from a specific endpoint. */
 
 export default Index;
 
-// Fetch the list of user IDs from an API or database
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const res = await axios.get(
-//     "https://sociatek.onrender.com/api/users/all"
-//   );
-//   const users = await res.data.message;
-
-//   const paths = users.map((user: User) => ({
-//     params: {
-//       username: user.username,
-//     },
-//   }));
-
-//   return {
-//     paths,
-//     fallback: "blocking",
-//   };
-// };
-
-//  Fetch the user data based on the ID from an API or database
 export const getServerSideProps: GetServerSideProps<UserProps> = async (
   context
 ) => {
@@ -738,3 +717,43 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
     },
   };
 };
+
+// Fetch the list of user IDs from an API or database
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const res = await axios.get("https://sociatek.onrender.com/api/users/all");
+//   const users = await res.data.message;
+
+//   const paths = users?.map((user: User) => ({
+//     params: {
+//       username: user.username,
+//     },
+//   }));
+
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// };
+
+// export const getStaticProps: GetStaticProps<UserProps> = async ({ params }) => {
+//   const username = params?.username;
+
+//   const res = await axios.get(
+//     `https://sociatek.onrender.com/api/user/${username}`
+//   );
+//   const res2 = await axios.get(
+//     `https://sociatek.onrender.com/api/posts/all?user=${username}&limit=10`
+//   );
+
+//   const data = await res.data.message;
+//   const data2 = await res2.data.message;
+
+//   return {
+//     props: {
+//       userr: data,
+//       posts: data2,
+//     },
+//   };
+// };
+
+//  Fetch the user data based on the ID from an API or database
