@@ -40,7 +40,7 @@ app.use("/api", userRoute);
 app.use("/api", postRoute);
 
 // error handlers
-// not found handler
+// not found error handler
 app.use(
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
     res.status(404).json({
@@ -48,7 +48,7 @@ app.use(
     });
   }
 );
-// default handler
+// default error handler
 app.use(
   (
     err: Error,
