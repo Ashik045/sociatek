@@ -74,14 +74,11 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
 export default Home;
 
 // SSR - get called on every request
-/**
- * The above function is an implementation of the `getServerSideProps` function in a TypeScript React
- * application, which fetches posts and users data from an API and returns them as props for the home
- * page component.
- * @returns The `getServerSideProps` function is returning an object with a `props` property. The
- * `props` property contains the `posts` and `users` data fetched from the API. If there is an error
- * during the API request, it will return an object with empty arrays for `posts` and `users`.
- */
+
+//  * The above function is an implementation of the `getServerSideProps` function in a TypeScript React
+//  * application, which fetches posts and users data from an API and returns them as props for the home
+//  * page component.
+
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
