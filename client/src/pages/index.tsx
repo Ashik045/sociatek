@@ -75,9 +75,9 @@ export default Home;
 
 // SSR - get called on every request
 
-//  * The above function is an implementation of the `getServerSideProps` function in a TypeScript React
-//  * application, which fetches posts and users data from an API and returns them as props for the home
-//  * page component.
+//   The above function is an implementation of the `getServerSideProps` function in a TypeScript React
+//   application, which fetches posts and users data from an API and returns them as props for the home
+//   page component.
 
 export const getServerSideProps: GetServerSideProps<
   HomePageProps
