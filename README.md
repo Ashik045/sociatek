@@ -15,7 +15,7 @@
 - Smooth user onboarding with a simplified multi-step registration form.
 - Ensured data security through server-side and client-side validation.
 - Dynamically rendered user navigation highlighting users, followers, and followings.
-- Highly documented and easily maintainable codes
+- Highly documented and easily maintainable codes.
 
 #### Upcoming Features
 
