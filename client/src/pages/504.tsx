@@ -1,4 +1,4 @@
-// custom error page not showing
+// custom error not showing
 const CustomError504 = () => {
   return (
     <div>
