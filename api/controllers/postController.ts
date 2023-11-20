@@ -13,8 +13,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 /**
- * The function `CreatePost` creates a new post and saves it to the database, returning the created
- * post in the response.
+  The function `CreatePost` creates a new post and saves it to the database, returning the created post in the response.
  */
 const CreatePost = async (req: Request, res: Response) => {
   try {
@@ -33,8 +32,7 @@ const CreatePost = async (req: Request, res: Response) => {
 };
 
 /**
- * The function `getPostById` retrieves a post by its ID and sends a response with the post data if
- * found, or an error message if not found.
+  The function `getPostById` retrieves a post by its ID and sends a response with the post data if found, or an error message if not found.
  */
 const getPostById = async (req: Request, res: Response) => {
   try {
@@ -51,7 +49,7 @@ const getPostById = async (req: Request, res: Response) => {
 };
 
 /**
- * The function `getAllPosts` retrieves posts based on the provided query parameters and returns them in descending order of creation.
+ The function `getAllPosts` retrieves posts based on the provided query parameters and returns them in descending order of creation.
  */
 const getAllPosts = async (req: Request, res: Response) => {
   const { user, limit, lastPostId } = req.query;
@@ -81,7 +79,7 @@ const getAllPosts = async (req: Request, res: Response) => {
 };
 
 /**
- * The `updPost` function updates a post if the user who created it is the one making the request.
+  The `updPost` function updates a post if the user who created it is the one making the request.
  */
 const updPost = async (req: Request, res: Response) => {
   try {
@@ -119,7 +117,7 @@ const updPost = async (req: Request, res: Response) => {
 };
 
 /**
- * The `deletePost` function deletes a post if the user who created it is the one making the request.
+  The `deletePost` function deletes a post if the user who created it is the one making the request.
  */
 const deletePost = async (
   req: AuthenticatedRequest & Request,
@@ -154,7 +152,7 @@ const deletePost = async (
 };
 
 /**
- * The `likePost` function allows a logged-in user to like a post by adding their user ID to the likes list of the post and adding the post ID to the activities array of the user.
+  The `likePost` function allows a logged-in user to like a post by adding their user ID to the likes list of the post and adding the post ID to the activities array of the user.
  */
 const likePost = async (req: AuthenticatedRequest & Request, res: Response) => {
   try {
@@ -202,7 +200,7 @@ const likePost = async (req: AuthenticatedRequest & Request, res: Response) => {
 };
 
 /**
- * The `unLikePost` function allows a logged-in user to unlike a post by removing their user ID from the post's likes array and removing the post ID from the user's activities array.
+  The `unLikePost` function allows a logged-in user to unlike a post by removing their user ID from the post's likes array and removing the post ID from the user's activities array.
  */
 const unLikePost = async (
   req: AuthenticatedRequest & Request,

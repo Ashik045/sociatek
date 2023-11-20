@@ -19,9 +19,9 @@ interface IUser {
   profileVisitors: string[];
 }
 
-// user schema
-/* Defining a Mongoose schema for a user object. The schema specifies the structure and
-properties of a user document in the MongoDB database. */
+// // user schema
+//  Defining a Mongoose schema for a user object. The schema specifies the structure and
+// properties of a user document in the MongoDB database.
 const UserSchema = new mongoose.Schema<IUser>(
   {
     username: {
