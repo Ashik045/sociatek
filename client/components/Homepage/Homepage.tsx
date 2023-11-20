@@ -9,6 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Postt, User } from "types.global";
 import styles from "./homepage.module.scss";
 
+// types
 interface PostAndUserProps {
   initialPosts: Postt[]; // Initial posts from the server
   users: User[];
