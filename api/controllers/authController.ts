@@ -59,9 +59,8 @@ export const userLoginHandler = async (
   }
 };
 
-/**
- The userRegHandler function handles user registration by checking if the email and username are already in use, hashing the password, creating a new user object, and saving it to the database.
- */
+//  The userRegHandler function handles user registration by checking if the email and username are already in use, hashing the password, creating a new user object, and saving it to the database.
+
 export const userRegHandler = async (
   req: express.Request,
   res: express.Response

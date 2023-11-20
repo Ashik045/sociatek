@@ -13,8 +13,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 /**
- * The getAllUsers function is an asynchronous function that retrieves a list of users based on optional
- * query parameters such as limit and lastPostId.
+  The getAllUsers function is an asynchronous function that retrieves a list of users based on optional query parameters such as limit and lastPostId.
  */
 export const getAllUsers = async (
   req: express.Request,
@@ -51,10 +50,8 @@ export const getAllUsers = async (
 };
 
 /**
- * The function `getUserById` retrieves a user by their user ID and returns their information,
- * excluding their password, if found.
- * @returns a JSON response with the user information if the user is found. If the user is not found,
- * it returns a JSON response with an error message. If there is an error during the process, it
+ * The function `getUserById` retrieves a user by their user ID and returns their information, excluding their password, if found.
+ * @returns a JSON response with the user information if the user is found. If the user is not found, it returns a JSON response with an error message. If there is an error during the process, it
  * returns a JSON response with an error message.
  */
 export const getUserById = async (
@@ -105,8 +102,7 @@ export const getUserByUserName = async (
 };
 
 /**
- * The updateUser function updates a user's information in a database, including their username and password, and
- * returns the updated user object.
+ * The updateUser function updates a user's information in a database, including their username and password, and returns the updated user object.
  */
 export const updateUser = async (
   req: express.Request,

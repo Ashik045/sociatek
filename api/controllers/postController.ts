@@ -12,9 +12,8 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
-/**
-  The function `CreatePost` creates a new post and saves it to the database, returning the created post in the response.
- */
+// The function `CreatePost` creates a new post and saves it to the database, returning the created post in the response.
+
 const CreatePost = async (req: Request, res: Response) => {
   try {
     const newPost = await new Post({ ...req.body });
