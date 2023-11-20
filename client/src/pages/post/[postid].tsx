@@ -16,6 +16,7 @@ import { Post, User } from "types.global";
 import nophoto from "../../../images/no-photo.png";
 import styles from "../../styles/singlepost.module.scss";
 
+// post type
 interface PostProp {
   post: Post;
   posts: Post[];
@@ -48,6 +49,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
   const { user } = useContext(Context);
   const router = useRouter();
 
+  /* The above code is used to calculate and update the time ago based on a given createdAt date. */
   useEffect(() => {
     const calculateTimeAgo = () => {
       const now = new Date();
