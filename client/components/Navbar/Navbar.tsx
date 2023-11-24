@@ -57,6 +57,7 @@ const Navbar = () => {
     //       setFilteredResults(APIData);
     //       dispatchh({ type: 'SEARCH_CLEAR' });
     //   }
+    //
   };
 
   const handleClose = () => {

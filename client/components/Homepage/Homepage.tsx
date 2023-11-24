@@ -66,7 +66,7 @@ const Homepage = ({
           <Profile />
         ) : (
           <p style={{ padding: "10px" }}>
-            Please sign in to achieve all the features of Sociatek.
+            Please sign in to see all the features of Sociatek.
           </p>
         )}
       </div>
