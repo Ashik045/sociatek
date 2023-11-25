@@ -92,6 +92,7 @@ const Navbar = () => {
                   value={selectVal}
                   onChange={(e) => setSelectVal(e.target.value)}
                 >
+                  {/* icons are not showing */}
                   <option className={styles.search_val} value="posts">
                     <FaPager /> Posts
                   </option>

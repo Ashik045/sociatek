@@ -4,6 +4,7 @@ import Post from "components/Post/Post";
 import PostComponent from "components/PostComponent/PostComponent";
 import Profile from "components/Profile/Profile";
 import Suggestions from "components/Suggestions/Suggestions";
+import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Postt, User } from "types.global";
@@ -65,8 +66,12 @@ const Homepage = ({
         {user ? (
           <Profile />
         ) : (
-          <p style={{ padding: "10px" }}>
-            Please sign in to see all the features of Sociatek.
+          <p style={{ padding: "10px", textAlign: "center" }}>
+            Please{" "}
+            <Link href="/login" style={{ color: "black" }}>
+              sign in
+            </Link>{" "}
+            to see all the features of Sociatek.
           </p>
         )}
       </div>
