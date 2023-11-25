@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { BiMenu, BiX } from "react-icons/bi";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FaPager, FaTimes, FaUserFriends } from "react-icons/fa";
 import noPhoto from "../../images/no-photo.png";
 import styles from "./navbar.module.scss";
 
@@ -14,6 +14,7 @@ const Navbar = () => {
   // const [user, setUser] = useState<null | User>(null);
   const [APIData, setAPIData] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
+  const [selectVal, setSelectVal] = useState("");
   const router = useRouter();
 
   const { user, dispatch } = useContext(Context);
@@ -40,24 +41,17 @@ const Navbar = () => {
   };
 
   // search and get data
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    //   setInpVal(e.target.value);
-    //   if (inpVal?.length > 0) {
-    //       navigate('/');
-    //       dispatchh({ type: 'SEARCH_START' });
-    //       // eslint-disable-next-line no-unused-vars
-    //       const filterData = APIData.filter((item) =>
-    //           Object.values(item.title).join('').toLowerCase().includes(inpVal.toLowerCase())
-    //       );
-    //       setFilteredResults(filterData);
-    //       dispatchh({ type: 'SEARCH_END', payload: inpVal });
-    //       // console.log(filterData);
-    //   } else {
-    //       setFilteredResults(APIData);
-    //       dispatchh({ type: 'SEARCH_CLEAR' });
-    //   }
-    //
+    try {
+      // fetch the data
+      // const res = await axios.get(
+      //   `https://sociatek.onrender.com/api/${selectVal === "users" ? "users" : "posts"}`
+      // );
+      console.log("input:" + inpVal, selectVal === "users" ? "users" : "posts");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleClose = () => {
@@ -92,7 +86,19 @@ const Navbar = () => {
                 />
               )}
               <button type="submit">
-                <FaSearch className={styles.search_icon} />
+                {/* <FaSearch className={styles.search_icon} /> */}
+                <select
+                  className={styles.search_option}
+                  value={selectVal}
+                  onChange={(e) => setSelectVal(e.target.value)}
+                >
+                  <option className={styles.search_val} value="posts">
+                    <FaPager /> Posts
+                  </option>
+                  <option className={styles.search_val} value="users">
+                    <FaUserFriends /> Users
+                  </option>
+                </select>
               </button>
             </form>
           </div>
