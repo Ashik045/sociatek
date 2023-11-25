@@ -51,7 +51,8 @@ const getPostById = async (req: Request, res: Response) => {
  The function `getAllPosts` retrieves posts based on the provided query parameters and returns them in descending order of creation.
  */
 const getAllPosts = async (req: Request, res: Response) => {
-  const { user, limit, lastPostId } = req.query;
+  const { user, limit, lastPostId, search } = req.query;
+
   try {
     const query: any = user ? { username: user } : {};
 
@@ -63,6 +64,11 @@ const getAllPosts = async (req: Request, res: Response) => {
 
     if (limit) {
       options.limit = parseInt(limit.toString());
+    }
+
+    if (search) {
+      // Use a case-insensitive regular expression for searching
+      query.text = { $regex: new RegExp(search.toString(), "i") };
     }
 
     const posts = await Post.find(query, null, options).sort({ createdAt: -1 });

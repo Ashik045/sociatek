@@ -46,7 +46,7 @@ const Navbar = () => {
     try {
       // fetch the data
       // const res = await axios.get(
-      //   `https://sociatek.onrender.com/api/${selectVal === "users" ? "users" : "posts"}`
+      //   `https://sociatek.onrender.com/api/${selectVal === "users" ? "users" : "posts"}/all?search=${inpVal?.toLocaleLowerCase()}`
       // );
       console.log("input:" + inpVal, selectVal === "users" ? "users" : "posts");
     } catch (error) {

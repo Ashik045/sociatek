@@ -20,7 +20,7 @@ export const getAllUsers = async (
   res: express.Response
 ) => {
   try {
-    const { limit, lastPostId } = req.query;
+    const { limit, lastPostId, search } = req.query;
     let users;
 
     const query: any = {};
@@ -35,6 +35,15 @@ export const getAllUsers = async (
     if (limit) {
       // If limit parameter is provided, fetch limited data
       options.limit = parseInt(limit.toString());
+    }
+
+    if (search) {
+      // Use a case-insensitive regular expression for searching
+      query.$or = [
+        { fullname: { $regex: new RegExp(search.toString(), "i") } },
+        { username: { $regex: new RegExp(search.toString(), "i") } },
+        { about: { $regex: new RegExp(search.toString(), "i") } },
+      ];
     }
 
     users = await User.find(query, null, options).sort({ createdAt: -1 });
