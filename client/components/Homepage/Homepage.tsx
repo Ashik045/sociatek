@@ -105,9 +105,7 @@ const Homepage = ({
               );
             })
           ) : (
-            <div className={styles.loader_div}>
-              <span className={styles.loader}></span>
-            </div>
+            <p style={{ textAlign: "center" }}>No post found!</p>
           )}
         </InfiniteScroll>
       </div>

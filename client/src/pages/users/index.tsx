@@ -20,9 +20,31 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
 
   const { user } = useContext(Context);
   const router = useRouter();
+  const { search } = router.query;
+
+  const fetchData = async () => {
+    try {
+      // Fetch the data
+      const res = await axios.get(
+        `https://sociatek.onrender.com/api/users/all${
+          search ? `?search=${search}` : ""
+        }`
+      );
+
+      // Handle the fetched data as needed
+      setUserss(res.data?.message);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle errors
+    }
+  };
 
   useEffect(() => {
-    setUserss(users);
+    if (search) {
+      fetchData();
+    } else {
+      setUserss(users);
+    }
   }, [users]);
 
   /**

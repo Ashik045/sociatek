@@ -5,7 +5,7 @@ import jwtDecode from "jwt-decode";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Postt, User } from "types.global";
 import Navbar from "../../components/Navbar/Navbar";
 
@@ -27,6 +27,34 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   const [hasMore, setHasMore] = useState(true);
   const { dispatch } = useContext(Context);
   const router = useRouter();
+  const { search } = router.query;
+
+  console.log(allPosts);
+
+  const fetchData = async () => {
+    try {
+      // Fetch the data
+      const res = await axios.get(
+        `https://sociatek.onrender.com/api/posts/all${
+          search ? `?search=${search}` : ""
+        }`
+      );
+
+      // Handle the fetched data as needed
+      setAllPosts(res.data?.message);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle errors
+    }
+  };
+
+  useEffect(() => {
+    if (search) {
+      fetchData();
+    } else {
+      setAllPosts(posts);
+    }
+  }, [search]);
 
   const token =
     typeof window !== "undefined" && localStorage.getItem("jwtToken"); // Retrieve the token from localStorage or wherever it is stored
@@ -60,7 +88,7 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
 
         {/* main section of this application */}
         <Homepage
-          initialPosts={posts}
+          initialPosts={allPosts}
           users={users}
           setAllPosts={setAllPosts}
           hasMore={hasMore}
