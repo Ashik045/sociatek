@@ -145,63 +145,69 @@ const UserDiv = ({ users, userNav }: UserProp) => {
 
   return (
     <div className={styles.suggestions_users}>
-      <InfiniteScroll
-        dataLength={allUsers.length}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        loader={
-          <div className={styles.loader_div}>
-            <span className={styles.loader}></span>
-          </div>
-        }
-      >
-        {(router.pathname === "/"
-          ? allUsers.filter((item) => item._id !== user?._id)
-          : allUsers
-        ).map((userr) => {
-          return (
-            <div className={styles.suggestions_user} key={userr._id}>
-              <Link href={`/user/${userr?.username}`}>
-                <Image
-                  src={userr.profilePicture ? userr.profilePicture : noPhoto}
-                  height={38}
-                  width={38}
-                  alt="sociatek user"
-                  className={styles.user_profile_pic}
-                />
-              </Link>
-
-              <div className={styles.user_uname}>
-                <Link
-                  href={`/user/${userr?.username}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <p className={styles.user_username}>{userr.username}</p>
-                </Link>
-                <p className={styles.user_txt}>{userr.about}</p>
-              </div>
-
-              <span className={styles.follow_btns}>
-                {user?.following?.includes(userr._id) ? (
-                  <FaUserCheck
-                    onClick={() => handleFollow(false, userr._id)}
-                    className={styles.followed_btn}
-                    style={{ cursor: loading ? "not-allowed" : "pointer" }}
+      {allUsers.length > 0 ? (
+        <InfiniteScroll
+          dataLength={allUsers.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={
+            <div className={styles.loader_div}>
+              <span className={styles.loader}></span>
+            </div>
+          }
+        >
+          {(router.pathname === "/"
+            ? allUsers.filter((item) => item._id !== user?._id)
+            : allUsers
+          ).map((userr) => {
+            return (
+              <div className={styles.suggestions_user} key={userr._id}>
+                <Link href={`/user/${userr?.username}`}>
+                  <Image
+                    src={userr.profilePicture ? userr.profilePicture : noPhoto}
+                    height={38}
+                    width={38}
+                    alt="sociatek user"
+                    className={styles.user_profile_pic}
                   />
-                ) : (
-                  userr._id !== user?._id && ( // remove the follow icon for the logged in user
-                    <FaUserPlus
-                      onClick={() => handleFollow(true, userr._id)}
-                      className={styles.follow_btn}
+                </Link>
+
+                <div className={styles.user_uname}>
+                  <Link
+                    href={`/user/${userr?.username}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <p className={styles.user_username}>{userr.username}</p>
+                  </Link>
+                  <p className={styles.user_txt}>{userr.about}</p>
+                </div>
+
+                <span className={styles.follow_btns}>
+                  {user?.following?.includes(userr._id) ? (
+                    <FaUserCheck
+                      onClick={() => handleFollow(false, userr._id)}
+                      className={styles.followed_btn}
                       style={{ cursor: loading ? "not-allowed" : "pointer" }}
                     />
-                  )
-                )}
-              </span>
-            </div>
-          );
-        })}
-      </InfiniteScroll>
+                  ) : (
+                    userr._id !== user?._id && ( // remove the follow icon for the logged in user
+                      <FaUserPlus
+                        onClick={() => handleFollow(true, userr._id)}
+                        className={styles.follow_btn}
+                        style={{ cursor: loading ? "not-allowed" : "pointer" }}
+                      />
+                    )
+                  )}
+                </span>
+              </div>
+            );
+          })}
+        </InfiniteScroll>
+      ) : (
+        <p style={{ textAlign: "center", color: "rgba(0, 0, 0, 0.614)" }}>
+          No user found!
+        </p>
+      )}
     </div>
   );
 };

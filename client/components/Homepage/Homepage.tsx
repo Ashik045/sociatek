@@ -84,30 +84,38 @@ const Homepage = ({
         {/* render all the posts from database */}
         {/* The `<InfiniteScroll>` component is a wrapper component that enables infinite scrolling
         functionality. It allows you to load more data as the user scrolls down the page.  */}
-        <InfiniteScroll
-          dataLength={allPosts.length}
-          next={fetchMoreData}
-          hasMore={hasMore}
-          loader={
-            <div className={styles.loader_div}>
-              <span className={styles.loader}></span>
-            </div>
-          }
-        >
-          {allPosts.length > 0 ? (
-            allPosts.map((post) => {
-              return (
-                <Post
-                  key={post._id}
-                  postItems={post}
-                  setAllPosts={setAllPosts}
-                />
-              );
-            })
-          ) : (
-            <p style={{ textAlign: "center" }}>No post found!</p>
-          )}
-        </InfiniteScroll>
+        {allPosts.length > 0 ? (
+          <InfiniteScroll
+            dataLength={allPosts.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={
+              <div className={styles.loader_div}>
+                <span className={styles.loader}></span>
+              </div>
+            }
+          >
+            {allPosts.length > 0 ? (
+              allPosts.map((post) => {
+                return (
+                  <Post
+                    key={post._id}
+                    postItems={post}
+                    setAllPosts={setAllPosts}
+                  />
+                );
+              })
+            ) : (
+              <div className={styles.loader_div}>
+                <span className={styles.loader}></span>
+              </div>
+            )}
+          </InfiniteScroll>
+        ) : (
+          <p style={{ textAlign: "center", color: "rgba(0, 0, 0, 0.614)" }}>
+            No post found!
+          </p>
+        )}
       </div>
 
       <div className={styles.homepage_users}>
