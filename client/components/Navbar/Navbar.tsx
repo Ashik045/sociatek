@@ -43,10 +43,6 @@ const Navbar = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      // fetch the data
-      // const res = await axios.get(
-      //   `https://sociatek.onrender.com/api/${selectVal === "users" ? "users" : "posts"}/all?search=${inpVal?.toLocaleLowerCase()}`
-      // );
       router.push({
         pathname: selectVal === "users" ? "users" : "/",
         query: { search: inpVal },
