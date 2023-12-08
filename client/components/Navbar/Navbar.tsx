@@ -53,6 +53,12 @@ const Navbar = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  };
+
   const handleClose = () => {
     setInpVal("");
     //   dispatchh({ type: 'SEARCH_CLEAR' });
@@ -77,6 +83,7 @@ const Navbar = () => {
                 placeholder="Search.."
                 value={inpVal}
                 onChange={handleChange}
+                onKeyDown={handleKeyDown}
               />
               {inpVal?.length !== 0 && (
                 <FaTimes
@@ -84,22 +91,20 @@ const Navbar = () => {
                   onClick={handleClose}
                 />
               )}
-              <button type="submit">
-                {/* <FaSearch className={styles.search_icon} /> */}
-                <select
-                  className={styles.search_option}
-                  value={selectVal}
-                  onChange={(e) => setSelectVal(e.target.value)}
-                >
-                  {/* icons are not showing */}
-                  <option className={styles.search_val} value="posts">
-                    <FaPager /> Posts
-                  </option>
-                  <option className={styles.search_val} value="users">
-                    <FaUserFriends /> Users
-                  </option>
-                </select>
-              </button>
+
+              <select
+                className={styles.search_option}
+                value={selectVal}
+                onChange={(e) => setSelectVal(e.target.value)}
+              >
+                {/* icons are not showing */}
+                <option className={styles.search_val} value="posts">
+                  <FaPager /> Posts
+                </option>
+                <option className={styles.search_val} value="users">
+                  <FaUserFriends /> Users
+                </option>
+              </select>
             </form>
           </div>
 
