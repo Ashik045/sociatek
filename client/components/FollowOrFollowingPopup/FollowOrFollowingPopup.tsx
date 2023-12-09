@@ -14,7 +14,7 @@ const FollowOrFollowingPopup = ({
   setFollowerOrFollowingPopup,
   catchFlwrOrFlwing,
 }: FollowOrFollowingProp) => {
-  // close the popup
+  // close the popupp
   const handleClose = () => {
     setFollowerOrFollowingPopup(false);
   };
