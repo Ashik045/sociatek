@@ -25,8 +25,8 @@ const Navbar = () => {
     setToggler(false);
   };
 
-  //  The handleLogout function logs the user out by dispatching a logout action, redirecting to the home page, removing the JWT token from local storage, and logging a message to the console.
-  // user logout function.
+  // The handleLogout function logs the user out by dispatching a logout action, redirecting to the home page, removing the JWT token from local storage, and logging a message to the console.
+  // user logout function
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
     router.push("/");
