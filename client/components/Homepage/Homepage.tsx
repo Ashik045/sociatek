@@ -38,7 +38,7 @@ const Homepage = ({
    */
   const fetchMoreData = async () => {
     try {
-      const lastPost = allPosts[allPosts.length - 1]; // Get the last post in the current list
+      const lastPost = allPosts[allPosts.length - 1]; // Get the last post in the current list.
 
       // Fetch more data from the API using the id of the last post.
       const res = await axios.get(
