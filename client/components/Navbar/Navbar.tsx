@@ -61,7 +61,7 @@ const Navbar = () => {
 
   const handleClose = () => {
     setInpVal("");
-    //   dispatchh({ type: 'SEARCH_CLEAR' });
+    //   dispatchh({ type: 'SEARCH_CLEAR' })
   };
 
   return (
