@@ -51,7 +51,7 @@ const index = () => {
       );
 
       const { message, jwtToken } = res.data;
-      console.log(message);
+      // console.log(message);
 
       // Store the JWT token in localStorage
       localStorage.setItem("jwtToken", jwtToken);
