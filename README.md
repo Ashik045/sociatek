@@ -4,23 +4,29 @@
 
 #### I discover a seamless social experience with my website. From effortless onboarding and real-time activity tracking to enhanced social connections and personalized profiles, i've got you covered. Share your stories, photos, and posts, while exploring a dynamic activity feed. With robust data security and intuitive navigation, it's time to connect, engage, and thrive.
 
-#### Chalanges | Features
+## Key Features
 
-- Enhanced social connections: follow/unfollow users and explore their followers and followings.
-- Authenticated users can effortlessly share stories, photos, and update or remove their posts. Also can react to any post.
-- Engaging user activity feed showcasing the latest user actions.
-- Personalized profile visitor functionality, enabling users to see who has viewed their profile.
-- Real-time user activity tracking, displaying individual active status within their own browser.
-- Based on the user scroll, fetch the posts & users part by part rather than fetch them all in the first load.
-- Smooth user onboarding with a simplified multi-step registration form.
-- Ensured data security through server-side and client-side validation.
-- Dynamically rendered user navigation highlighting users, followers, and followings.
-- Highly documented and easily maintainable codes.
+- **Social Connections**: Users can follow/unfollow others and explore followers and followings, fostering enhanced social interactions.
+- **Personalized Profiles**: Includes profile visitor tracking, allowing users to see who has visited their profiles.
+- **Real-Time Activity Tracking**: Displays individual user statuses and includes a dynamic activity feed showcasing recent actions, enhancing engagement and keeping the content fresh.
+- **Post Management**: Authenticated users can share, update, or delete stories, photos, and other posts. Additionally, they can react to posts, adding a layer of interactivity.
+- **Infinite Scroll and Lazy Loading**: To improve performance, posts and user data load incrementally based on user scroll, reducing initial load times.
+- **Onboarding Experience**: New users are introduced via a streamlined multi-step registration form, simplifying the onboarding process.
+- **Data Security**: Emphasizes secure handling of data, with server- and client-side validations to protect user information.
+
+## Challenges
+
+- **User Experience (UX) & User Interface (UI)**: Designing an intuitive and accessible UI with a seamless UX was critical. The app prioritizes simplicity in navigation and visual appeal, ensuring a meaningful and enjoyable user experience.
+- **Performance Optimization**: To keep load times low, Sociatek implements lazy loading for posts and users, managing content delivery efficiently.
+- **Scalability**: Given the social platform’s potential growth, scalability is a focus, allowing for future additions without impacting current performance.
+- **Security**: Protecting user data is a priority, incorporating SSL and multi-factor authentication to secure user interactions and sensitive information.
 
 #### Upcoming Features
 
 - Notifications functionality.
 - Add comments to any post.
+
+---
 
 ### Previews
 
