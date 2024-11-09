@@ -89,6 +89,18 @@ const Homepage = ({
             dataLength={allPosts.length}
             next={fetchMoreData}
             hasMore={hasMore}
+            pullDownToRefresh
+            pullDownToRefreshThreshold={50}
+            pullDownToRefreshContent={
+              <h3 style={{ textAlign: "center" }}>
+                &#8595; Pull down to refresh
+              </h3>
+            }
+            releaseToRefreshContent={
+              <h3 style={{ textAlign: "center" }}>
+                &#8593; Release to refresh
+              </h3>
+            }
             loader={
               <div className={styles.loader_div}>
                 <span className={styles.loader}></span>
