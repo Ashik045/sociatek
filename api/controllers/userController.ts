@@ -220,6 +220,7 @@ export const getFollowing = async (
   res: express.Response
 ) => {
   const { userId } = req.params;
+  const { limit, lastPostId } = req.query;
 
   try {
     const user = await User.findById(userId);
@@ -227,7 +228,15 @@ export const getFollowing = async (
       return res.status(404).json({ error: "User not found!" });
     }
 
-    const followings = await User.find({ _id: { $in: user.following } });
+    // Build the query for pagination if lastPostId is provided
+    const query: any = lastPostId ? { _id: { $lt: lastPostId } } : {};
+
+    // Fetch the followings with pagination and limit options
+    const followings = await User.find({
+      _id: { $in: user.following },
+      ...query,
+    }).limit(parseInt(limit as string, 10) || 10); // Default to 10 if limit is not provided
+
     res.status(200).json({
       message: followings,
     });

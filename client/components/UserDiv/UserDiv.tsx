@@ -26,8 +26,9 @@ const UserDiv = ({ users, userNav }: UserProp) => {
 
   useEffect(() => {
     setAllUsers(users);
-    console.log("user");
   }, [user, users]);
+
+  console.log(allUsers);
 
   /**
    * The function fetches more data from an API based on the last post ID and updates the state with the
@@ -40,7 +41,7 @@ const UserDiv = ({ users, userNav }: UserProp) => {
       // Fetch more data from the API using the _id of the last post
       if (userNav === "allusers") {
         const res = await axios.get(
-          `https://sociatek.onrender.com/api/users/all?limit=15&lastPostId=${lastPost._id}`
+          `https://sociatek.onrender.com/api/users/all?limit=10&lastPostId=${lastPost._id}`
         );
 
         const newPosts = res.data.message;
@@ -156,10 +157,7 @@ const UserDiv = ({ users, userNav }: UserProp) => {
             </div>
           }
         >
-          {(router.pathname === "/"
-            ? allUsers.filter((item) => item._id !== user?._id)
-            : allUsers
-          ).map((userr) => {
+          {allUsers.map((userr) => {
             return (
               <div className={styles.suggestions_user} key={userr._id}>
                 <Link href={`/user/${userr?.username}`}>

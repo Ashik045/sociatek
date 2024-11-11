@@ -94,45 +94,24 @@
 
 @media screen and (max-width: 992px) {
   .reactors_popup {
-    .popup_main {
-      width: 45% !important;
-    }
-
-    .close_popup {
-      position: absolute;
-      top: 130px;
-      right: 130px;
-      z-index: 100;
+    .reactors_popup_m {
+      width: 45%;
     }
   }
 }
 
 @media screen and (max-width: 767px) {
   .reactors_popup {
-    .popup_main {
-      width: 60% !important;
-    }
-
-    .close_popup {
-      position: absolute;
-      top: 130px;
-      right: 70px;
-      z-index: 100;
+    .reactors_popup_m {
+      width: 60%;
     }
   }
 }
 
 @media screen and (max-width: 576px) {
   .reactors_popup {
-    .popup_main {
-      width: 85% !important;
-    }
-
-    .close_popup {
-      position: absolute;
-      top: 130px;
-      right: 20px;
-      z-index: 100;
+    .reactors_popup_m {
+      width: 85%;
     }
   }
 }

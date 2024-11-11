@@ -226,8 +226,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
       const res = await axios.get(
         `https://sociatek.onrender.com/api/post/${postId}/reactedusers`
       );
-      const users = await res.data.message;
-      setReactedUsers(users);
+      setReactedUsers(res.data?.message);
 
       setLoading(false);
     } catch (error) {
@@ -354,6 +353,7 @@ const Post = ({ postItems, setAllPosts }: PostsItems) => {
             users={reactedUsers}
             loading={loading}
             setReactorsPopup={setReactorsPopup}
+            visitor={false}
           />
         )}
 

@@ -1,4 +1,4 @@
-import ReactorUser from "components/ReactorUser/ReactorUser";
+import UserDiv from "components/UserDiv/UserDiv";
 import React from "react";
 import { FaTimes } from "react-icons/fa";
 import { User } from "types.global";
@@ -37,9 +37,7 @@ const ReactorsPopup = ({
               <span className={styles.loader}></span>
             </div>
           ) : (
-            users.map((user) => {
-              return <ReactorUser key={user._id} user={user} />;
-            })
+            <UserDiv users={users} />
           )}
         </div>
       </div>

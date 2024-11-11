@@ -260,7 +260,7 @@ call to retrieve user data from a specific endpoint. */
   const handleFollowingClick = async (userId: string) => {
     // You can use the user's following array to display the list
     const response = await axios.get(
-      `https://sociatek.onrender.com/api/user/${userId}/followings`
+      `https://sociatek.onrender.com/api/user/${userId}/followings?limit=10`
     );
     const followings = await response.data.message;
     setFollowingList(followings);
