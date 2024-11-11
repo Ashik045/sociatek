@@ -31,7 +31,7 @@ const ReactorUser = ({ user }: ReactorUser) => {
   const { _id, profilePicture, username, about } = user;
 
   return (
-    <div className={styles.reactor_user} key={_id}>
+    <div className={styles.reactor_user}>
       <Link href={`/user/${username}`}>
         <Image
           src={profilePicture ? profilePicture : noPhoto}

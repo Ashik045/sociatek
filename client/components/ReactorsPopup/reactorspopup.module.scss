@@ -10,18 +10,19 @@
   background-color: rgba(0, 0, 0, 0.76);
   z-index: 101;
 
-  .popup_main {
+  .reactors_popup_m {
+    overflow-y: scroll;
     position: relative;
-    width: 30% !important;
+    width: 30%;
     max-height: 400px;
     background-color: #f6fcfd;
-    overflow: hidden;
+    // overflow: hidden;
     display: flex;
     justify-content: center;
     animation: slide-in 0.3s ease;
-    overflow-y: scroll;
     padding: 15px 0px;
     border-radius: 2px;
+
     .popup_users {
       h3 {
         text-align: center;
@@ -66,27 +67,27 @@
         }
       }
     }
-  }
 
-  .close_popup {
-    position: absolute;
-    top: 130px;
-    right: 250px;
-    z-index: 100;
-    cursor: pointer;
-    padding: 7px;
-    font-size: 20px;
-    background-color: rgb(95, 95, 95);
-    color: #f6fcfd;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1999 !important;
-    transition: all 0.2s ease;
+    .close_popup {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      cursor: pointer;
+      padding: 5px;
+      font-size: 24px;
+      border-radius: 50%;
+      background-color: rgb(95, 95, 95);
+      color: #f6fcfd;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      transition: all 0.2s ease;
 
-    &:hover {
-      transform: scale(1.1);
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 }

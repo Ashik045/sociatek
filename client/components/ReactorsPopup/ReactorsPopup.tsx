@@ -24,10 +24,11 @@ const ReactorsPopup = ({
 
   return (
     <div className={styles.reactors_popup}>
-      <span onClick={handleClose} className={styles.close_popup}>
-        <FaTimes />
-      </span>
-      <div className={styles.popup_main}>
+      <div className={styles.reactors_popup_m}>
+        <span onClick={handleClose} className={styles.close_popup}>
+          <FaTimes />
+        </span>
+
         <div className={styles.popup_users}>
           <h3>{visitor ? "Profile Visitors" : "Reactions"} </h3>
 

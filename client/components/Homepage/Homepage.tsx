@@ -58,6 +58,24 @@ const Homepage = ({
     }
   };
 
+  const refreshFunction = async () => {
+    try {
+      // Fetch the latest posts from the server
+      const res = await axios.get(
+        "https://sociatek.onrender.com/api/posts/all?limit=10"
+      );
+
+      // Update the posts state with the latest data
+      const refreshedPosts = res.data.message;
+      setAllPosts(refreshedPosts);
+
+      // Reset `hasMore` to true to allow infinite scrolling to load additional posts
+      setHasMore(true);
+    } catch (error) {
+      console.log("Error refreshing posts:", error);
+    }
+  };
+
   const { user } = useContext(Context);
 
   return (
@@ -89,18 +107,6 @@ const Homepage = ({
             dataLength={allPosts.length}
             next={fetchMoreData}
             hasMore={hasMore}
-            pullDownToRefresh
-            pullDownToRefreshThreshold={50}
-            pullDownToRefreshContent={
-              <h3 style={{ textAlign: "center" }}>
-                &#8595; Pull down to refresh
-              </h3>
-            }
-            releaseToRefreshContent={
-              <h3 style={{ textAlign: "center" }}>
-                &#8593; Release to refresh
-              </h3>
-            }
             loader={
               <div className={styles.loader_div}>
                 <span className={styles.loader}></span>
