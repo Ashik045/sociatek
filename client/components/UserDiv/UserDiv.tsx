@@ -14,9 +14,10 @@ interface UserProp {
   users: User[];
   userNav?: string;
   setFollow?: React.Dispatch<React.SetStateAction<boolean>>;
+  userId?: string;
 }
 
-const UserDiv = ({ users, userNav }: UserProp) => {
+const UserDiv = ({ users, userNav, userId }: UserProp) => {
   const [allUsers, setAllUsers] = useState(users);
   const [hasMore, setHasMore] = useState(true);
   const [followed, setFollowed] = useState(false);
@@ -26,9 +27,10 @@ const UserDiv = ({ users, userNav }: UserProp) => {
 
   useEffect(() => {
     setAllUsers(users);
-  }, [user, users]);
+  }, [users]);
 
-  console.log(allUsers);
+  // console.log(allUsers);
+  // console.log(userId);
 
   /**
    * The function fetches more data from an API based on the last post ID and updates the state with the
@@ -36,27 +38,31 @@ const UserDiv = ({ users, userNav }: UserProp) => {
    */
   const fetchMoreData = async () => {
     try {
-      const lastPost = allUsers[allUsers.length - 1]; // Get the last post in the current list
+      // Check if there are existing users and get the ID of the last user for pagination
+      const lastUser = allUsers[allUsers.length - 1];
+      const lastUserId = lastUser._id;
 
-      // Fetch more data from the API using the _id of the last post
-      if (userNav === "allusers") {
-        const res = await axios.get(
-          `https://sociatek.onrender.com/api/users/all?limit=10&lastPostId=${lastPost._id}`
-        );
-
-        const newPosts = res.data.message;
-
-        if (newPosts.length === 0) {
-          setHasMore(false); // Stop fetching if there are no more posts
-        } else {
-          // Update the state with the new posts
-          setAllUsers((prevPosts) => [...prevPosts, ...newPosts]);
+      // Construct API endpoint with pagination parameters
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userId}/followings`,
+        {
+          params: {
+            limit: 10,
+            lastPostId: lastUserId,
+          },
         }
-      } else {
+      );
+
+      const newUsers = res.data.message; // Extract followings from response
+
+      // Update state with new users or stop fetching if no more users are found
+      if (newUsers.length === 0) {
         setHasMore(false);
+      } else {
+        setAllUsers((prevUsers) => [...prevUsers, ...newUsers]);
       }
     } catch (error) {
-      console.log("Error fetching more data:", error);
+      console.error("Error fetching more data:", error);
     }
   };
 
@@ -94,7 +100,7 @@ const UserDiv = ({ users, userNav }: UserProp) => {
         // send an unfollow request to the user
         try {
           const response = await axios.post(
-            `https://sociatek.onrender.com/api/user/unfollow/${userId}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/unfollow/${userId}`,
             {},
             config
           );
@@ -120,7 +126,7 @@ const UserDiv = ({ users, userNav }: UserProp) => {
         // send a follow request to the server
         try {
           const response = await axios.post(
-            `https://sociatek.onrender.com/api/user/follow/${userId}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/follow/${userId}`,
             {},
             config
           );

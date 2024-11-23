@@ -109,7 +109,7 @@ const PostPopup = ({ setPostPopup }: PopupProps) => {
 
       try {
         const res = await axios.post(
-          "https://sociatek.onrender.com/api/post/create",
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/post/create`,
           formInputs,
           config
         );

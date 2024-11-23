@@ -9,6 +9,7 @@ interface ReactorsProps {
   setReactorsPopup: React.Dispatch<React.SetStateAction<boolean>>;
   loading: boolean;
   visitor?: boolean;
+  userId?: string;
 }
 
 const ReactorsPopup = ({
@@ -16,7 +17,11 @@ const ReactorsPopup = ({
   setReactorsPopup,
   loading,
   visitor,
+  userId,
 }: ReactorsProps) => {
+  console.log("ReactorsPopup is rendering...");
+  console.log("userId in ReactorsPopup:", userId); // Log userId here
+
   // close the popup
   const handleClose = () => {
     setReactorsPopup(false);
@@ -37,7 +42,7 @@ const ReactorsPopup = ({
               <span className={styles.loader}></span>
             </div>
           ) : (
-            <UserDiv users={users} />
+            <UserDiv users={users} userId={userId} />
           )}
         </div>
       </div>

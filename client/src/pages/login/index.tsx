@@ -43,7 +43,7 @@ const index = () => {
     try {
       dispatch({ type: "LOGIN_START" });
       const res = await axios.post(
-        "https://sociatek.onrender.com/api/auth/login",
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/login`,
         {
           emailOrUsername: emailOrUsername.toLocaleLowerCase(),
           password: password,

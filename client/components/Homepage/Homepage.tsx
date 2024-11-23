@@ -42,7 +42,7 @@ const Homepage = ({
 
       // Fetch more data from the API using the id of the last post.
       const res = await axios.get(
-        `https://sociatek.onrender.com/api/posts/all?limit=10&lastPostId=${lastPost._id}`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all?limit=10&lastPostId=${lastPost._id}`
       );
 
       const newPosts = res.data.message;
@@ -62,7 +62,7 @@ const Homepage = ({
     try {
       // Fetch the latest posts from the server
       const res = await axios.get(
-        "https://sociatek.onrender.com/api/posts/all?limit=10"
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all?limit=10`
       );
 
       // Update the posts state with the latest data

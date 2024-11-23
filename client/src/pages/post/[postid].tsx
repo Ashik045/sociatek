@@ -111,7 +111,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
       try {
         // add a like request
         const response = await axios.post(
-          `https://sociatek.onrender.com/api/post/like/${_id}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/post/like/${_id}`,
           {},
           config
         );
@@ -128,7 +128,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
       // add a unlike request
       try {
         const response = await axios.post(
-          `https://sociatek.onrender.com/api/post/unlike/${_id}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/post/unlike/${_id}`,
           {},
           config
         );
@@ -175,7 +175,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
     try {
       // send a api request
       const res = await axios.delete(
-        `https://sociatek.onrender.com/api/post/${id}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/post/${id}`,
         config
       );
 
@@ -200,7 +200,7 @@ const SinglePost = ({ post, posts }: PostProp) => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://sociatek.onrender.com/api/post/${postId}/reactedusers`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/post/${postId}/reactedusers`
       );
       const users = await res.data.message;
       setReactedUsers(users);
@@ -391,7 +391,7 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
   const postId = context.query.postid;
 
   const res = await axios.get(
-    `https://sociatek.onrender.com/api/post/${postId}`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/post/${postId}`
   );
   const data = await res.data.message;
 
@@ -400,7 +400,7 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
 
   // fetch other posts of the user
   const res2 = await axios.get(
-    `https://sociatek.onrender.com/api/posts/all?user=${username}`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all?user=${username}`
   );
   const data2 = await res2.data.message;
 
@@ -417,7 +417,7 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
 
 // using SSG for avoiding "504 - server timeout" error
 // export const getStaticPaths: GetStaticPaths = async () => {
-//   const res = await axios.get("https://sociatek.onrender.com/api/posts/all");
+//   const res = await axios.get("${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all");
 
 //   const posts = await res.data?.message;
 
@@ -439,7 +439,7 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
 //   const postId = params?.postid;
 
 //   const res = await axios.get(
-//     `https://sociatek.onrender.com/api/post/${postId}`
+//     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/post/${postId}`
 //   );
 //   const data = await res.data.message;
 
@@ -448,7 +448,7 @@ export const getServerSideProps: GetServerSideProps<PostProp> = async (
 
 //   // fetch other posts of the user
 //   const res2 = await axios.get(
-//     `https://sociatek.onrender.com/api/posts/all?user=${username}`
+//     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all?user=${username}`
 //   );
 //   const data2 = await res2.data.message;
 

@@ -7,12 +7,14 @@ interface FollowOrFollowingProp {
   users: User[];
   setFollowerOrFollowingPopup: React.Dispatch<React.SetStateAction<boolean>>;
   catchFlwrOrFlwing: boolean;
+  userId?: string;
 }
 
 const FollowOrFollowingPopup = ({
   users,
   setFollowerOrFollowingPopup,
   catchFlwrOrFlwing,
+  userId,
 }: FollowOrFollowingProp) => {
   // close the popupp
   const handleClose = () => {
@@ -37,7 +39,7 @@ const FollowOrFollowingPopup = ({
       }
     }
 
-    return <UserDiv users={users} />;
+    return <UserDiv users={users} userId={userId} />;
   };
 
   return (

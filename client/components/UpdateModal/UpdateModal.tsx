@@ -74,7 +74,7 @@ const UpdateModal = ({ user, setOpenModal }: PageProp) => {
         // if everything is good then send the data to the server
         try {
           const res = await axios.put(
-            `https://sociatek.onrender.com/api/user/${user?.username}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${user?.username}`,
             values
           );
           const returneduser = await res?.data?.message;

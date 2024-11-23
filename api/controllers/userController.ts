@@ -220,7 +220,7 @@ export const getFollowing = async (
   res: express.Response
 ) => {
   const { userId } = req.params;
-  const { limit, lastPostId } = req.query;
+  const { limit, lastPostId } = req.query; // Pagination params: limit and lastPostId
 
   try {
     const user = await User.findById(userId);
@@ -228,15 +228,26 @@ export const getFollowing = async (
       return res.status(404).json({ error: "User not found!" });
     }
 
-    // Build the query for pagination if lastPostId is provided
-    const query: any = lastPostId ? { _id: { $lt: lastPostId } } : {};
+    // Build query to find the followings of the user
+    const query: any = { _id: { $in: user.following } };
 
-    // Fetch the followings with pagination and limit options
-    const followings = await User.find({
-      _id: { $in: user.following },
-      ...query,
-    }).limit(parseInt(limit as string, 10) || 10); // Default to 10 if limit is not provided
+    // If lastPostId is provided, use it to get the next set of followings
+    if (lastPostId) {
+      query._id = { $lt: lastPostId }; // Fetch users with IDs less than the lastPostId
+    }
 
+    // Set up options for pagination
+    const options: any = {};
+    if (limit) {
+      options.limit = parseInt(limit.toString()); // Set the limit for number of followings
+    }
+
+    // Fetch the followings from the database
+    const followings = await User.find(query, null, options).sort({
+      createdAt: -1,
+    }); // Optional: sort by creation date// Optional: choose fields to return
+
+    // Return the followings in the response
     res.status(200).json({
       message: followings,
     });

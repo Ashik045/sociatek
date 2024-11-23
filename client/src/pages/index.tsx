@@ -29,11 +29,13 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   const router = useRouter();
   const { search } = router.query;
 
+  console.log("server url", process.env.NEXT_PUBLIC_SERVER_URL);
+
   const fetchData = async () => {
     try {
       // Fetch the data
       const res = await axios.get(
-        `https://sociatek.onrender.com/api/posts/all${
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all${
           search ? `?search=${search}` : ""
         }`
       );
@@ -109,10 +111,10 @@ export const getServerSideProps: GetServerSideProps<
 > = async () => {
   try {
     const postsRes = await axios.get(
-      "https://sociatek.onrender.com/api/posts/all?limit=10"
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all?limit=10`
     );
     const usersRes = await axios.get(
-      "https://sociatek.onrender.com/api/users/all?limit=7"
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/all?limit=7`
     );
 
     const posts = postsRes.data.message;
@@ -140,10 +142,10 @@ export const getServerSideProps: GetServerSideProps<
 // export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
 //   try {
 //     const postsRes = await axios.get(
-//       "https://sociatek.onrender.com/api/posts/all?limit=10"
+//       "${}/api/posts/all?limit=10"
 //     );
 //     const usersRes = await axios.get(
-//       "https://sociatek.onrender.com/api/users/all?limit=7"
+//       "${}/api/users/all?limit=7"
 //     );
 
 //     const posts = postsRes.data.message;

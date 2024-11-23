@@ -26,7 +26,7 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
     try {
       // Fetch the data
       const res = await axios.get(
-        `https://sociatek.onrender.com/api/users/all${
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/all${
           search ? `?search=${search}` : ""
         }`
       );
@@ -63,7 +63,7 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
 
       try {
         const response = await axios.get(
-          `https://sociatek.onrender.com/api/user/${user?._id}/followers`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${user?._id}/followers`
         );
         const followers = response.data.message;
         setUserss(followers);
@@ -78,7 +78,7 @@ const Users: NextPage<HomePageProps> = ({ users }) => {
 
       try {
         const response = await axios.get(
-          `https://sociatek.onrender.com/api/user/${user?._id}/followings`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${user?._id}/followings`
         );
         const followings = response.data.message;
         setUserss(followings);
@@ -172,7 +172,7 @@ export const getServerSideProps: GetServerSideProps<
   HomePageProps
 > = async () => {
   const res2 = await axios.get(
-    "https://sociatek.onrender.com/api/users/all?limit=15"
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/all?limit=15`
   );
   const data2 = await res2.data;
 
@@ -185,7 +185,7 @@ export const getServerSideProps: GetServerSideProps<
 
 // export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
 //   const res2 = await axios.get(
-//     "https://sociatek.onrender.com/api/users/all?limit=15"
+//     "${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/all?limit=15"
 //   );
 //   const data2 = await res2.data;
 

@@ -91,7 +91,7 @@ request to the server to record a user visit when certain conditions are met. */
           };
 
           const res = await axios.get(
-            `https://sociatek.onrender.com/api/user/visit/${userr?._id}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/visit/${userr?._id}`,
             config
           );
 
@@ -117,7 +117,7 @@ request to the server to record a user visit when certain conditions are met. */
       setLoading3(true);
       try {
         const res = await axios.get(
-          `https://sociatek.onrender.com/api/user/${userr?._id}/visitors`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userr?._id}/visitors`
         );
         setProfileVisitors(res.data?.message);
 
@@ -141,7 +141,7 @@ the `userr._id` value changes. */
       try {
         // Fetch the followers data from the server
         const response = await axios.get(
-          `https://sociatek.onrender.com/api/user/${userr._id}/followers`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userr._id}/followers`
         );
         const followers = await response.data.message;
 
@@ -157,7 +157,7 @@ the `userr._id` value changes. */
       try {
         // Fetch the following data from the server
         const response = await axios.get(
-          `https://sociatek.onrender.com/api/user/${userr._id}/followings`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userr._id}/followings`
         );
         const followings = await response.data.message;
 
@@ -180,7 +180,7 @@ call to retrieve user data from a specific endpoint. */
   useEffect(() => {
     const userCall = async () => {
       const res = await axios.get(
-        `https://sociatek.onrender.com/api/user/${userr?.username}`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userr?.username}`
       );
 
       const userrr = await res.data?.message;
@@ -210,7 +210,7 @@ call to retrieve user data from a specific endpoint. */
       try {
         // Send a request to the server endpoint /api/user/active
         await axios.get(
-          `https://sociatek.onrender.com/api/user/active/${user?._id}`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/active/${user?._id}`
         );
       } catch (error) {
         console.error("Failed to update active status:", error);
@@ -244,7 +244,7 @@ call to retrieve user data from a specific endpoint. */
   const handleFollowersClick = async (userId: string) => {
     // You can use the user's followers array to display the list
     const response = await axios.get(
-      `https://sociatek.onrender.com/api/user/${userId}/followers`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userId}/followers`
     );
     const followers = await response.data.message;
     setFollowersList(followers);
@@ -260,7 +260,7 @@ call to retrieve user data from a specific endpoint. */
   const handleFollowingClick = async (userId: string) => {
     // You can use the user's following array to display the list
     const response = await axios.get(
-      `https://sociatek.onrender.com/api/user/${userId}/followings?limit=10`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userId}/followings?limit=10`
     );
     const followings = await response.data.message;
     setFollowingList(followings);
@@ -311,7 +311,7 @@ call to retrieve user data from a specific endpoint. */
         // send a follow request to the user
         if (!loading) {
           const response = await axios.post(
-            `https://sociatek.onrender.com/api/user/follow/${userr?._id}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/follow/${userr?._id}`,
             {},
             config
           );
@@ -332,7 +332,7 @@ call to retrieve user data from a specific endpoint. */
         // send a unfollow request to the user
         if (!loading) {
           const response = await axios.post(
-            `https://sociatek.onrender.com/api/user/unfollow/${userr?._id}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/unfollow/${userr?._id}`,
             {},
             config
           );
@@ -363,7 +363,7 @@ call to retrieve user data from a specific endpoint. */
       setLoading2(true);
       // fetch the activity of a user
       const res = await axios.get(
-        `https://sociatek.onrender.com/api/user/activities/${userId}?limit=10`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/activities/${userId}?limit=10`
       );
 
       const activity = await res.data.message;
@@ -385,7 +385,7 @@ call to retrieve user data from a specific endpoint. */
     try {
       setLoading3(true);
       const res = await axios.get(
-        `https://sociatek.onrender.com/api/user/${userr?._id}/visitors`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userr?._id}/visitors`
       );
       setProfileVisitors(res.data?.message);
 
@@ -407,7 +407,7 @@ call to retrieve user data from a specific endpoint. */
 
       // Fetch more data from the API using the _id of the last post
       const res = await axios.get(
-        `https://sociatek.onrender.com/api/posts/all?user=${userName}&limit=10&lastPostId=${lastPost._id}`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all?user=${userName}&limit=10&lastPostId=${lastPost._id}`
       );
 
       const newPosts = res.data.message;
@@ -524,6 +524,7 @@ call to retrieve user data from a specific endpoint. */
                   users={catchFlwrOrFlwing ? followersList : followingList}
                   setFollowerOrFollowingPopup={setFollowerOrFollowingPopup}
                   catchFlwrOrFlwing={catchFlwrOrFlwing}
+                  userId={userr._id}
                 />
               )}
 
@@ -602,7 +603,7 @@ call to retrieve user data from a specific endpoint. */
               <p onClick={() => handleVisitorsPopup(userr._id)}>See All</p>
             </div>
 
-            {visitorsPopup && profileVisitors.length > 0 && (
+            {userr?._id && visitorsPopup && profileVisitors.length > 0 && (
               <ReactorsPopup
                 users={profileVisitors}
                 loading={loading3}
@@ -701,10 +702,10 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
   const { params } = context;
 
   const res = await axios.get(
-    `https://sociatek.onrender.com/api/user/${params?.username}`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${params?.username}`
   );
   const res2 = await axios.get(
-    `https://sociatek.onrender.com/api/posts/all?user=${params?.username}&limit=10`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all?user=${params?.username}&limit=10`
   );
 
   const data = await res.data.message;
@@ -720,7 +721,7 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
 
 // Fetch the list of user IDs from an API or database
 // export const getStaticPaths: GetStaticPaths = async () => {
-//   const res = await axios.get("https://sociatek.onrender.com/api/users/all");
+//   const res = await axios.get($"{process.env.NEXT_PUBLIC_SERVER_URL}/api/users/all");
 //   const users = await res.data.message;
 
 //   const paths = users?.map((user: User) => ({
@@ -739,10 +740,10 @@ export const getServerSideProps: GetServerSideProps<UserProps> = async (
 //   const username = params?.username;
 
 //   const res = await axios.get(
-//     `https://sociatek.onrender.com/api/user/${username}`
+//     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${username}`
 //   );
 //   const res2 = await axios.get(
-//     `https://sociatek.onrender.com/api/posts/all?user=${username}&limit=10`
+//     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all?user=${username}&limit=10`
 //   );
 
 //   const data = await res.data.message;

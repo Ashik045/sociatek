@@ -1,0 +1,24 @@
+app = "api-lively-shadow-2653"
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+  NODE_ENV = "production"
+  APPLICATION_PORT = "4000"
+  MONGODB_CONNECTION_STRING = "mongodb+srv://ashikurislam045:ashikurislam045@cluster0.bd5bflk.mongodb.net/?retryWrites=true&w=majority"
+  MONGODB_CONNECTION_STRING_MAIN = "mongodb+srv://ashikurislam045:ashikur045@cluster00.ieuy5pf.mongodb.net/?retryWrites=true&w=majority"
+  JWT_SECRET_KEY = "4&N&&8a@zP3m6M8*Wx"
+
+[[services]]
+  internal_port = 4000
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]

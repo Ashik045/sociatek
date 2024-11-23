@@ -18,6 +18,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.9",
     "@nestia/sdk": "^1.6.5",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
