@@ -29,8 +29,6 @@ const Home: NextPage<HomePageProps> = ({ posts, users }) => {
   const router = useRouter();
   const { search } = router.query;
 
-  console.log("server url", process.env.NEXT_PUBLIC_SERVER_URL);
-
   const fetchData = async () => {
     try {
       // Fetch the data
