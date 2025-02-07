@@ -12,7 +12,7 @@ import Navbar from "../../components/Navbar/Navbar";
 /* The `interface HomePageProps` is defining the shape of the props that the `Home` component will
 receive. It specifies that the `posts` prop should be an array of `Postt` objects and the `users`
 prop should be an array of `User` objects. This allows TypeScript to enforce type checking and
-provide autocomplete suggestions when accessing these props within the component. */
+provide autocomplete suggestions when accessing these props within the component */
 interface HomePageProps {
   posts: Postt[];
   users: User[];
