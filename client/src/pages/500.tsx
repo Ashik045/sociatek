@@ -1,5 +1,5 @@
 const TimeOut = () => {
-  // 504 error is for the free deployment on netlify or railway.
+  // 504 error is for the free deployment on netlify or railway
   return (
     <div>
       <h1>504 - Server Timeout</h1>
